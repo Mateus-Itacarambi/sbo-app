@@ -1,0 +1,54 @@
+@import "../../styles/variaveis";
+
+.nav {
+    background-color: $verde9;
+
+    &__container {
+        height: 8rem;
+        display: flex;
+        max-width: 1600px;
+        margin: auto;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__ul {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    &__li {
+        .ativo {
+            background-color: $verde11;
+
+            &:hover {
+                background-color: $verde11;
+            }
+        }
+
+        a{
+            padding: 0.8rem 2.5rem;
+            border-radius: 2.5rem;
+            font-size: 1.8rem;
+            color: white;
+            text-decoration: none;
+            transition: .3s;
+
+            &:hover {
+                background-color: $verde10;
+            }
+        }
+    }
+
+    &__button {
+        transition: .4s;
+        background-color: white;
+        padding: 1rem 3.8rem;
+        border-radius: 2.5rem;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: $verde10;
+        border: 2px solid white;
+        cursor: pointer;
+    }
+}
