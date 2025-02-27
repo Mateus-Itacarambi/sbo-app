@@ -17,5 +17,23 @@
         width: 100%;
         height: 100vh;
         border-radius: 4rem 0 0 4rem;
+
+        .alerta {
+            box-sizing: border-box;
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            font-size: 1.3rem;
+            font-weight: 500;
+            padding: 1.5rem;
+            border-radius: 5px;
+            transition: .3s;
+
+            &.error {
+                background-color: $vermelho4;
+                color: $vermelho9;
+                border: 2px solid $vermelho9;
+            }
+          }
     }
 }

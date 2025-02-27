@@ -18,6 +18,7 @@ export default function Cadastro() {
   const [semestre, setSemestre] = useState("");
   const [cursos, setCursos] = useState<{ value: number; label: string; semestres: number }[]>([]);
   const [semestresDisponiveis, setSemestresDisponiveis] = useState<{ value: number; label: string }[]>([]);
+  const [erro, setErro] = useState("");
 
   const generos = [
     { value: "Feminino", label: "Feminino" },
@@ -69,10 +70,10 @@ export default function Cadastro() {
       email,
       senha,
       matricula,
-      semestre: Number(semestre), // Ajustado para "semestre"
-      idCurso: Number(curso), // Ajustado para "idCurso"
+      semestre: Number(semestre),
+      idCurso: Number(curso),
     };
-    
+  
     try {
       const response = await fetch("http://localhost:8080/estudantes", {
         method: "POST",
@@ -81,21 +82,25 @@ export default function Cadastro() {
         },
         body: JSON.stringify(estudante),
       });
-    
+  
       if (!response.ok) {
-        throw new Error("Erro ao cadastrar estudante");
+        const errorData = await response.json(); // Tenta capturar a mensagem do backend
+        throw new Error(errorData.message || "Erro ao cadastrar estudante");
       }
-    
+  
       alert("Estudante cadastrado com sucesso!");
-    } catch (error) {
+      setErro(""); // Limpa o erro se o cadastro for bem-sucedido
+    } catch (error: any) {
       console.error(error);
-      alert("Erro ao cadastrar estudante.");
+      setErro(error.message); // Armazena a mensagem de erro para exibir no alerta
     }
   };
+  
 
   return (
     <div className={styles.container}>
       <section>
+        {erro && <div className={`${styles.alerta}} ${styles[theme]}`}>{erro}</div>}
         <div className={styles.cadastro}>
           <h1>Cadastro de Conta</h1>
           <p>Seja bem-vindo! Crie seu acesso rapidamente.</p>
