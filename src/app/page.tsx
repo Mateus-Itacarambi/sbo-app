@@ -3,8 +3,6 @@ import figura from "./assets/figura_inicio.png"
 import styles from "./page.module.scss"
 import Link from "next/link";
 
-
-
 export default function Home() {
   return (
     <main>

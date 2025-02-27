@@ -1,0 +1,36 @@
+@import "../../styles/variaveis";
+
+.select {
+  width: 40rem;
+  height: 54px;
+  padding: 1rem;
+  font-size: 1.6rem;
+  color: $cinza11;
+  border: 2px solid $cinza7;
+  border-radius: .6rem;
+  background: url("../../assets/login/arrow.png") no-repeat;
+  background-size: 13px;
+  background-position: calc(100% - 1rem) center !important;
+  -moz-appearance:none !important;
+  -webkit-appearance: none !important; 
+  appearance: none !important;
+  padding-right: 2rem !important;
+  margin-bottom: 3rem;
+  outline: $verde9;
+  transition: .3s;
+
+  &:hover {
+    border: 2px solid $verde9;
+  }
+
+  option {
+    font-size: 1.6rem;
+    color: $cinza12;
+  }
+}
+
+.label {
+  display: block;
+  font-size: 1.6rem;
+  margin-bottom: .7rem;
+}

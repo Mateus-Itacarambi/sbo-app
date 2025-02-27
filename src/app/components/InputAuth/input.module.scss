@@ -1,0 +1,38 @@
+@import "../../styles/variaveis";
+
+.input_field {
+    label {
+        display: block;
+        font-size: 1.6rem;
+        font-weight: 400;
+        margin-bottom: .5rem;
+    }
+  
+    input {
+        box-sizing: border-box;
+        font-size: 1.6rem;
+        font-weight: 400;
+        color: $cinza11;
+        width: 100%;
+        height: 54px;
+        padding: 1.5rem 1rem;
+        border: 2px solid $cinza7;
+        border-radius: .6rem;
+        margin-bottom: 3rem;
+        outline: none;
+        transition: .3s;
+
+        &:focus, &:hover { 
+            border: 2px solid $verde9;
+        }
+
+        &:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active {
+            transition: background-color 5000s ease-in-out 0s;
+            box-shadow: inset 0 0 20px 20px white;
+        }
+    }
+  }
+  

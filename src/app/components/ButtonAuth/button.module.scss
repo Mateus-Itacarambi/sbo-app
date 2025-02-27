@@ -1,0 +1,30 @@
+@import "../../styles/variaveis";
+
+.button {
+    width: 100%;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: white;
+    border: none;
+    border-radius: .6rem;
+    padding: 1.5rem 0;
+    margin: 3rem 0;
+    cursor: pointer;
+    transition: .3s;
+
+    &.primary {
+        background-color: $verde9;
+
+        &:hover {
+            background-color: $verde11;
+        }
+    }
+
+    &.secondary {
+        background-color: $vermelho9;
+
+        &:hover {
+            background-color: $vermelho11;
+        }
+    }
+}
