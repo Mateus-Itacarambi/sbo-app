@@ -3,21 +3,68 @@
 import Link from "next/link"
 import styles from "./page.module.scss"
 import InputAuth from "../../components/InputAuth"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ButtonAuth from "@/app/components/ButtonAuth";
+import Alerta from "@/app/components/Alerta";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState("");
+  const [sucesso, setSucesso] = useState("");
+  const [mostrarMensagem, setmostrarMensagem] = useState(false);
+
+  useEffect(() => {
+    if (erro || sucesso) {
+      setmostrarMensagem(true);
+  
+      const timer = setTimeout(() => {
+        setmostrarMensagem(false);
+        setErro(""); // Limpa o erro após esconder o alerta
+        setSucesso("");
+      }, 3000); // Esconde após 5 segundos
+  
+      return () => clearTimeout(timer); // Limpa o timer anterior ao definir um novo erro
+    }
+  }, [erro, sucesso]);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const response = await fetch('http://localhost:8080/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, senha }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      const token = data.token;
+      
+      // Armazenar o token JWT no localStorage ou Cookie
+      localStorage.setItem('authToken', token);
+
+      // Redirecionar para a página principal ou dashboard
+      window.location.href = "/dashboard"; // Exemplo de redirecionamento
+      setErro("");
+    } else {
+      setErro("Credenciais inválidas. Tente novamente.");
+      setSucesso("");
+    }
+  };
 
   return (
     <div className={styles.container}>
       <section>
+        {sucesso && mostrarMensagem && <Alerta text={sucesso} theme="sucesso"/>}
+        {erro && mostrarMensagem && <Alerta text={erro} theme="erro"/>}
         <div className={styles.login}>
           <h1>BEM-VINDO DE VOLTA</h1>
           <p>Bem-vindo de volta! Por favor, entre com suas credenciais.</p>
           
-          <form action="">
+          <form  onSubmit={handleLogin}>
             <InputAuth
               label="E-mail"
               type="email"

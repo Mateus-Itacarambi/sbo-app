@@ -10,7 +10,7 @@ export default function BarraLateral () {
             <Logo/>
         </div>
         <div className={styles.imagem}>
-            <Image src={loginImagem} alt="" width={600}/>
+            <Image src={loginImagem} alt="" width={600} priority/>
         </div>
     </aside>
   );

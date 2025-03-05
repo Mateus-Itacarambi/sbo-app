@@ -6,6 +6,7 @@ import InputAuth from "../../components/InputAuth";
 import { useState, useEffect } from "react";
 import ButtonAuth from "@/app/components/ButtonAuth";
 import SelectAuth from "@/app/components/SelectAuth";
+import Alerta from "@/app/components/Alerta";
 
 export default function Cadastro() {
   const [nome, setNome] = useState("");
@@ -19,11 +20,28 @@ export default function Cadastro() {
   const [cursos, setCursos] = useState<{ value: number; label: string; semestres: number }[]>([]);
   const [semestresDisponiveis, setSemestresDisponiveis] = useState<{ value: number; label: string }[]>([]);
   const [erro, setErro] = useState("");
+  const [sucesso, setSucesso] = useState("");
+  const [mostrarMensagem, setmostrarMensagem] = useState(false);
 
   const generos = [
     { value: "Feminino", label: "Feminino" },
     { value: "Masculino", label: "Masculino" },
   ];
+
+  useEffect(() => {
+    if (erro || sucesso) {
+      setmostrarMensagem(true);
+  
+      const timer = setTimeout(() => {
+        setmostrarMensagem(false);
+        setErro(""); // Limpa o erro após esconder o alerta
+        setSucesso("");
+      }, 3000); // Esconde após 5 segundos
+  
+      return () => clearTimeout(timer); // Limpa o timer anterior ao definir um novo erro
+    }
+  }, [erro, sucesso]);
+  
 
   // Função para buscar cursos do backend
   useEffect(() => {
@@ -84,15 +102,16 @@ export default function Cadastro() {
       });
   
       if (!response.ok) {
-        const errorData = await response.json(); // Tenta capturar a mensagem do backend
-        throw new Error(errorData.message || "Erro ao cadastrar estudante");
+        const errorData = await response.text(); // Tenta capturar a mensagem do backend
+        throw new Error(errorData || "Erro ao cadastrar estudante");
       }
-  
-      alert("Estudante cadastrado com sucesso!");
+      
+      setSucesso("Estudante cadastrado com sucesso!");
       setErro(""); // Limpa o erro se o cadastro for bem-sucedido
     } catch (error: any) {
       console.error(error);
       setErro(error.message); // Armazena a mensagem de erro para exibir no alerta
+      setSucesso("");
     }
   };
   
@@ -100,7 +119,8 @@ export default function Cadastro() {
   return (
     <div className={styles.container}>
       <section>
-        {erro && <div className={`${styles.alerta}} ${styles[theme]}`}>{erro}</div>}
+        {sucesso && mostrarMensagem && <Alerta text={sucesso} theme="sucesso"/>}
+        {erro && mostrarMensagem && <Alerta text={erro} theme="erro"/>}
         <div className={styles.cadastro}>
           <h1>Cadastro de Conta</h1>
           <p>Seja bem-vindo! Crie seu acesso rapidamente.</p>

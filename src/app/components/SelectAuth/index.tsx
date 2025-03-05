@@ -31,7 +31,7 @@ export default function SelectAuth({ options, onChange, placeholder, text }: Sel
         className={styles.select}
         required
       >
-        <option value="" disabled selected>{placeholder}</option>
+        <option value="" disabled>{placeholder}</option>
         {options.map((option, index) => (
           <option key={index} value={option.value}>
             {option.label}

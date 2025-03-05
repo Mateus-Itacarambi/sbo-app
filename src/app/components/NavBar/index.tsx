@@ -5,7 +5,6 @@ import Logo from '../Logo';
 import styles from './navbar.module.scss'
 import { usePathname } from 'next/navigation';
 
-
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
   const pathname = usePathname();
   const isActive = pathname === href;
