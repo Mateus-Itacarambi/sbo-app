@@ -1,11 +1,12 @@
 "use client";
 
-import Link from "next/link"
-import styles from "./page.module.scss"
-import InputAuth from "../../components/InputAuth"
+import Link from "next/link";
+import styles from "./page.module.scss";
+import InputAuth from "../../components/InputAuth";
 import { useState, useEffect } from "react";
 import ButtonAuth from "@/app/components/ButtonAuth";
 import Alerta from "@/app/components/Alerta";
+import { jwtDecode } from "jwt-decode";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -17,13 +18,13 @@ export default function Login() {
   useEffect(() => {
     if (erro || sucesso) {
       setmostrarMensagem(true);
-  
+
       const timer = setTimeout(() => {
         setmostrarMensagem(false);
         setErro(""); // Limpa o erro após esconder o alerta
         setSucesso("");
       }, 3000); // Esconde após 5 segundos
-  
+
       return () => clearTimeout(timer); // Limpa o timer anterior ao definir um novo erro
     }
   }, [erro, sucesso]);
@@ -31,10 +32,10 @@ export default function Login() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await fetch('http://localhost:8080/auth/login', {
-      method: 'POST',
+    const response = await fetch("http://localhost:8080/auth/login", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, senha }),
     });
@@ -42,9 +43,12 @@ export default function Login() {
     if (response.ok) {
       const data = await response.json();
       const token = data.token;
-      
+
       // Armazenar o token JWT no localStorage ou Cookie
-      localStorage.setItem('authToken', token);
+      localStorage.setItem("authToken", token);
+      const decodedToken: any = jwtDecode(token);
+
+      console.log(decodedToken.nome);
 
       // Redirecionar para a página principal ou dashboard
       window.location.href = "/dashboard"; // Exemplo de redirecionamento
@@ -58,13 +62,15 @@ export default function Login() {
   return (
     <div className={styles.container}>
       <section>
-        {sucesso && mostrarMensagem && <Alerta text={sucesso} theme="sucesso"/>}
-        {erro && mostrarMensagem && <Alerta text={erro} theme="erro"/>}
+        {sucesso && mostrarMensagem && (
+          <Alerta text={sucesso} theme="sucesso" />
+        )}
+        {erro && mostrarMensagem && <Alerta text={erro} theme="erro" />}
         <div className={styles.login}>
           <h1>BEM-VINDO DE VOLTA</h1>
           <p>Bem-vindo de volta! Por favor, entre com suas credenciais.</p>
-          
-          <form  onSubmit={handleLogin}>
+
+          <form onSubmit={handleLogin}>
             <InputAuth
               label="E-mail"
               type="email"
@@ -85,9 +91,14 @@ export default function Login() {
               <p>Esqueceu sua senha?</p>
             </Link>
 
-            <ButtonAuth text="Acessar" type="submit" theme="primary"/>
+            <ButtonAuth text="Acessar" type="submit" theme="primary" />
 
-            <p>Não tem uma conta? <Link href="/auth/estudante-cadastro"><span>Cadastra-se</span></Link></p>
+            <p>
+              Não tem uma conta?{" "}
+              <Link href="/auth/estudante-cadastro">
+                <span>Cadastra-se</span>
+              </Link>
+            </p>
           </form>
         </div>
       </section>
