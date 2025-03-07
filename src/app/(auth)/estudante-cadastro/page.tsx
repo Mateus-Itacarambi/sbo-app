@@ -27,6 +27,7 @@ export default function Cadastro() {
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
   const [mostrarMensagem, setmostrarMensagem] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Estado para loading
 
   const generos = [
     { value: "Feminino", label: "Feminino" },
@@ -92,6 +93,7 @@ export default function Cadastro() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true); // Ativa o loading
 
     const estudante = {
       nome,
@@ -121,9 +123,11 @@ export default function Cadastro() {
       setSucesso("Estudante cadastrado com sucesso!");
       setErro(""); // Limpa o erro se o cadastro for bem-sucedido
     } catch (error: any) {
-      console.error(error);
-      setErro(error.message); // Armazena a mensagem de erro para exibir no alerta
+      console.error("Erro ao fazer login:", error);
+      setErro("Erro ao conectar ao servidor.");
       setSucesso("");
+    } finally {
+      setIsLoading(false); // Desativa o loading quando a requisição terminar
     }
   };
 
@@ -200,12 +204,12 @@ export default function Cadastro() {
               onChange={(e) => setSenha(e.target.value)}
             />
 
-            <ButtonAuth text="Cancelar" type="reset" theme="secondary" />
-            <ButtonAuth text="Cadastrar" type="submit" theme="primary" />
+            <ButtonAuth text="Cancelar" type="reset" theme="secondary" disabled={isLoading}/>
+            <ButtonAuth text={isLoading ? <span className="spinner"></span> : "Cadastrar"} type="submit" theme="primary" disabled={isLoading}/>
           </form>
           <p>
             Já possui uma conta?{" "}
-            <Link href={"/auth/login"}>
+            <Link href={"/login"}>
               <span>Login</span>
             </Link>
           </p>

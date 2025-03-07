@@ -1,7 +1,13 @@
-export default function DashboardLayout({
-  children, // will be a page or nested layout
-}: {
-  children: React.ReactNode;
-}) {
-  return <section>{children}</section>;
+import "../globals.css";
+import NavBar from "../components/NavBar";
+
+export default function MainLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="pt-br">
+      <body>
+        <NavBar />
+        <main>{children}</main>
+      </body>
+    </html>
+  );
 }

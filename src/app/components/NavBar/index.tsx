@@ -47,7 +47,7 @@ const NavBar = () => {
                   Sobre
                 </NavLink>
               </li>
-            </ul><Link href={"/auth/login"}>
+            </ul><Link href={"/login"}>
                 <button className={styles.nav__button}>
                   Login
                 </button>

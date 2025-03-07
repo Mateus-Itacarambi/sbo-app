@@ -1,5 +1,5 @@
 import Image from "next/image";
-import figura from "./assets/figura_inicio.png"
+import figura from "@/app/assets/figura_inicio.png"
 import styles from "./page.module.scss"
 import Link from "next/link";
 
