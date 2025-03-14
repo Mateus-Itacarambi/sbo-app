@@ -7,7 +7,6 @@ import { useState, useEffect } from "react";
 import ButtonAuth from "@/app/components/ButtonAuth";
 import SelectAuth from "@/app/components/SelectAuth";
 import Alerta from "@/app/components/Alerta";
-import Head from "next/head";
 
 export default function Cadastro() {
   const [nome, setNome] = useState("");
@@ -114,21 +113,28 @@ export default function Cadastro() {
         },
         body: JSON.stringify(estudante),
       });
-
+    
       if (!response.ok) {
-        const errorData = await response.text(); // Tenta capturar a mensagem do backend
+        const errorData = await response.text(); // Captura a mensagem do backend
         throw new Error(errorData || "Erro ao cadastrar estudante");
       }
-
+    
       setSucesso("Estudante cadastrado com sucesso!");
       setErro(""); // Limpa o erro se o cadastro for bem-sucedido
     } catch (error: any) {
-      console.error("Erro ao fazer login:", error);
-      setErro("Erro ao conectar ao servidor.");
+      console.error("Erro ao cadastrar estudante:", error);
+    
+      if (error.message.includes("Failed to fetch")) {
+        setErro("Erro ao conectar ao servidor.");
+      } else {
+        setErro(error.message || "Erro desconhecido.");
+      }
+
       setSucesso("");
     } finally {
       setIsLoading(false); // Desativa o loading quando a requisição terminar
     }
+    
   };
 
   return (

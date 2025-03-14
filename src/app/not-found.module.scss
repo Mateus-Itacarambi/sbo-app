@@ -10,13 +10,15 @@
     text-align: center;
 
     .button {
-        font-size: 1.8rem;
-        padding: 1.5rem 4rem;
+        font-size: 1.6rem;
+        padding: 1.2rem 4rem;
         background-color: $verde9;
         color: white;
+        border: none;
         border-radius: 3rem;
         text-decoration: none;
         transition: .3s;
+        cursor: pointer;
 
         &:hover{
             background-color: $verde11;

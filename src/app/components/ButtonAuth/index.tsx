@@ -5,7 +5,7 @@ interface ButtonAuthProps {
   text: React.ReactNode;
   type: "button" | "submit" | "reset";
   theme: string;
-  onClick?: () => void; // Função opcional sem parâmetros e sem retorno
+  onClick?: () => void;
   disabled: boolean;
 }
 

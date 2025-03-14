@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import ButtonAuth from "@/app/components/ButtonAuth";
 import Alerta from "@/app/components/Alerta";
 import { jwtDecode } from "jwt-decode";
+import { useRouter } from 'next/router';
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -15,6 +16,7 @@ export default function Login() {
   const [sucesso, setSucesso] = useState("");
   const [mostrarMensagem, setmostrarMensagem] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Estado para loading
+  const router = useRouter()
 
   useEffect(() => {
     if (erro || sucesso) {
@@ -30,6 +32,8 @@ export default function Login() {
     }
   }, [erro, sucesso]);
 
+  
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true); // Ativa o loading
@@ -44,30 +48,27 @@ export default function Login() {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        const token = data.token;
+        // const data = await response.json();
+        // const token = data.token;
+
+        // const decodedToken: any = jwtDecode(token);
   
-        // Armazenar o token JWT no localStorage ou Cookie
-        localStorage.setItem("authToken", token);
-        const decodedToken: any = jwtDecode(token);
-  
-        console.log(decodedToken.nome);
-  
-        // Redirecionar para a página principal ou dashboard
-        window.location.href = "/dashboard"; // Exemplo de redirecionamento
+        // console.log(decodedToken.nome);
+
+        router.push('/')
         setErro("");
       } else {
         setErro("Credenciais inválidas. Tente novamente.");
         setSucesso("");
       }
-
     } catch (error: any) {
       console.error("Erro ao fazer login:", error);
       setErro("Erro ao conectar ao servidor.");
     } finally {
-      setIsLoading(false); // Desativa o loading quando a requisição terminar
+      setIsLoading(false);
     }
   };
+
 
   return (
     <div className={styles.container}>

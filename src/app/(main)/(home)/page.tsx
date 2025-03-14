@@ -23,7 +23,7 @@ export default function Home() {
           </Link>
         </div>
         <div className={styles.imagem}>
-          <Image src={figura} height={680} alt="Ilustração de uma mulher segurando uma lupa ampliando a imagem de uma pessoa em uma lista de perfis."/>
+          <Image src={figura} height={680} alt="Ilustração de uma mulher segurando uma lupa ampliando a imagem de uma pessoa em uma lista de perfis." priority/>
         </div>
       </section>
     </main>
