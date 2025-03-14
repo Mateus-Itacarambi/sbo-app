@@ -4,10 +4,10 @@ import Link from "next/link";
 import styles from "./page.module.scss";
 import InputAuth from "../../components/InputAuth";
 import { useState, useEffect } from "react";
-import ButtonAuth from "@/app/components/ButtonAuth";
-import Alerta from "@/app/components/Alerta";
+import ButtonAuth from "@/components/ButtonAuth";
+import Alerta from "@/components/Alerta";
 import { jwtDecode } from "jwt-decode";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -15,8 +15,7 @@ export default function Login() {
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
   const [mostrarMensagem, setmostrarMensagem] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // Estado para loading
-  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (erro || sucesso) {
@@ -32,8 +31,6 @@ export default function Login() {
     }
   }, [erro, sucesso]);
 
-  
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true); // Ativa o loading
@@ -48,14 +45,14 @@ export default function Login() {
       });
 
       if (response.ok) {
-        // const data = await response.json();
-        // const token = data.token;
+        const data = await response.json();
+        const token = data.token;
 
-        // const decodedToken: any = jwtDecode(token);
-  
-        // console.log(decodedToken.nome);
+        const decodedToken: any = jwtDecode(token);
 
-        router.push('/')
+        console.log(decodedToken.nome);
+
+        window.location.href = "/";
         setErro("");
       } else {
         setErro("Credenciais inválidas. Tente novamente.");
@@ -69,9 +66,9 @@ export default function Login() {
     }
   };
 
-
   return (
     <div className={styles.container}>
+      <div className="teste"></div>
       <section>
         {sucesso && mostrarMensagem && (
           <Alerta text={sucesso} theme="sucesso" />
@@ -102,7 +99,12 @@ export default function Login() {
               <p>Esqueceu sua senha?</p>
             </Link>
 
-            <ButtonAuth text={isLoading ? <span className="spinner"></span> : "Acessar"} type="submit" theme="primary" disabled={isLoading}/>
+            <ButtonAuth
+              text={isLoading ? <span className="spinner"></span> : "Acessar"}
+              type="submit"
+              theme="primary"
+              disabled={isLoading}
+            />
 
             <p>
               Não tem uma conta?{" "}

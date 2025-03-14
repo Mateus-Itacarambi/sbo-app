@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
@@ -8,19 +8,18 @@ interface User {
   email: string;
   role: string; // Pode ser "estudante" ou "professor"
   nome: string;
-  // Adicione outros campos conforme necessário
 }
 
-export default function Dashboard() {
+export default function Perfil() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    
+    const token = localStorage.getItem("authToken");
+
     if (!token) {
-      router.push('/auth/login');
+      router.push("/login");
       return;
     }
 
@@ -32,8 +31,8 @@ export default function Dashboard() {
         nome: decodedToken.nome, // Nome do usuário, se incluído no token
       });
     } catch (error) {
-      localStorage.removeItem('authToken');
-      router.push('/auth/login');
+      localStorage.removeItem("authToken");
+      router.push("/login");
     } finally {
       setLoading(false);
     }
@@ -53,7 +52,7 @@ export default function Dashboard() {
           <p>Tipo de usuário: {user.role}</p>
 
           {/* Exiba conteúdo específico para Estudante ou Professor */}
-          {user.role === 'ESTUDANTE' ? (
+          {user.role === "ESTUDANTE" ? (
             <p>Conteúdo específico para Estudante</p>
           ) : (
             <p>Conteúdo específico para Professor</p>

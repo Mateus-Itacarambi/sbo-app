@@ -1,4 +1,13 @@
-import './globals.css';
+import "./globals.css";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: {
+    template: "%s | Sistema de Busca de Orientadores",
+    default: "Sistema de Busca de Orientadores",
+  },
+  description: "",
+};
 
 export default function RootLayout({
   children,
@@ -7,9 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <body>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

@@ -4,9 +4,9 @@ import Link from "next/link";
 import styles from "./page.module.scss";
 import InputAuth from "../../components/InputAuth";
 import { useState, useEffect } from "react";
-import ButtonAuth from "@/app/components/ButtonAuth";
-import SelectAuth from "@/app/components/SelectAuth";
-import Alerta from "@/app/components/Alerta";
+import ButtonAuth from "@/components/ButtonAuth";
+import SelectAuth from "@/components/SelectAuth";
+import Alerta from "@/components/Alerta";
 
 export default function Cadastro() {
   const [nome, setNome] = useState("");
@@ -113,17 +113,17 @@ export default function Cadastro() {
         },
         body: JSON.stringify(estudante),
       });
-    
+
       if (!response.ok) {
         const errorData = await response.text(); // Captura a mensagem do backend
         throw new Error(errorData || "Erro ao cadastrar estudante");
       }
-    
+
       setSucesso("Estudante cadastrado com sucesso!");
       setErro(""); // Limpa o erro se o cadastro for bem-sucedido
     } catch (error: any) {
       console.error("Erro ao cadastrar estudante:", error);
-    
+
       if (error.message.includes("Failed to fetch")) {
         setErro("Erro ao conectar ao servidor.");
       } else {
@@ -134,7 +134,6 @@ export default function Cadastro() {
     } finally {
       setIsLoading(false); // Desativa o loading quando a requisição terminar
     }
-    
   };
 
   return (
@@ -210,8 +209,18 @@ export default function Cadastro() {
               onChange={(e) => setSenha(e.target.value)}
             />
 
-            <ButtonAuth text="Cancelar" type="reset" theme="secondary" disabled={isLoading}/>
-            <ButtonAuth text={isLoading ? <span className="spinner"></span> : "Cadastrar"} type="submit" theme="primary" disabled={isLoading}/>
+            <ButtonAuth
+              text="Cancelar"
+              type="reset"
+              theme="secondary"
+              disabled={isLoading}
+            />
+            <ButtonAuth
+              text={isLoading ? <span className="spinner"></span> : "Cadastrar"}
+              type="submit"
+              theme="primary"
+              disabled={isLoading}
+            />
           </form>
           <p>
             Já possui uma conta?{" "}

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "./barra-lateral.module.scss";
-import loginImagem from "../../assets/login/login.svg";
+import loginImagem from "@/assets/login/login.svg";
 import Logo from "../Logo";
 
 export default function BarraLateral() {

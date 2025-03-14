@@ -1,131 +1,156 @@
 @import "../../styles/variaveis";
 
 .nav {
-    background-color: $verde9;
-    font-weight: 500;
+  background-color: $verde9;
+  font-weight: 500;
 
-    &__container {
-        height: 8rem;
+  &__container {
+    height: 8rem;
+    display: flex;
+    max-width: 1600px;
+    margin: auto;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__ul {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  &__li {
+    .ativo {
+      background-color: $verde11;
+
+      &:hover {
+        background-color: $verde11;
+      }
+    }
+
+    a {
+      padding: 0.8rem 2.5rem;
+      border-radius: 2.5rem;
+      font-size: 1.8rem;
+      color: white;
+      transition: 0.3s;
+
+      &:hover {
+        background-color: $verde10;
+      }
+    }
+  }
+
+  &__button {
+    transition: 0.4s;
+    background-color: white;
+    width: 13rem;
+    padding: 1rem 0;
+    border-radius: 2.5rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: $verde10;
+    border: 2px solid white;
+    cursor: pointer;
+  }
+
+  .actions {
+    width: 13rem;
+    height: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+
+    .userSection {
+      display: flex;
+      align-items: center;
+
+      .profile {
+        width: 4.5rem;
+        height: 4.5rem;
+        border-radius: 50%;
+        overflow: hidden;
         display: flex;
-        max-width: 1600px;
-        margin: auto;
         align-items: center;
-        justify-content: space-between;
-    }
+        justify-content: center;
+        background: #fff;
+        font-size: 2rem;
+        font-weight: 700;
+        color: $verde9;
+        margin-right: 0.5rem;
+        margin-left: 2rem;
+      }
 
-    &__ul {
-        display: flex;
-        gap: 0.5rem;
-    }
+      .profileImage {
+        border-radius: 50%;
+        object-fit: cover;
+      }
 
-    &__li {
-        .ativo {
-            background-color: $verde11;
+      .initials {
+        font-size: 2rem;
+      }
 
-            &:hover {
-                background-color: $verde11;
-            }
+      .dropdown {
+        position: relative;
+
+        &:hover .dropdownContent {
+          display: block;
         }
 
-        a{
-            padding: 0.8rem 2.5rem;
-            border-radius: 2.5rem;
-            font-size: 1.8rem;
-            color: white;
-            transition: .3s;
+        .dropdownContent {
+          width: 13rem;
+          display: none;
+          position: fixed;
+          top: 8rem;
+          right: 15rem;
+          background: white;
+          box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+          border-radius: 0 0 5px 5px;
+          overflow: hidden;
+          min-width: 150px;
+
+          a,
+          button {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            text-align: left;
+            font-weight: 500;
+            font-size: 1.6rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            text-decoration: none;
+            color: $cinza12;
 
             &:hover {
-                background-color: $verde10;
+              background-color: $cinza5;
             }
+          }
         }
-    }
 
-    &__button {
-        transition: .4s;
-        background-color: white;
-        width: 13rem;
-        padding: 1rem 0;
-        border-radius: 2.5rem;
-        font-size: 1.8rem;
-        font-weight: 600;
-        color: $verde10;
-        border: 2px solid white;
-        cursor: pointer;
-    }
-
-    .actions {
-        width: 13rem;
-        height: 8rem;
-        display: flex;
-        align-items: center;
-        justify-content: right;
-      
-        .userSection {
+        .box {
           display: flex;
           align-items: center;
-      
-          .profile {
-            width: 4.5rem;
-            height: 4.5rem;
-            border-radius: 50%;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #fff;
-            font-size: 2rem;
-            font-weight: 700;
-            color: $verde9;
-            margin-right: .5rem;
-            margin-left: 2rem;
-          }
-      
-          .profileImage {
-            border-radius: 50%;
-            object-fit: cover;
-          }
-      
-          .initials {
-            font-size: 2rem;
-          }
-      
-          .dropdown {
-            position: relative;
+          padding: 1.5rem 2rem 2rem 2rem;
+          margin-left: 1rem;
+          border-radius: 0.5rem;
+          cursor: pointer;
 
-            &:hover .dropdownContent{
-              display: block;
-            }
-      
-            .dropdownContent {
-              width: 13rem;
-              display: none;
-              position: absolute;
-              right: -1rem;
-              background: white;
-              box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-              border-radius: 0 0 5px 5px;
-              overflow: hidden;
-              min-width: 150px;
-      
-              a, button {
-                display: block;
-                width: 100%;
-                padding: 0.8rem;
-                text-align: left;
-                font-weight: 500;
-                font-size: 1.6rem;
-                border: none;
-                background: none;
-                cursor: pointer;
-                text-decoration: none;
-                color: $cinza12;
+          &:hover {
+            background-color: $verde10;
+          }
 
-                &:hover {
-                  background-color: $cinza5;
-                }
-              }
-            }
+          .arrow {
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            padding: 4px;
+            display: inline-block;
+            transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+            transition: 0.2s;
           }
         }
       }
+    }
+  }
 }
