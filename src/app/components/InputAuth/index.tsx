@@ -7,9 +7,10 @@ interface InputAuthProps {
   placeholder?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
 }
 
-export default function InputAuth({ label, type, placeholder, value, onChange }: InputAuthProps) {
+export default function InputAuth({ label, type, placeholder, value, onChange, disabled = false, }: InputAuthProps) {
   return (
     <div className={styles.input_field}>
       <label>{label}</label>
@@ -19,6 +20,7 @@ export default function InputAuth({ label, type, placeholder, value, onChange }:
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        disabled={disabled}
       />
     </div>
   );

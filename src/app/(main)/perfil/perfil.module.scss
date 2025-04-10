@@ -1,0 +1,151 @@
+@import "../../styles/variaveis";
+
+.main {
+  height: calc(100vh - 12rem);
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+  background-color: $verde3;
+}
+
+.container {
+    overflow-y: scroll;
+    padding: 0 1rem;
+
+    &::-webkit-scrollbar
+    {
+        width: 8px;
+        border-radius: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb
+    {
+        border-radius: 15px;
+        background-color: $verde9;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $verde10;
+        }
+    }
+    .card_container {
+      max-width: 1200px;
+      background-color: white;
+      width: 100%;
+      padding: 2rem;
+      display: flex;
+      border-radius: 1.5rem;
+      box-sizing: border-box;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+  }
+  
+  .card_perfil {
+    display: grid;
+    grid-template-columns: .5fr 5fr 1fr;
+    gap: 3rem;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 20px;
+    width: 100%;
+    max-height: 200px;
+    // border: 3px solid $verde4;
+  }
+  
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 20px;
+    width: 100%;
+    // border: 3px solid $verde4;
+
+    // h2 {
+    //   font-size: 2.5rem;
+    //   font-weight: 600;
+    //   color: $verde9;
+    // }
+
+  form {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  }
+  
+  .profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+    .profileImage {
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  
+    .initials {
+      width: 11rem;
+      height: 11rem;
+      border-radius: 50%;
+      background-color: $verde9;
+      color: white;
+      font-size: 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 5px 5px 10px $cinza6;
+    }
+  }
+  
+  .details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+  
+    h1 {
+      font-size: 3rem;
+      font-weight: 600;
+      color: $verde9;
+    }
+  
+    p {
+      font-size: 1.7rem;
+      font-weight: 500;
+      color: $cinza10;
+    }
+
+    label {
+      color: $cinza12;
+    }
+
+    strong {
+      color: $verde10;
+    }
+  }
+  
+  .editar {
+    text-align: end;
+
+    .editBtn {
+      padding: .8rem 2rem;
+      border: none;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: white;
+      border-radius: 2rem;
+      cursor: pointer;
+      background-color: $verde9;
+      transition: 0.2s;
+  
+      &:hover {
+        background-color: $verde11;
+        color: white;
+      }
+    }
+  }
+  

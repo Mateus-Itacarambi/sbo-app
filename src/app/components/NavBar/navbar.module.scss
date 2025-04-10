@@ -59,10 +59,13 @@
     display: flex;
     align-items: center;
     justify-content: right;
+    gap: 100px;
 
     .userSection {
       display: flex;
       align-items: center;
+      width: 13rem;
+      justify-content: space-between;
 
       .profile {
         width: 4.5rem;
@@ -76,8 +79,6 @@
         font-size: 2rem;
         font-weight: 700;
         color: $verde9;
-        margin-right: 0.5rem;
-        margin-left: 2rem;
       }
 
       .profileImage {
@@ -87,69 +88,6 @@
 
       .initials {
         font-size: 2rem;
-      }
-
-      .dropdown {
-        position: relative;
-
-        &:hover .dropdownContent {
-          display: block;
-        }
-
-        .dropdownContent {
-          width: 13rem;
-          display: none;
-          position: fixed;
-          top: 8rem;
-          right: 15rem;
-          background: white;
-          box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-          border-radius: 0 0 5px 5px;
-          overflow: hidden;
-          min-width: 150px;
-
-          a,
-          button {
-            display: block;
-            width: 100%;
-            padding: 0.8rem;
-            text-align: left;
-            font-weight: 500;
-            font-size: 1.6rem;
-            border: none;
-            background: none;
-            cursor: pointer;
-            text-decoration: none;
-            color: $cinza12;
-
-            &:hover {
-              background-color: $cinza5;
-            }
-          }
-        }
-
-        .box {
-          display: flex;
-          align-items: center;
-          padding: 1.5rem 2rem 2rem 2rem;
-          margin-left: 1rem;
-          border-radius: 0.5rem;
-          cursor: pointer;
-
-          &:hover {
-            background-color: $verde10;
-          }
-
-          .arrow {
-            border: solid white;
-            border-width: 0 3px 3px 0;
-            padding: 4px;
-            display: inline-block;
-            transform: rotate(45deg);
-            -webkit-transform: rotate(45deg);
-            transition: 0.2s;
-          }
-        }
       }
     }
   }

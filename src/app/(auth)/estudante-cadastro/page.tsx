@@ -16,17 +16,17 @@ export default function Cadastro() {
   const [senha, setSenha] = useState("");
   const [genero, setGenero] = useState("");
   const [curso, setCurso] = useState("");
-  // const [semestre, setSemestre] = useState("");
-  // const [cursos, setCursos] = useState<
-  //   { value: number; label: string; semestres: number }[]
-  // >([]);
-  // const [semestresDisponiveis, setSemestresDisponiveis] = useState<
-  //   { value: number; label: string }[]
-  // >([]);
+  const [semestre, setSemestre] = useState("");
+  const [cursos, setCursos] = useState<
+    { value: number; label: string; semestres: number }[]
+  >([]);
+  const [semestresDisponiveis, setSemestresDisponiveis] = useState<
+    { value: number; label: string }[]
+  >([]);
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
   const [mostrarMensagem, setmostrarMensagem] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // Estado para loading
+  const [isLoading, setIsLoading] = useState(false);
 
   const generos = [
     { value: "Feminino", label: "Feminino" },
@@ -39,60 +39,63 @@ export default function Cadastro() {
 
       const timer = setTimeout(() => {
         setmostrarMensagem(false);
-        setErro(""); // Limpa o erro após esconder o alerta
+        setErro("");
         setSucesso("");
-      }, 3000); // Esconde após 5 segundos
+      }, 3000);
 
-      return () => clearTimeout(timer); // Limpa o timer anterior ao definir um novo erro
+      return () => clearTimeout(timer);
     }
   }, [erro, sucesso]);
 
-  // Função para buscar cursos do backend
-  // useEffect(() => {
-  //   async function fetchCursos() {
-  //     try {
-  //       const response = await fetch("http://localhost:8080/cursos");
-  //       const data = await response.json();
+  useEffect(() => {
+    async function fetchCursos() {
+      try {
+        const response = await fetch("http://localhost:8080/cursos");
 
-  //       // Extraindo apenas a lista de cursos dentro de "content"
-  //       setCursos(
-  //         data.content.map((curso: any) => ({
-  //           value: curso.id,
-  //           label: curso.nome,
-  //           semestres: curso.semestres,
-  //         }))
-  //       );
-  //     } catch (error) {
-  //       console.error("Erro ao buscar cursos:", error);
-  //     }
-  //   }
+         if (!response.ok) {
+          const errorData = await response.text();
+          throw new Error(errorData || "Erro ao buscar cursos");
+        }
+        
+        const data = await response.json();
 
-  //   fetchCursos();
-  // }, []);
+        setCursos(
+          data.content.map((curso: any) => ({
+            value: curso.id,
+            label: curso.nome,
+            semestres: curso.semestres,
+          }))
+        );
+      } catch (error) {
+        console.error("Erro ao buscar cursos:", error);
+      }
+    }
 
-  // const handleCursoChange = (cursoId: string) => {
-  //   setCurso(cursoId);
+    fetchCursos();
+  }, []);
 
-  //   // Encontrar o curso selecionado e gerar os semestres
-  //   const cursoSelecionado = cursos.find(
-  //     (curso) => curso.value === Number(cursoId)
-  //   );
-  //   if (cursoSelecionado) {
-  //     const semestres = Array.from(
-  //       { length: cursoSelecionado.semestres },
-  //       (_, i) => ({
-  //         value: i + 1,
-  //         label: `${i + 1}º Semestre`,
-  //       })
-  //     );
-  //     setSemestresDisponiveis(semestres);
-  //     setSemestre(""); // Reseta o semestre ao mudar o curso
-  //   }
-  // };
+  const handleCursoChange = (cursoId: string) => {
+    setCurso(cursoId);
+
+    const cursoSelecionado = cursos.find(
+      (curso) => curso.value === Number(cursoId)
+    );
+    if (cursoSelecionado) {
+      const semestres = Array.from(
+        { length: cursoSelecionado.semestres },
+        (_, i) => ({
+          value: i + 1,
+          label: `${i + 1}º Semestre`,
+        })
+      );
+      setSemestresDisponiveis(semestres);
+      setSemestre("");
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true); // Ativa o loading
+    setIsLoading(true);
 
     const estudante = {
       nome,
@@ -101,8 +104,8 @@ export default function Cadastro() {
       email,
       senha,
       matricula,
-      // semestre: Number(semestre),
-      // idCurso: Number(curso),
+      semestre: Number(semestre),
+      idCurso: Number(curso),
     };
 
     try {
@@ -115,12 +118,12 @@ export default function Cadastro() {
       });
 
       if (!response.ok) {
-        const errorData = await response.text(); // Captura a mensagem do backend
+        const errorData = await response.text();
         throw new Error(errorData || "Erro ao cadastrar estudante");
       }
 
       setSucesso("Estudante cadastrado com sucesso!");
-      setErro(""); // Limpa o erro se o cadastro for bem-sucedido
+      setErro("");
     } catch (error: any) {
       console.error("Erro ao cadastrar estudante:", error);
 
@@ -132,7 +135,7 @@ export default function Cadastro() {
 
       setSucesso("");
     } finally {
-      setIsLoading(false); // Desativa o loading quando a requisição terminar
+      setIsLoading(false);
     }
   };
 
@@ -171,7 +174,7 @@ export default function Cadastro() {
               placeholder="Selecione um gênero"
             />
 
-            {/* <SelectAuth
+            <SelectAuth
               options={cursos}
               onChange={handleCursoChange}
               text="Curso"
@@ -183,7 +186,7 @@ export default function Cadastro() {
               onChange={(value) => setSemestre(value)} 
               text="Semestre" 
               placeholder="Selecione um semestre" 
-            /> */}
+            />
 
             <InputAuth
               label="Matrícula"

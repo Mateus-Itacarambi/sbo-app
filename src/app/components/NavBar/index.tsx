@@ -6,7 +6,9 @@ import styles from "./navbar.module.scss";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import iconBell from "@/app/assets/bell.png";
+import iconBell from "@/assets/bell.png";
+import Dropdown from "@/components/Dropdown";
+import { useRouter } from "next/navigation";
 
 interface User {
   name: string;
@@ -35,16 +37,51 @@ const NavLink = ({
 };
 
 const NavBar = () => {
-  const [user, setUser] = useState<User | null>({
-    name: "João Silva",
-    profileImage: "", // Deixe vazio para testar as iniciais
-  });
+  const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await fetch("http://localhost:8080/auth/me", {
+          credentials: "include",
+        });
+    
+        if (res.ok) {
+          const userData = await res.json();
+          setUser({
+            name: userData.nome,
+            profileImage: userData.profileImage,
+          });
+        } else {
+          console.error("Usuário não autenticado");
+        }
+      } catch (error) {
+        console.error("Erro ao buscar usuário:", error);
+      }
+    };    
+
+    fetchUser();
+  }, []);
 
   const getInitials = (nome: string) => {
     const nomes = nome.split(" ");
     return nomes.length > 1
       ? `${nomes[0][0]}${nomes[nomes.length - 1][0]}`.toUpperCase()
       : nomes[0][0].toUpperCase();
+  };
+
+  const logout = async () => {
+    try {
+      await fetch("http://localhost:8080/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      setUser(null);
+      router.push("/login");
+    } catch (err) {
+      console.error("Erro ao fazer logout:", err);
+    }
   };
 
   return (
@@ -73,7 +110,7 @@ const NavBar = () => {
             <div className={styles.userSection}>
               <Image src={iconBell} width={23} alt="Ícone de sino" />
 
-              <Link href={`/perfil/mateus-itacarambi`}>
+              <Link href={`/perfil`}>
                 <div className={styles.profile}>
                   {user.profileImage ? (
                     <Image
@@ -91,16 +128,18 @@ const NavBar = () => {
                 </div>
               </Link>
 
-              <div className={styles.dropdown}>
-                <div className={styles.box}>
-                  <i className={styles.arrow}></i>
-                </div>
-                <div className={styles.dropdownContent}>
-                  <Link href="/perfil">Perfil</Link>
-                  <Link href="/configuracoes">Configurações</Link>
-                  <button onClick={() => setUser(null)}>Sair</button>
-                </div>
-              </div>
+              <Dropdown
+                label=""
+                items={[
+                  { type: "link", label: "Perfil", href: "/perfil" },
+                  { type: "link", label: "Configurações", href: "/configuracoes" },
+                  {
+                    type: "action",
+                    label: "Sair",
+                    onClick: logout,
+                  },
+                ]}
+              />
             </div>
           ) : (
             <Link href={"/login"}>

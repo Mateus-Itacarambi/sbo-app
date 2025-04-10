@@ -19,15 +19,15 @@ export default function SelectAuth({ options, onChange, placeholder, text }: Sel
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
     setSelected(value);
-    if (onChange) onChange(value); // Passa o valor selecionado para o componente pai
+    if (onChange) onChange(value);
   };
 
   return (
     <div>
       <label className={styles.label}>{text}</label>
       <select
-        value={selected} // Vincula o estado ao valor do select
-        onChange={handleSelect} // Garante que a seleção seja tratada
+        value={selected}
+        onChange={handleSelect}
         className={styles.select}
         required
       >

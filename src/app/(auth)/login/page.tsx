@@ -6,8 +6,7 @@ import InputAuth from "../../components/InputAuth";
 import { useState, useEffect } from "react";
 import ButtonAuth from "@/components/ButtonAuth";
 import Alerta from "@/components/Alerta";
-import { jwtDecode } from "jwt-decode";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,6 +15,7 @@ export default function Login() {
   const [sucesso, setSucesso] = useState("");
   const [mostrarMensagem, setmostrarMensagem] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (erro || sucesso) {
@@ -23,21 +23,22 @@ export default function Login() {
 
       const timer = setTimeout(() => {
         setmostrarMensagem(false);
-        setErro(""); // Limpa o erro após esconder o alerta
+        setErro("");
         setSucesso("");
-      }, 3000); // Esconde após 5 segundos
+      }, 3000);
 
-      return () => clearTimeout(timer); // Limpa o timer anterior ao definir um novo erro
+      return () => clearTimeout(timer);
     }
   }, [erro, sucesso]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true); // Ativa o loading
+    setIsLoading(true);
 
     try {
       const response = await fetch("http://localhost:8080/auth/login", {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -45,18 +46,10 @@ export default function Login() {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        const token = data.token;
-
-        const decodedToken: any = jwtDecode(token);
-
-        console.log(decodedToken.nome);
-
-        window.location.href = "/";
-        setErro("");
+        router.push("/");
       } else {
-        setErro("Credenciais inválidas. Tente novamente.");
-        setSucesso("");
+        const error = await response.text();
+        alert("Erro: " + error);
       }
     } catch (error: any) {
       console.error("Erro ao fazer login:", error);
