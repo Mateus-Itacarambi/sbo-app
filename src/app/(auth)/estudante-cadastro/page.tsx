@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import ButtonAuth from "@/components/ButtonAuth";
 import SelectAuth from "@/components/SelectAuth";
 import Alerta from "@/components/Alerta";
+import { generos } from "@/types";
 
 export default function Cadastro() {
   const [nome, setNome] = useState("");
@@ -28,10 +29,7 @@ export default function Cadastro() {
   const [mostrarMensagem, setmostrarMensagem] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const generos = [
-    { value: "Feminino", label: "Feminino" },
-    { value: "Masculino", label: "Masculino" },
-  ];
+
 
   useEffect(() => {
     if (erro || sucesso) {

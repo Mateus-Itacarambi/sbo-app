@@ -1,0 +1,7 @@
+export * from "./usuario";
+export * from "./curso";
+export * from "./tema";
+export * from "./estudante";
+export * from "./professor";
+export * from "./areaInteresse";
+export * from "./generos";

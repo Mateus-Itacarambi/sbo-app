@@ -3,6 +3,7 @@
 
 .cadastro {
     max-width: 85rem;
+    width: 100%;
 
     h1 {
         font-size: 5rem;
@@ -11,16 +12,13 @@
     }
 
     form {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-
-        input {
-            width: 40rem;
-        }
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 2rem;
 
         button {
-            width: 40rem;
+            width: 100%;
             margin-top: 1rem;
         }
     }

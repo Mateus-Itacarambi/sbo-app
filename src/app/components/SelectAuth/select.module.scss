@@ -1,7 +1,7 @@
 @import "../../styles/variaveis";
 
 .select {
-  width: 40rem;
+  width: 100%;
   height: 54px;
   padding: 1rem;
   font-size: 1.6rem;
@@ -26,6 +26,12 @@
   option {
     font-size: 1.6rem;
     color: $cinza12;
+  }
+
+  &:disabled {
+    width: 100%;
+    background-color: $cinza2_1;
+    border: 2px solid $cinza2_2;
   }
 }
 

@@ -43,7 +43,7 @@
   
   .card_perfil {
     display: grid;
-    grid-template-columns: .5fr 5fr 1fr;
+    grid-template-columns: .5fr 4fr 2fr;
     gap: 3rem;
     background: #fff;
     padding: 2rem;
@@ -73,7 +73,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    column-gap: 3rem;
   }
   }
   
@@ -131,7 +131,11 @@
   .editar {
     text-align: end;
 
-    .editBtn {
+    button {
+      width: 12rem;
+      height: auto;
+      margin: auto;
+      padding: 0%;
       padding: .8rem 2rem;
       border: none;
       font-size: 1.6rem;
@@ -141,6 +145,7 @@
       cursor: pointer;
       background-color: $verde9;
       transition: 0.2s;
+      margin-left: 1rem;
   
       &:hover {
         background-color: $verde11;

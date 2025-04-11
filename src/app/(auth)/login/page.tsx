@@ -49,7 +49,7 @@ export default function Login() {
         router.push("/");
       } else {
         const error = await response.text();
-        alert("Erro: " + error);
+        setErro(error);
       }
     } catch (error: any) {
       console.error("Erro ao fazer login:", error);
