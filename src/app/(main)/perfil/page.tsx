@@ -199,10 +199,11 @@ export default function Perfil() {
                 <div className={styles.initials}>{getInitials(usuario.nome)}</div>
               )}
             </div>
-            <div className={styles.details}>
+            <div className={styles.detalhes}>
               <h1>{usuario.nome}</h1>
               <p>{usuario.email}</p>
-              {usuario.role === "ESTUDANTE" && <p>{(usuario as Estudante).curso?.nome}</p>}
+              {usuario.role === "ESTUDANTE" && <p>{(usuario as Estudante).curso?.nome} - {(usuario as Estudante).semestre}º semestre</p>}
+              {usuario.role === "PROFESSOR" && <p>{(usuario as Professor).disponibilidade}</p>}
             </div>
             <div className={styles.editar}>
               {!editando ? (
@@ -216,7 +217,51 @@ export default function Perfil() {
             </div>
           </div>
 
+          {/* {usuario.role === "ESTUDANTE" && (
+            <>
+              <div className={styles.card}>
+                <h2>Matrícula - </h2>
+                <p>{(usuario as Estudante).matricula}</p>
+              </div>
+              <div className={styles.card_tema}>
+                <h2>Tema</h2>
+                {(usuario as Estudante).tema?.titulo === "" && (
+                  <p>teste</p>
+                )}
+              </div>
+            </>
+          )} */}
+
+          {usuario.role === "ESTUDANTE" && (
+            <>
+              <div className={styles.card}>
+                <h2>Matrícula -</h2>
+                <p>{(usuario as Estudante).matricula}</p>
+              </div>
+
+              <div className={styles.card_tema}>
+                <h2>Tema</h2>
+                {!(usuario as Estudante).tema ? (
+                  <>
+                    <p>Não possui um tema cadastrado.</p>
+                    <button onClick={() => router.push("/tema/cadastrar")}>
+                      Adicionar Tema
+                    </button>
+                  </>
+                ) : (
+                  <p>{(usuario as Estudante).tema?.titulo}</p>
+                )}
+              </div>
+            </>
+          )}
+
+
           <div className={styles.card}>
+            <h2>Detalhes do usuário</h2>
+            <p>
+              <strong>Nome Completo</strong>
+              {usuario.nome}
+            </p>
             <form className={styles.form}>
               <InputAuth label="Nome Completo" name="nome" type="text" value={formData.nome} onChange={handleChange} disabled={!editando} />
               <InputAuth label="Email" name="email" type="email" value={formData.email} onChange={handleChange} disabled={!editando} />
