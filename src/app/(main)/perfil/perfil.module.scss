@@ -7,6 +7,12 @@
   padding: 2rem 0;
   background-color: $verde3;
 
+  h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: $verde9;
+  }
+
   .container {
     overflow-y: scroll;
     padding: 0 1rem;
@@ -134,12 +140,6 @@
         transition: 0.2s;
       }
 
-      h2 {
-        font-size: 2.5rem;
-        font-weight: 600;
-        color: $verde9;
-      }
-
       p {
         font-size: 1.6rem;
         color: $cinza11;
@@ -172,12 +172,85 @@
           }
 
           button {
-            background-color: $verde9;
-
-            &:hover {
-              background-color: $verde10;
-           }
+            margin: 0;
           }
+
+          .tema {
+            display: flex;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: transform 0.2s;
+            margin-top: 2rem;
+          
+            .tema_content {
+              width: 100%;
+              padding: 16px;
+              display: flex;
+              flex-direction: column;
+              gap: 8px;
+          
+              .title {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                font-size: 1.8rem;
+                font-weight: 600;
+                color: $cinza11;
+
+                a {
+                  display: none;
+                }
+
+                button:nth-child(1) {
+                  width: 0;
+                  height: 0;
+                  background-color: white;
+                }
+
+                button:nth-child(2), button:nth-child(3) {
+                  background-color: white;
+                  color: $cinza12;
+                  font-size: 1.5rem;
+                  font-weight: 400;
+                  padding: .5rem 1rem;
+                  border-radius: 0 0 3px 3px;
+  
+                  &:hover {
+                    background-color: #f3f4f6;
+                  }
+                }
+
+                .icon {
+                  display: flex;
+                  align-items: center;
+                }
+              }
+          
+              .keywords {
+                font-size: 1.4rem;
+                color: #666;
+              }
+          
+              .description {
+                font-size: 1.4rem;
+                color: #444;
+                max-height: 60px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+          
+              .status {
+                font-size: 1.4rem;
+                padding: 4px 8px;
+                border-radius: 12px;
+                background-color: $verde4;
+                color: $verde11;
+                width: fit-content;
+              }
+            }
+          }
+          
         }
 
         form {

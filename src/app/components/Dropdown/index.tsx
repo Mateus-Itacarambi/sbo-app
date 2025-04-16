@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, ReactNode } from 'react';
 import Link from 'next/link';
 import { ChevronDown } from 'lucide-react';
 import styles from './dropdown.module.scss';
@@ -12,9 +12,11 @@ type DropdownItem =
 interface DropdownProps {
   label: string;
   items: DropdownItem[];
+  icon?: ReactNode;
+  top?: string;
 }
 
-export default function Dropdown({ label, items }: DropdownProps) {
+export default function Dropdown({ label, items, icon, top="calc(8rem - ((8rem - 4.5rem) / 2) + 1rem)" }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -32,11 +34,11 @@ export default function Dropdown({ label, items }: DropdownProps) {
     <div className={styles.dropdown} ref={dropdownRef}>
       <button onClick={() => setIsOpen((prev) => !prev)} className={styles.button}>
         {label}
-        <ChevronDown className={styles.icon} />
+        {icon || <ChevronDown className={styles.icon} />} {/* Ícone customizável */}
       </button>
-      
+
       {isOpen && (
-        <div className={styles.menu}>
+        <div className={styles.menu} style={{ top: top }}>
           {items.map((item, idx) => {
             if (item.type === 'link') {
               return (

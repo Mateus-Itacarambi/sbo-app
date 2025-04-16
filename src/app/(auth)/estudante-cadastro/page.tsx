@@ -29,8 +29,6 @@ export default function Cadastro() {
   const [mostrarMensagem, setmostrarMensagem] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-
-
   useEffect(() => {
     if (erro || sucesso) {
       setmostrarMensagem(true);

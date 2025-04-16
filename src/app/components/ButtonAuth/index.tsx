@@ -6,7 +6,7 @@ interface ButtonAuthProps {
   type: "button" | "submit" | "reset";
   theme: string;
   onClick?: () => void;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 export default function ButtonAuth({ text, type, onClick, theme, disabled }: ButtonAuthProps) {

@@ -6,8 +6,7 @@ export interface Tema {
     titulo: string;
     descricao: string;
     palavrasChave: string;
-    areaConhecimento: string;
-    status: string;
+    statusTema: string;
     professor: Professor;
     estudantes?: Estudante[];
 }

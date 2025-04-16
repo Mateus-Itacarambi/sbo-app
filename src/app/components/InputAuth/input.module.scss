@@ -8,7 +8,7 @@
         margin-bottom: .7rem;
     }
   
-    input {
+    input, textarea {
         box-sizing: border-box;
         font-size: 1.6rem;
         font-weight: 400;
@@ -41,6 +41,15 @@
             border: 2px solid $cinza2_1;
             background-color: $cinza2;
         }
+    }
+
+    textarea {
+        font-family: "Inter", sans-serif;
+        font-weight: 300;
+        color: $cinza12;
+        height: 12rem;
+        resize: none;
+        margin-bottom: 1rem;
     }
   }
   

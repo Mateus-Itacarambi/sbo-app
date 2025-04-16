@@ -10,6 +10,9 @@ import Alerta from "@/components/Alerta";
 import SelectAuth from "@/components/SelectAuth";
 import { Curso, Estudante, generos, Professor, Usuario } from "@/types";
 import ButtonAuth from "@/components/ButtonAuth";
+import Modal from "@/components/Modal";
+import Dropdown from "@/components/Dropdown";
+import Icone from "@/assets/tres-pontos.png"
 
 interface CursoSelect {
   value: number;
@@ -28,6 +31,87 @@ export default function Perfil() {
   const [isLoading, setIsLoading] = useState(false);
   const [cursos, setCursos] = useState<CursoSelect[]>([]);
   const [semestresDisponiveis, setSemestresDisponiveis] = useState<{ value: number, label: string }[]>([]);
+  const [mostrarModalTema, setMostrarModalTema] = useState(false);
+  const [temaTitulo, setTemaTitulo] = useState("");
+  const [temaDescricao, setTemaDescricao] = useState("");
+  const [temaPalavrasChave, setTemaPalavrasChave] = useState("");
+
+  const handleCadastrarTema = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    if (!usuario) return;
+  
+    try {
+      const response = await fetch(`http://localhost:8080/temas/estudante/${usuario.id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          titulo: temaTitulo,
+          descricao: temaDescricao,
+          palavrasChave: temaPalavrasChave
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(errorData || "Erro ao cadastrar tema");
+      }
+  
+      setSucesso("Tema cadastrado com sucesso!");
+      setErro("");
+      setMostrarModalTema(false);
+      const data = await response.json();
+      
+      if (data.tema) {
+        setUsuario(prev => prev ? { ...prev, tema: data.tema } : prev);
+      }
+    } catch (error: any) {
+      console.error("Erro ao cadastrar tema:", error);
+
+      if (error.message.includes("Failed to fetch")) {
+        setErro("Erro ao conectar ao servidor.");
+      } else {
+        setErro(error.message || "Erro desconhecido.");
+      }
+
+      setSucesso("");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRemoverTema = async () => {
+    if (!usuario) return;
+  
+    try {
+      const response = await fetch(`http://localhost:8080/temas/${(usuario as Estudante).tema?.id}/deletar/${usuario.id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(errorData || "Erro ao remover tema");
+      }
+  
+      setUsuario(prev => prev ? { ...prev, tema: undefined } : null);
+      setSucesso("Tema removido com sucesso!");
+      setErro("");
+    } catch (error: any) {
+      console.error("Erro ao remover tema:", error);
+  
+      if (error.message.includes("Failed to fetch")) {
+        setErro("Erro ao conectar ao servidor.");
+      } else {
+        setErro(error.message || "Erro desconhecido.");
+      }
+  
+      setSucesso("");
+    }
+  };
 
   useEffect(() => {
     if (erro || sucesso) {
@@ -124,7 +208,7 @@ export default function Perfil() {
       : nomes[0][0].toUpperCase();
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -153,8 +237,6 @@ export default function Perfil() {
   
     setEditando(false);
   };
-  
-
   
 
   const handleSalvar = async () => {
@@ -217,20 +299,14 @@ export default function Perfil() {
             </div>
           </div>
 
-          {/* {usuario.role === "ESTUDANTE" && (
-            <>
-              <div className={styles.card}>
-                <h2>Matrícula - </h2>
-                <p>{(usuario as Estudante).matricula}</p>
-              </div>
-              <div className={styles.card_tema}>
-                <h2>Tema</h2>
-                {(usuario as Estudante).tema?.titulo === "" && (
-                  <p>teste</p>
-                )}
-              </div>
-            </>
-          )} */}
+          <div className={styles.card}>
+            <h2>Data de Nascimento -</h2>
+            <p>{new Date(usuario.dataNascimento).toLocaleDateString("pt-BR")}</p>
+          </div>
+          <div className={styles.card}>
+            <h2>Gênero -</h2>
+            <p>{usuario.genero}</p>
+          </div>
 
           {usuario.role === "ESTUDANTE" && (
             <>
@@ -240,16 +316,40 @@ export default function Perfil() {
               </div>
 
               <div className={styles.card_tema}>
-                <h2>Tema</h2>
-                {!(usuario as Estudante).tema ? (
+                  <h2>Tema</h2>
+                {(usuario as Estudante).tema ? (
+                  <div className={styles.tema}>
+                    <div className={styles.tema_content}>
+                      <div className={styles.title}>
+                        {(usuario as Estudante).tema?.titulo}
+                        <Dropdown
+                          label=""
+                          top="3rem"
+                          icon={<div className={styles.icon}><Image src={Icone} alt=""/></div>}
+                          items={[
+                            { type: "link", label: "", href: "" },
+                            { type: "action", label: "Editar", onClick: () => setMostrarModalTema(true)},
+                            { type: "action", label: "Remover", onClick: handleRemoverTema },
+                          ]}
+                        />
+                      </div>
+                      <div className={styles.status}>{(usuario as Estudante).tema?.statusTema}</div>
+                      <div className={styles.keywords}>{(usuario as Estudante).tema?.palavrasChave}</div>
+                      <div className={styles.description}>
+                        {(usuario as Estudante).tema?.estudantes
+                          ?.map(e => e.nome)
+                          .sort((a, b) => a.localeCompare(b))
+                          .join(', ') || 'Nenhum estudante'}
+                      </div>
+                      <div className={styles.description}>{(usuario as Estudante).tema?.descricao}</div>
+                    </div>
+                  </div>
+
+                ) : (
                   <>
                     <p>Não possui um tema cadastrado.</p>
-                    <button onClick={() => router.push("/tema/cadastrar")}>
-                      Adicionar Tema
-                    </button>
+                    <ButtonAuth text="Adicionar Tema" type="button" theme="primary" onClick={() => setMostrarModalTema(true)} />
                   </>
-                ) : (
-                  <p>{(usuario as Estudante).tema?.titulo}</p>
                 )}
               </div>
             </>
@@ -286,6 +386,38 @@ export default function Perfil() {
           </div>
         </div>
       </div>
+      {mostrarModalTema && (
+        <Modal onClose={() => setMostrarModalTema(false)}>
+          <form name="cadastro_estudante" onSubmit={handleCadastrarTema}>
+            <InputAuth
+              label="Título"
+              type="text"
+              placeholder="Título do tema"
+              value={temaTitulo}
+              onChange={(e) => setTemaTitulo(e.target.value)}
+            />
+            <InputAuth
+              label="Palavras-chave"
+              type="text"
+              placeholder="Palavras-chave do tema"
+              value={temaPalavrasChave}
+              onChange={(e) => setTemaPalavrasChave(e.target.value)}
+            />
+            <InputAuth
+              label="Descrição"
+              type="textarea"
+              placeholder="Descrição do tema"
+              value={temaDescricao}
+              onChange={(e) => setTemaDescricao(e.target.value)}
+            />
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: "1rem" }}>
+              <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={() => setMostrarModalTema(false)} />
+              <ButtonAuth text="Salvar" type="submit" theme="primary"/>
+            </div>
+          </form>
+        </Modal>
+      )}
+
     </div>
   );
 }

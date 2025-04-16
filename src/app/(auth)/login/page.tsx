@@ -50,6 +50,7 @@ export default function Login() {
       } else {
         const error = await response.text();
         setErro(error);
+        console.error("Erro ao fazer login:", error);
       }
     } catch (error: any) {
       console.error("Erro ao fazer login:", error);
