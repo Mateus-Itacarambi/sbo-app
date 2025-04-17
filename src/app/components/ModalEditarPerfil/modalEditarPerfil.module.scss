@@ -1,60 +1,60 @@
-.modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+@import "../../styles/variaveis";
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
   
-  .modalContent {
+  .modal {
     background: white;
     padding: 2rem;
     border-radius: 1rem;
     width: 100%;
-    max-width: 500px;
+    max-width: 800px;
+    animation: slideUp 0.3s ease;
+
+    h2 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: $verde9;
+      margin-bottom: 2rem;
+    }
   
     form {
-      display: flex;
-      flex-direction: column;
-    
-      label {
-        margin-top: 1rem;
-      }
-    
-      input {
-        padding: 0.5rem;
-        border: 1px solid #ccc;
-        border-radius: 0.5rem;
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 2rem;
+
+      button {
+        margin: 0;
       }
     }
   }
   
-  .buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 1.5rem;
-  
-    .save {
-      background-color: #4caf50;
-      color: white;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 0.5rem;
-      cursor: pointer;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
     }
+    to {
+      opacity: 1;
+    }
+  }
   
-    .cancel {
-      background-color: #f44336;
-      color: white;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 0.5rem;
-      cursor: pointer;
+  @keyframes slideUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
     }
   }
   

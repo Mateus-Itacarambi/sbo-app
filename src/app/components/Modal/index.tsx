@@ -1,8 +1,6 @@
-"use client";
-
 import { useEffect } from "react";
 import ReactDOM from "react-dom";
-import styles from "./Modal.module.scss";
+import styles from "./modal.module.scss";
 
 interface ModalProps {
   onClose: () => void;

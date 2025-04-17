@@ -4,7 +4,7 @@ import styles from "./input.module.scss";
 interface InputAuthProps {
   label: string;
   name?: string;
-  type: "text" | "email" | "password" | "date" | "tel" | "textarea";
+  type: "text" | "email" | "password" | "date" | "tel" | "textarea" | "number";
   placeholder?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
@@ -20,6 +20,16 @@ export default function InputAuth({
   onChange,
   disabled = false,
 }: InputAuthProps) {
+  function handleNumberKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'];
+    if (
+      !allowedKeys.includes(e.key) &&
+      (isNaN(Number(e.key)) || e.key === ' ')
+    ) {
+      e.preventDefault();
+    }
+  }
+
   return (
     <div className={styles.input_field}>
       <label>{label}</label>
@@ -33,6 +43,17 @@ export default function InputAuth({
           disabled={disabled}
           className={styles.textarea}
           maxLength={200}
+        />
+      ) : type === "number" ? (
+        <input
+          required
+          name={name}
+          type={type}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+          onKeyDown={handleNumberKeyDown}
         />
       ) : (
         <input

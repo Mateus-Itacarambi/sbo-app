@@ -12,7 +12,10 @@ import { Curso, Estudante, generos, Professor, Usuario } from "@/types";
 import ButtonAuth from "@/components/ButtonAuth";
 import Modal from "@/components/Modal";
 import Dropdown from "@/components/Dropdown";
-import Icone from "@/assets/tres-pontos.png"
+import Icone from "@/assets/tres-pontos.png";
+import ModalEditarPerfil from "@/components/ModalEditarPerfil";
+
+type UsuarioCompleto = Estudante | Professor;
 
 interface CursoSelect {
   value: number;
@@ -20,21 +23,23 @@ interface CursoSelect {
   semestres: number;
 }
 
-export default function Perfil() {
+export default function Perfil({ usuarioInicial }: { usuarioInicial: UsuarioCompleto }) {
   const router = useRouter();
-  const [usuario, setUsuario] = useState<Estudante | Professor | null>(null);
-  const [editando, setEditando] = useState(false);
+  // const [usuario, setUsuario] = useState<Estudante | Professor | null>(null);
+const [orientador, setOrientador] = useState<Professor | null>(null);
   const [formData, setFormData] = useState<any>({});
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
   const [mostrarMensagem, setmostrarMensagem] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [cursos, setCursos] = useState<CursoSelect[]>([]);
-  const [semestresDisponiveis, setSemestresDisponiveis] = useState<{ value: number, label: string }[]>([]);
   const [mostrarModalTema, setMostrarModalTema] = useState(false);
   const [temaTitulo, setTemaTitulo] = useState("");
   const [temaDescricao, setTemaDescricao] = useState("");
   const [temaPalavrasChave, setTemaPalavrasChave] = useState("");
+  const [usuario, setUsuario] = useState<UsuarioCompleto>(usuarioInicial);
+  const [mostrarModal, setMostrarModalEditarPerfil] = useState(false);
+  const [cursos, setCursos] = useState<CursoSelect[]>([]);
+  const [semestresDisponiveis, setSemestresDisponiveis] = useState<{ value: number, label: string }[]>([]);
 
   const handleCadastrarTema = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,6 +88,65 @@ export default function Perfil() {
     }
   };
 
+  useEffect(() => {
+    const fetchCursos = async () => {
+      try {
+        const res = await fetch("http://localhost:8080/cursos");
+        if (!res.ok) throw new Error("Erro ao buscar cursos");
+
+        const data = await res.json();
+        const cursosMapeados = data.content.map((curso: Curso) => ({
+          value: curso.id,
+          label: curso.nome,
+          semestres: curso.semestres,
+        }));
+        setCursos(cursosMapeados);
+
+        const cursoId = formData.curso;
+        const cursoUsuario = cursosMapeados.find((c: { value: number }) => c.value === Number(cursoId));        
+        if (cursoUsuario) {
+          const semestres = Array.from({ length: cursoUsuario.semestres }, (_, i) => ({
+            value: i + 1,
+            label: `${i + 1}º Semestre`,
+          }));
+          setSemestresDisponiveis(semestres);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar cursos:", error);
+      }
+    };
+
+    if (usuario && usuario.role === "ESTUDANTE") fetchCursos();
+  }, [usuario, formData.curso]);
+
+  const handleCursoChange = (cursoId: string) => {
+    const id = Number(cursoId);
+    setFormData({ ...formData, curso: id, semestre: 0 });
+
+    const cursoSelecionado = cursos.find(curso => curso.value === id);
+    if (cursoSelecionado) {
+      const semestres = Array.from({ length: cursoSelecionado.semestres }, (_, i) => ({
+        value: i + 1,
+        label: `${i + 1}º Semestre`,
+      }));
+      setSemestresDisponiveis(semestres);
+    } else {
+      setSemestresDisponiveis([]);
+    }
+  };
+
+  const handleGeneroChange = (genero: string) => {
+    setFormData({ ...formData, genero: genero });
+  };
+
+  const handleSemestreChange = (semestre: string) => {
+    setFormData({ ...formData, semestre: Number(semestre) });
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const handleRemoverTema = async () => {
     if (!usuario) return;
   
@@ -97,7 +161,7 @@ export default function Perfil() {
         throw new Error(errorData || "Erro ao remover tema");
       }
   
-      setUsuario(prev => prev ? { ...prev, tema: undefined } : null);
+      setUsuario(prev => prev ? { ...prev, tema: undefined } : prev);
       setSucesso("Tema removido com sucesso!");
       setErro("");
     } catch (error: any) {
@@ -148,58 +212,22 @@ export default function Perfil() {
   }, []);
 
   useEffect(() => {
-    const fetchCursos = async () => {
+    const fetchOrientador = async () => {
       try {
-        const res = await fetch("http://localhost:8080/cursos");
-        if (!res.ok) throw new Error("Erro ao buscar cursos");
-
-        const data = await res.json();
-        const cursosMapeados = data.content.map((curso: Curso) => ({
-          value: curso.id,
-          label: curso.nome,
-          semestres: curso.semestres,
-        }));
-        setCursos(cursosMapeados);
-
-        const cursoId = formData.curso;
-        const cursoUsuario = cursosMapeados.find((c: { value: number }) => c.value === Number(cursoId));        if (cursoUsuario) {
-          const semestres = Array.from({ length: cursoUsuario.semestres }, (_, i) => ({
-            value: i + 1,
-            label: `${i + 1}º Semestre`,
-          }));
-          setSemestresDisponiveis(semestres);
+        const res = await fetch(`http://localhost:8080/professores/${(usuario as Estudante).tema?.professor}`, { credentials: "include" });
+        if (res.ok) {
+          const orientador = await res.json();
+          setOrientador(orientador);
+        } else {
+          throw new Error("Erro ao buscar orientador")
         }
       } catch (error) {
-        console.error("Erro ao carregar cursos:", error);
+        console.error("Erro na requisição:", error);
       }
     };
 
-    if (usuario && usuario.role === "ESTUDANTE") fetchCursos();
-  }, [usuario, formData.curso]);
-
-  const handleCursoChange = (cursoId: string) => {
-    const id = Number(cursoId);
-    setFormData({ ...formData, curso: id, semestre: 0 });
-
-    const cursoSelecionado = cursos.find(curso => curso.value === id);
-    if (cursoSelecionado) {
-      const semestres = Array.from({ length: cursoSelecionado.semestres }, (_, i) => ({
-        value: i + 1,
-        label: `${i + 1}º Semestre`,
-      }));
-      setSemestresDisponiveis(semestres);
-    } else {
-      setSemestresDisponiveis([]);
-    }
-  };
-
-  const handleGeneroChange = (genero: string) => {
-    setFormData({ ...formData, genero: genero });
-  };
-
-  const handleSemestreChange = (semestre: string) => {
-    setFormData({ ...formData, semestre: Number(semestre) });
-  };
+    fetchOrientador();
+  }, []);
 
   const getInitials = (nome: string) => {
     const nomes = nome.split(" ");
@@ -208,12 +236,41 @@ export default function Perfil() {
       : nomes[0][0].toUpperCase();
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
-  const handleEditar = () => {
-    setEditando(true);
+  const handleSalvarPerfil = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const endpoint =
+      usuario?.role === "ESTUDANTE" ? "/estudantes" : "/professores";
+  
+    try {
+      const response = await fetch(`http://localhost:8080${endpoint}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(errorData || "Erro ao atualizar perfil");
+      }
+
+      setMostrarModalEditarPerfil(false);
+      setSucesso("Atualizado com sucesso!");
+      setErro("");
+    } catch (error: any) {
+      console.error("Erro ao atualizar perfil:", error);
+
+      setErro(error.message || "Erro desconhecido.");
+
+      setSucesso("");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleCancelar = () => {
@@ -235,34 +292,7 @@ export default function Perfil() {
       }
     }
   
-    setEditando(false);
-  };
-  
-
-  const handleSalvar = async () => {
-    try {
-      const endpoint = usuario?.role === "ESTUDANTE" ? "estudantes" : "professores";
-      const response = await fetch(`http://localhost:8080/${endpoint}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(formData),
-      });
-      console.log(formData)
-
-      if (!response.ok) throw new Error(await response.text());
-
-      const atualizado = await response.json();
-      setUsuario(atualizado);
-      setEditando(false);
-      setSucesso("Perfil atualizado com sucesso!");
-      setErro("");
-    } catch (error: any) {
-      setErro(error.message || "Erro desconhecido.");
-      setSucesso("");
-    } finally {
-      setIsLoading(false);
-    }
+    setMostrarModalEditarPerfil(false);
   };
 
   if (!usuario) return <Loading />;
@@ -288,14 +318,7 @@ export default function Perfil() {
               {usuario.role === "PROFESSOR" && <p>{(usuario as Professor).disponibilidade}</p>}
             </div>
             <div className={styles.editar}>
-              {!editando ? (
-                <button className={styles.editBtn} onClick={handleEditar}>Editar</button>
-              ) : (
-                <>
-                  <ButtonAuth text="Salvar" type="submit" theme="primary" onClick={handleSalvar} disabled={isLoading} />
-                  <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={handleCancelar} disabled={isLoading} />
-                </>
-              )}
+              <button className={styles.editBtn} onClick={() => setMostrarModalEditarPerfil(true)}>Editar</button>
             </div>
           </div>
 
@@ -352,42 +375,34 @@ export default function Perfil() {
                   </>
                 )}
               </div>
+
+              <div className={styles.card_orientador}>
+                <h2>Orientador</h2>
+                <div className={styles.card_perfil}>
+                  <div className={styles.profile}>
+                    {usuario.profileImage ? (
+                      <Image src={orientador?.profileImage} alt="Foto de perfil" width={100} height={100} className={styles.profileImage} />
+                    ) : (
+                      <div className={styles.initials}>{getInitials(orientador?.nome)}</div>
+                    )}
+                  </div>
+                  <div className={styles.detalhes}>
+                    <h1>{usuario.nome}</h1>
+                    <p>{usuario.email}</p>
+                    {usuario.role === "ESTUDANTE" && <p>{(usuario as Estudante).curso?.nome} - {(usuario as Estudante).semestre}º semestre</p>}
+                  </div>
+                  <div className={styles.editar}>
+                    <button className={styles.editBtn}>Visualizar</button>
+                  </div>
+                </div>
+              </div>
             </>
           )}
-
-
-          <div className={styles.card}>
-            <h2>Detalhes do usuário</h2>
-            <p>
-              <strong>Nome Completo</strong>
-              {usuario.nome}
-            </p>
-            <form className={styles.form}>
-              <InputAuth label="Nome Completo" name="nome" type="text" value={formData.nome} onChange={handleChange} disabled={!editando} />
-              <InputAuth label="Email" name="email" type="email" value={formData.email} onChange={handleChange} disabled={!editando} />
-              <InputAuth label="Data de Nascimento" name="dataNascimento" type="date" value={formData.dataNascimento} onChange={handleChange} disabled={!editando} />
-              <SelectAuth text="Gênero" options={generos} onChange={handleGeneroChange} disabled={!editando} selected={formData.genero} />
-
-              {usuario.role === "ESTUDANTE" && (
-                <>
-                  <InputAuth label="Matrícula" name="matricula" type="text" value={formData.matricula} onChange={handleChange} disabled={!editando} />
-                  <SelectAuth text="Curso" options={cursos} onChange={handleCursoChange} disabled={!editando} selected={formData.curso} />
-                  <SelectAuth text="Semestre" options={semestresDisponiveis} onChange={handleSemestreChange} disabled={!editando || semestresDisponiveis.length === 0} selected={formData.semestre} />
-                </>
-              )}
-
-              {usuario.role === "PROFESSOR" && (
-                <>
-                  <InputAuth label="ID Lattes" type="text" value={formData.idLattes || ""} onChange={handleChange} disabled={!editando} />
-                  <InputAuth label="Disponibilidade" type="text" value={formData.disponibilidade || ""} onChange={handleChange} disabled={!editando} />
-                </>
-              )}
-            </form>
-          </div>
         </div>
       </div>
       {mostrarModalTema && (
         <Modal onClose={() => setMostrarModalTema(false)}>
+          <h2>Cadastrar Tema</h2>
           <form name="cadastro_estudante" onSubmit={handleCadastrarTema}>
             <InputAuth
               label="Título"
@@ -418,6 +433,34 @@ export default function Perfil() {
         </Modal>
       )}
 
+      {mostrarModal && (
+        <ModalEditarPerfil onClose={() => setMostrarModalEditarPerfil(false)}>
+          <h2>Editar Perfil</h2>
+          <form onSubmit={handleSalvarPerfil}>          
+            <InputAuth label="Nome Completo" name="nome" type="text" value={formData.nome} onChange={handleChange}/>
+            <InputAuth label="Data de Nascimento" name="dataNascimento" type="date" value={formData.dataNascimento} onChange={handleChange}/>
+            <SelectAuth text="Gênero" options={generos} onChange={handleGeneroChange} selected={formData.genero} />
+
+            {"matricula" in formData && (
+              <InputAuth label="Matrícula" name="matricula" type="number" value={formData.matricula} onChange={handleChange}/>
+            )}
+
+            {usuario.role === "ESTUDANTE" && (
+              <>
+                {"curso" in formData && (
+                  <SelectAuth text="Curso" options={cursos} onChange={handleCursoChange} selected={formData.curso} />
+                )}
+                {"semestre" in formData && (
+                  <SelectAuth text="Semestre" options={semestresDisponiveis} onChange={handleSemestreChange} selected={formData.semestre} />
+                )}
+              </>
+            )}
+
+            <ButtonAuth type="button" text="Cancelar" theme="secondary" onClick={handleCancelar} />
+            <ButtonAuth type="submit" text="Salvar" theme="primary"/>
+          </form>
+        </ModalEditarPerfil>
+      )}
     </div>
   );
 }

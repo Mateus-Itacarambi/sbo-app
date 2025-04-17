@@ -10,6 +10,7 @@
     padding: 1.5rem;
     border-radius: 5px;
     transition: .3s;
+    z-index: 1001;
 
     &.erro {
         background-color: $vermelho4;
@@ -24,7 +25,7 @@
     }
 
     &.sucesso {
-        background-color: $verde3;
+        background-color: $verde5;
         color: $verde9;
         border: 2px solid $verde9;
     }
