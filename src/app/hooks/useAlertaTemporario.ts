@@ -16,6 +16,21 @@ export function useAlertaTemporario({
   setMostrarAlerta,
 }: AlertaParams) {
   useEffect(() => {
+    const sucessoStorage = localStorage.getItem("mensagemSucesso");
+    const erroStorage = localStorage.getItem("mensagemErro");
+
+    if (sucessoStorage) {
+      setSucesso(sucessoStorage);
+      localStorage.removeItem("mensagemSucesso");
+    }
+
+    if (erroStorage) {
+      setErro(erroStorage);
+      localStorage.removeItem("mensagemErro");
+    }
+  }, [setErro, setSucesso]);
+
+  useEffect(() => {
     if (erro || sucesso) {
       setMostrarAlerta(true);
       const timer = setTimeout(() => {

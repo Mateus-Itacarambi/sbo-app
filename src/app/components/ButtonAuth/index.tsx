@@ -7,11 +7,12 @@ interface ButtonAuthProps {
   theme: string;
   onClick?: () => void;
   disabled?: boolean;
+  margin?: string;
 }
 
-export default function ButtonAuth({ text, type, onClick, theme, disabled }: ButtonAuthProps) {
+export default function ButtonAuth({ text, type, onClick, theme, disabled, margin }: ButtonAuthProps) {
   return (
-    <button className={`${styles.button} ${styles[theme]}`} onClick={onClick} type={type} disabled={disabled}>
+    <button className={`${styles.button} ${styles[theme]}`} onClick={onClick} type={type} disabled={disabled} style={{ margin: margin}}>
       {text}
     </button>
   );
