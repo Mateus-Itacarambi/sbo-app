@@ -14,8 +14,14 @@ import Modal from "@/components/Modal";
 import Dropdown from "@/components/Dropdown";
 import Icone from "@/assets/tres-pontos.png";
 import ModalEditarPerfil from "@/components/ModalEditarPerfil";
+import StatusBadge from "@/components/StatusBadge";
+import { getInitials } from "@/utils/getInitials";
+import { useAuth } from "@/contexts/AuthContext";
+import { useAlertaTemporario } from '@/hooks/useAlertaTemporario';
 
 type UsuarioCompleto = Estudante | Professor;
+
+type StatusTipo = 'RESERVADO' | 'EM_ANDAMENTO' | 'DISPONIVEL' | 'INDISPONIVEL' | 'CONCLUIDO';
 
 interface CursoSelect {
   value: number;
@@ -23,25 +29,37 @@ interface CursoSelect {
   semestres: number;
 }
 
-export default function Perfil({ usuarioInicial }: { usuarioInicial: UsuarioCompleto }) {
+export default function Perfil() {
   const router = useRouter();
-  // const [usuario, setUsuario] = useState<Estudante | Professor | null>(null);
-const [orientador, setOrientador] = useState<Professor | null>(null);
+  const [orientador, setOrientador] = useState<Professor | null>(null);
   const [formData, setFormData] = useState<any>({});
-  const [erro, setErro] = useState("");
-  const [sucesso, setSucesso] = useState("");
-  const [mostrarMensagem, setmostrarMensagem] = useState(false);
+  const [erro, setErro] = useState('');
+  const [sucesso, setSucesso] = useState('');
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [mostrarModalTema, setMostrarModalTema] = useState(false);
+  const [modalTemaAberto, setmodalTemaAberto] = useState(false);
   const [temaTitulo, setTemaTitulo] = useState("");
   const [temaDescricao, setTemaDescricao] = useState("");
   const [temaPalavrasChave, setTemaPalavrasChave] = useState("");
-  const [usuario, setUsuario] = useState<UsuarioCompleto>(usuarioInicial);
-  const [mostrarModal, setMostrarModalEditarPerfil] = useState(false);
+  const [modalEditarPerfilAberto, setmodalEditarPerfilAberto] = useState(false);
   const [cursos, setCursos] = useState<CursoSelect[]>([]);
   const [semestresDisponiveis, setSemestresDisponiveis] = useState<{ value: number, label: string }[]>([]);
+  const { usuario, setUsuario } = useAuth();
 
-  const handleCadastrarTema = async (e: React.FormEvent) => {
+  useAlertaTemporario({ erro, sucesso, setErro, setSucesso, setMostrarAlerta });
+
+  useEffect(() => {
+    if (usuario) {
+      setFormData({
+        ...usuario,
+        curso: usuario.role === "ESTUDANTE" ? (usuario as Estudante).curso?.id || "" : "",
+      });
+    }
+  }, [usuario]);
+  
+  
+
+  const cadastrarTema = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     if (!usuario) return;
@@ -67,12 +85,8 @@ const [orientador, setOrientador] = useState<Professor | null>(null);
   
       setSucesso("Tema cadastrado com sucesso!");
       setErro("");
-      setMostrarModalTema(false);
-      const data = await response.json();
-      
-      if (data.tema) {
-        setUsuario(prev => prev ? { ...prev, tema: data.tema } : prev);
-      }
+      setmodalTemaAberto(false);
+      router.refresh();
     } catch (error: any) {
       console.error("Erro ao cadastrar tema:", error);
 
@@ -161,7 +175,7 @@ const [orientador, setOrientador] = useState<Professor | null>(null);
         throw new Error(errorData || "Erro ao remover tema");
       }
   
-      setUsuario(prev => prev ? { ...prev, tema: undefined } : prev);
+      router.refresh();
       setSucesso("Tema removido com sucesso!");
       setErro("");
     } catch (error: any) {
@@ -176,67 +190,7 @@ const [orientador, setOrientador] = useState<Professor | null>(null);
       setSucesso("");
     }
   };
-
-  useEffect(() => {
-    if (erro || sucesso) {
-      setmostrarMensagem(true);
-      const timer = setTimeout(() => {
-        setmostrarMensagem(false);
-        setErro("");
-        setSucesso("");
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [erro, sucesso]);
-
-  useEffect(() => {
-    const fetchUsuario = async () => {
-      try {
-        const res = await fetch("http://localhost:8080/auth/me", { credentials: "include" });
-        if (res.ok) {
-          const data = await res.json();
-          setUsuario(data);
-          setFormData({
-            ...data,
-            curso: data.curso?.id || "",
-          });
-        } else {
-          router.push("/login");
-        }
-      } catch (error) {
-        console.error("Erro na requisição:", error);
-      }
-    };
-
-    fetchUsuario();
-  }, []);
-
-  useEffect(() => {
-    const fetchOrientador = async () => {
-      try {
-        const res = await fetch(`http://localhost:8080/professores/${(usuario as Estudante).tema?.professor}`, { credentials: "include" });
-        if (res.ok) {
-          const orientador = await res.json();
-          setOrientador(orientador);
-        } else {
-          throw new Error("Erro ao buscar orientador")
-        }
-      } catch (error) {
-        console.error("Erro na requisição:", error);
-      }
-    };
-
-    fetchOrientador();
-  }, []);
-
-  const getInitials = (nome: string) => {
-    const nomes = nome.split(" ");
-    return nomes.length > 1
-      ? `${nomes[0][0]}${nomes[nomes.length - 1][0]}`.toUpperCase()
-      : nomes[0][0].toUpperCase();
-  };
-
-
+  
   const handleSalvarPerfil = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -259,7 +213,10 @@ const [orientador, setOrientador] = useState<Professor | null>(null);
         throw new Error(errorData || "Erro ao atualizar perfil");
       }
 
-      setMostrarModalEditarPerfil(false);
+      const atualizado = await response.json();
+      setUsuario(atualizado);
+
+      setmodalEditarPerfilAberto(false);
       setSucesso("Atualizado com sucesso!");
       setErro("");
     } catch (error: any) {
@@ -292,15 +249,46 @@ const [orientador, setOrientador] = useState<Professor | null>(null);
       }
     }
   
-    setMostrarModalEditarPerfil(false);
+    setmodalEditarPerfilAberto(false);
   };
+
+  useEffect(() => {
+    const fetchOrientador = async () => {
+      if (!usuario || !(usuario as Estudante).tema?.professor) return;
+  
+      try {
+        const res = await fetch(`http://localhost:8080/professores/${(usuario as Estudante).tema?.professor.id}`, {
+          credentials: "include",
+        });
+  
+        if (res.ok) {
+          const orientador = await res.json();
+          setOrientador(orientador);
+          console.log(orientador);
+        } else {
+          throw new Error("Erro ao buscar orientador");
+        }
+      } catch (error) {
+        console.error("Erro na requisição:", error);
+      }
+    };
+  
+    fetchOrientador();
+  }, [usuario]);
 
   if (!usuario) return <Loading />;
 
   return (
     <div className={styles.main}>
-      {sucesso && mostrarMensagem && <Alerta text={sucesso} theme="sucesso" top="10rem" />}
-      {erro && mostrarMensagem && <Alerta text={erro} theme="erro" top="10rem" />}
+      {sucesso && mostrarAlerta && <Alerta text={sucesso} theme="sucesso" top="10rem" />}
+      {erro && mostrarAlerta && <Alerta text={erro} theme="erro" top="10rem" />}
+
+      {mostrarAlerta && (
+        <Alerta text={erro || sucesso} theme={erro ? "erro" : "sucesso"} top="10rem" />
+        // <div className={`${styles.alerta} ${erro ? styles.erro : styles.sucesso}`}>
+        //   {erro || sucesso}
+        // </div>
+      )}
       <div className={styles.container}>
         <div className={styles.card_container}>
           <div className={styles.card_perfil}>
@@ -318,7 +306,7 @@ const [orientador, setOrientador] = useState<Professor | null>(null);
               {usuario.role === "PROFESSOR" && <p>{(usuario as Professor).disponibilidade}</p>}
             </div>
             <div className={styles.editar}>
-              <button className={styles.editBtn} onClick={() => setMostrarModalEditarPerfil(true)}>Editar</button>
+              <button className={styles.editBtn} onClick={() => setmodalEditarPerfilAberto(true)}>Editar</button>
             </div>
           </div>
 
@@ -347,16 +335,21 @@ const [orientador, setOrientador] = useState<Professor | null>(null);
                         {(usuario as Estudante).tema?.titulo}
                         <Dropdown
                           label=""
-                          top="3rem"
+                          width="17rem"
+                          top="1.7rem"
                           icon={<div className={styles.icon}><Image src={Icone} alt=""/></div>}
                           items={[
                             { type: "link", label: "", href: "" },
-                            { type: "action", label: "Editar", onClick: () => setMostrarModalTema(true)},
+                            { type: "action", label: "Editar", onClick: () => setmodalTemaAberto(true)},
                             { type: "action", label: "Remover", onClick: handleRemoverTema },
+                            { type: "action", label: "Adicionar Estudante", onClick: handleRemoverTema },
+                            { type: "action", label: "Cancelar Orientação", onClick: handleRemoverTema },
                           ]}
                         />
                       </div>
-                      <div className={styles.status}>{(usuario as Estudante).tema?.statusTema}</div>
+                      {(usuario as Estudante).tema?.statusTema && (
+                          <StatusBadge status={(usuario as Estudante).tema?.statusTema as StatusTipo} />
+                      )}
                       <div className={styles.keywords}>{(usuario as Estudante).tema?.palavrasChave}</div>
                       <div className={styles.description}>
                         {(usuario as Estudante).tema?.estudantes
@@ -371,39 +364,49 @@ const [orientador, setOrientador] = useState<Professor | null>(null);
                 ) : (
                   <>
                     <p>Não possui um tema cadastrado.</p>
-                    <ButtonAuth text="Adicionar Tema" type="button" theme="primary" onClick={() => setMostrarModalTema(true)} />
+                    <ButtonAuth text="Adicionar Tema" type="button" theme="primary" onClick={() => setmodalTemaAberto(true)} />
                   </>
                 )}
               </div>
 
+                  
               <div className={styles.card_orientador}>
                 <h2>Orientador</h2>
-                <div className={styles.card_perfil}>
-                  <div className={styles.profile}>
-                    {usuario.profileImage ? (
-                      <Image src={orientador?.profileImage} alt="Foto de perfil" width={100} height={100} className={styles.profileImage} />
-                    ) : (
-                      <div className={styles.initials}>{getInitials(orientador?.nome)}</div>
-                    )}
-                  </div>
-                  <div className={styles.detalhes}>
-                    <h1>{usuario.nome}</h1>
-                    <p>{usuario.email}</p>
-                    {usuario.role === "ESTUDANTE" && <p>{(usuario as Estudante).curso?.nome} - {(usuario as Estudante).semestre}º semestre</p>}
-                  </div>
-                  <div className={styles.editar}>
-                    <button className={styles.editBtn}>Visualizar</button>
-                  </div>
-                </div>
+                {(usuario as Estudante).tema?.professor ? (
+                    <div className={styles.card_perfil}>
+                      <div className={styles.profile}>
+                        {orientador?.profileImage ? (
+                          <Image src={orientador?.profileImage} alt="Foto de perfil" width={100} height={100} className={styles.profileImage} />
+                        ) : (
+                          <div className={styles.initials}>{getInitials(orientador?.nome)}</div>
+                        )}
+                      </div>
+                        <div className={styles.detalhes}>
+                          <h1>{orientador?.nome}</h1>
+                          <p>{orientador?.email}</p>
+                          {orientador?.disponibilidade && (
+                              <StatusBadge status={orientador?.disponibilidade as StatusTipo} />
+                          )}
+                        </div>
+                        <div className={styles.editar}>
+                          <button className={styles.editBtn}>Visualizar</button>
+                        </div>
+                    </div>
+                  ) : (
+                    <>
+                      <p>Não possui um tema cadastrado.</p>
+                      <ButtonAuth text="Adicionar Tema" type="button" theme="primary" onClick={() => setmodalTemaAberto(true)} />
+                    </>
+                )}
               </div>
             </>
           )}
         </div>
       </div>
-      {mostrarModalTema && (
-        <Modal onClose={() => setMostrarModalTema(false)}>
+      {modalTemaAberto && (
+        <Modal onClose={() => setmodalTemaAberto(false)}>
           <h2>Cadastrar Tema</h2>
-          <form name="cadastro_estudante" onSubmit={handleCadastrarTema}>
+          <form name="cadastro_estudante" onSubmit={cadastrarTema}>
             <InputAuth
               label="Título"
               type="text"
@@ -426,15 +429,15 @@ const [orientador, setOrientador] = useState<Professor | null>(null);
               onChange={(e) => setTemaDescricao(e.target.value)}
             />
             <div style={{ display: "flex", justifyContent: "flex-end", gap: "1rem" }}>
-              <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={() => setMostrarModalTema(false)} />
+              <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={() => setmodalTemaAberto(false)} />
               <ButtonAuth text="Salvar" type="submit" theme="primary"/>
             </div>
           </form>
         </Modal>
       )}
 
-      {mostrarModal && (
-        <ModalEditarPerfil onClose={() => setMostrarModalEditarPerfil(false)}>
+      {modalEditarPerfilAberto && (
+        <ModalEditarPerfil onClose={() => setmodalEditarPerfilAberto(false)}>
           <h2>Editar Perfil</h2>
           <form onSubmit={handleSalvarPerfil}>          
             <InputAuth label="Nome Completo" name="nome" type="text" value={formData.nome} onChange={handleChange}/>
@@ -457,7 +460,7 @@ const [orientador, setOrientador] = useState<Professor | null>(null);
             )}
 
             <ButtonAuth type="button" text="Cancelar" theme="secondary" onClick={handleCancelar} />
-            <ButtonAuth type="submit" text="Salvar" theme="primary"/>
+            <ButtonAuth type="submit" text={isLoading ? <span className="spinner"></span> : "Salvar"} theme="primary"/>
           </form>
         </ModalEditarPerfil>
       )}

@@ -1,11 +1,16 @@
+"use client";
+
 import "../globals.css";
 import NavBar from "../components/NavBar";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <NavBar />
-      <main>{children}</main>
+      <AuthProvider>
+        <NavBar />
+        <main>{children}</main>
+      </AuthProvider>
     </>
   );
 }

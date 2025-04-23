@@ -9,6 +9,8 @@ import { usePathname } from "next/navigation";
 import iconBell from "@/assets/bell.png";
 import Dropdown from "@/components/Dropdown";
 import { useRouter } from "next/navigation";
+import { getInitials } from "@/utils/getInitials";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface User {
   name: string;
@@ -37,52 +39,7 @@ const NavLink = ({
 };
 
 const NavBar = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const router = useRouter();
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await fetch("http://localhost:8080/auth/me", {
-          credentials: "include",
-        });
-    
-        if (res.ok) {
-          const userData = await res.json();
-          setUser({
-            name: userData.nome,
-            profileImage: userData.profileImage,
-          });
-        } else {
-          console.error("Usuário não autenticado");
-        }
-      } catch (error) {
-        console.error("Erro ao buscar usuário:", error);
-      }
-    };    
-
-    fetchUser();
-  }, []);
-
-  const getInitials = (nome: string) => {
-    const nomes = nome.split(" ");
-    return nomes.length > 1
-      ? `${nomes[0][0]}${nomes[nomes.length - 1][0]}`.toUpperCase()
-      : nomes[0][0].toUpperCase();
-  };
-
-  const logout = async () => {
-    try {
-      await fetch("http://localhost:8080/auth/logout", {
-        method: "POST",
-        credentials: "include",
-      });
-      setUser(null);
-      router.push("/login");
-    } catch (err) {
-      console.error("Erro ao fazer logout:", err);
-    }
-  };
+  const { usuario, logout, loading } = useAuth();
 
   return (
     <nav className={styles.nav}>
@@ -106,15 +63,15 @@ const NavBar = () => {
           </li>
         </ul>
         <div className={styles.actions}>
-          {user ? (
+        {loading ? null : usuario ? (
             <div className={styles.userSection}>
               <Image src={iconBell} width={23} alt="Ícone de sino" />
 
               <Link href={`/perfil`}>
                 <div className={styles.profile}>
-                  {user.profileImage ? (
+                  {usuario.profileImage ? (
                     <Image
-                      src={user.profileImage}
+                      src={usuario.profileImage}
                       width={45}
                       height={45}
                       alt="Foto de perfil"
@@ -122,7 +79,7 @@ const NavBar = () => {
                     />
                   ) : (
                     <div className={styles.initials}>
-                      {getInitials(user.name)}
+                      {getInitials(usuario.nome)}
                     </div>
                   )}
                 </div>

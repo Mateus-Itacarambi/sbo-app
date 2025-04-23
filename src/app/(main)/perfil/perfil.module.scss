@@ -159,8 +159,6 @@
         }
 
         &_tema {
-          display: flex;
-          flex-direction: column;
           background: #fff;
           padding: 2rem;
           border-radius: 20px;
@@ -178,7 +176,8 @@
           .tema {
             display: flex;
             border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            // box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 3px solid $verde4;
             overflow: hidden;
             transition: transform 0.2s;
             margin-top: 2rem;
@@ -208,7 +207,7 @@
                   background-color: white;
                 }
 
-                button:nth-child(2), button:nth-child(3) {
+                button:nth-child(2), button:nth-child(3), button:nth-child(4), button:nth-child(5) {
                   background-color: white;
                   color: $cinza12;
                   font-size: 1.5rem;
@@ -254,15 +253,32 @@
         }
 
         &_orientador {
-          display: flex;
-          flex-direction: column;
-          background: #fff;
-          padding: 2rem;
-          border-radius: 20px;
           width: 100%;
+          padding: 2rem;
           border: 3px solid $verde4;
+          border-radius: 20px;
           box-sizing: border-box;
+
+          h2 {
+            margin-bottom: 2rem;
+          }
+      
+          .card_perfil {
+            width: calc(100% - 4rem - 6px);
+          }
+
+          p {
+          
+          &.status {
+            font-size: 1.4rem;
+            padding: 4px 8px;
+            border-radius: 12px;
+            background-color: $verde4;
+            color: $verde11;
+            width: fit-content;
+          }
         }
+      }
 
         form {
           width: 100%;

@@ -13,10 +13,11 @@ interface DropdownProps {
   label: string;
   items: DropdownItem[];
   icon?: ReactNode;
+  width?: string;
   top?: string;
 }
 
-export default function Dropdown({ label, items, icon, top="calc(8rem - ((8rem - 4.5rem) / 2) + 1rem)" }: DropdownProps) {
+export default function Dropdown({ label, items, icon, width="13rem", top="calc(8rem - ((8rem - 4.5rem) / 2) + 1rem)" }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -38,7 +39,7 @@ export default function Dropdown({ label, items, icon, top="calc(8rem - ((8rem -
       </button>
 
       {isOpen && (
-        <div className={styles.menu} style={{ top: top }}>
+        <div className={styles.menu} style={{ width: width, top: top }}>
           {items.map((item, idx) => {
             if (item.type === 'link') {
               return (

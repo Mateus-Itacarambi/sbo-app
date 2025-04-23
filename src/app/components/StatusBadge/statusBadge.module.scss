@@ -1,0 +1,34 @@
+@import "../../styles/variaveis";
+
+.badge {
+    font-size: 1.4rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    width: fit-content;
+  }
+
+  .RESERVADO {
+    background-color: $amarelo4;
+    color: $amarelo11;
+  }
+  
+  .EM_ANDAMENTO {
+    background-color: $azul5;
+    color: $azul11;
+  }
+  
+  .DISPONIVEL {
+    background-color: $verde4;
+    color: $verde11;
+  }
+  
+  .INDISPONIVEL {
+    background-color: $vermelho5;
+    color: $vermelho9;
+  }
+  
+  .CONCLUIDO {
+    background-color: $cinza5;
+    color: $cinza11;
+  }
+  
