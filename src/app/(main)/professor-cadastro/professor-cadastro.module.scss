@@ -1,0 +1,68 @@
+@import "../../styles/variaveis";
+
+.main {
+    height: calc(100vh - 12rem);
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0;
+    background-color: $verde3;
+  
+    .container {
+      max-width: 1000px;
+      width: 100%;
+      overflow-y: scroll;
+      padding: 0 1rem;
+  
+      &::-webkit-scrollbar
+      {
+          width: 8px;
+          border-radius: 8px;
+      }
+  
+      &::-webkit-scrollbar-thumb
+      {
+          border-radius: 15px;
+          background-color: $verde9;
+          cursor: pointer;
+  
+          &:hover {
+            background-color: $verde10;
+          }
+      }
+
+      .card_container {
+        background-color: white;
+        display: flex;
+        border-radius: 1.5rem;
+        box-sizing: border-box;
+        flex-wrap: wrap;
+        flex-direction: column;
+        padding: 2rem;
+
+        h2 {
+            color: $verde9;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        p {
+          font-size: 1.6rem;
+          font-weight: 500;
+          color: $cinza12;
+          margin-bottom: 1rem;
+        }
+
+        p:nth-child(4) {
+          font-size: 1.2rem;
+          color: $cinza12;
+        }
+
+        input {
+          font-weight: 300;
+          color: $cinza10;
+          margin-bottom: 1rem;
+        }
+      }
+    }
+}

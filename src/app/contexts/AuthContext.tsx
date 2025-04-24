@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Estudante, Professor } from "@/types";
+import Modal from "@/components/Modal";
 
 type UsuarioCompleto = Estudante | Professor;
 
@@ -32,6 +33,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (res.ok) {
           const data = await res.json();
           setUsuario(data);
+
+          if (usuario?.role === "PROFESSOR" && (usuario as Professor).idLattes === "Precisa alterar") {
+            router.push("/cadastro-professor");
+          }
         } else {
           router.push("/login");
         }

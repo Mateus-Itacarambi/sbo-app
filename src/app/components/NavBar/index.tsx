@@ -3,19 +3,12 @@
 import Link from "next/link";
 import Logo from "../Logo";
 import styles from "./navbar.module.scss";
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import iconBell from "@/assets/bell.png";
 import Dropdown from "@/components/Dropdown";
-import { useRouter } from "next/navigation";
 import { getInitials } from "@/utils/getInitials";
 import { useAuth } from "@/contexts/AuthContext";
-
-interface User {
-  name: string;
-  profileImage?: string;
-}
 
 const NavLink = ({
   href,
@@ -84,19 +77,38 @@ const NavBar = () => {
                   )}
                 </div>
               </Link>
-
-              <Dropdown
-                label=""
-                items={[
-                  { type: "link", label: "Perfil", href: "/perfil" },
-                  { type: "link", label: "Configurações", href: "/configuracoes" },
-                  {
-                    type: "action",
-                    label: "Sair",
-                    onClick: logout,
-                  },
-                ]}
-              />
+              
+              {usuario.role === "ESTUDANTE" ? (
+                <Dropdown
+                  label=""
+                  items={[
+                    { type: "link", label: "Perfil", href: "/perfil" },
+                    { type: "link", label: "Configurações", href: "/configuracoes" },
+                    { type: "action", label: "Sair", onClick: logout },
+                  ]}
+                />
+              ) : usuario.role === "PROFESSOR" ? (
+                <Dropdown
+                  label=""
+                  items={[
+                    { type: "link", label: "Perfil", href: "/perfil" },
+                    { type: "link", label: "Configurações", href: "/configuracoes" },
+                    { type: "link", label: "Temas", href: "/temas" },
+                    { type: "action", label: "Sair", onClick: logout },
+                  ]}
+                />
+              ) : usuario.role === "ADMINISTRADOR" ? (
+                <Dropdown
+                  width="195px"
+                  label=""
+                  items={[
+                    { type: "link", label: "Perfil", href: "/perfil" },
+                    { type: "link", label: "Configurações", href: "/configuracoes" },
+                    { type: "link", label: "Cadastro de Professores", href: "/professor-cadastro" },
+                    { type: "action", label: "Sair", onClick: logout },
+                  ]}
+                />
+              ) : null}
             </div>
           ) : (
             <Link href={"/login"}>

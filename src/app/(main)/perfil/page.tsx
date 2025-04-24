@@ -92,11 +92,9 @@ export default function Perfil() {
         const errorData = await response.text();
         throw new Error(errorData || "Erro ao cadastrar tema");
       }
-  
-      setSucesso("Tema cadastrado com sucesso!");
-      setErro("");
-      setModalTemaAberto(false);
-      router.refresh();
+
+      localStorage.setItem("mensagemSucesso", "Tema cadastrado com sucesso!");
+      location.reload();
     } catch (error: any) {
       console.error("Erro ao cadastrar tema:", error);
 

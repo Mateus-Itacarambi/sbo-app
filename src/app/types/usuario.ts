@@ -5,5 +5,6 @@ export interface Usuario {
     dataNascimento: string;
     genero: string;
     role?: string;
+    ativo?: boolean;
     profileImage?: string;
   }
