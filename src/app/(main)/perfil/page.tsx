@@ -43,7 +43,6 @@ export default function Perfil() {
   const [cursos, setCursos] = useState<CursoSelect[]>([]);
   const [semestresDisponiveis, setSemestresDisponiveis] = useState<{ value: number, label: string }[]>([]);
   const { usuario, setUsuario } = useAuth();
-
   useAlertaTemporario({ erro, sucesso, setErro, setSucesso, setMostrarAlerta });
 
   useEffect(() => {

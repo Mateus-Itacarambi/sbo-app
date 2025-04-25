@@ -3,12 +3,16 @@
 import { useState } from 'react';
 import styles from './professor-cadastro.module.scss';
 import ButtonAuth from '@/components/ButtonAuth';
+import Alerta from '@/components/Alerta';
+import { useAlertaTemporario } from '@/hooks/useAlertaTemporario';
 
 export default function UploadProfessores() {
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [erro, setErro] = useState('');
   const [sucesso, setSucesso] = useState('');
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  useAlertaTemporario({ erro, sucesso, setErro, setSucesso, setMostrarAlerta });
 
   const handleUpload = async () => {
     setIsLoading(true);
@@ -26,7 +30,7 @@ export default function UploadProfessores() {
 
       if (!response.ok) {
         const errorData = await response.text();
-        throw new Error(errorData || "Erro ao cadastrar tema");
+        throw new Error(errorData || "Erro ao cadastrar professores");
       }
   
       setSucesso("Professores cadastrados com sucesso!");
@@ -48,13 +52,24 @@ export default function UploadProfessores() {
 
   return (
     <div className={styles.main}>
+      {mostrarAlerta && (
+        <Alerta text={erro || sucesso} theme={erro ? "erro" : "sucesso"} top="10rem" />
+      )}
       <div className={styles.container}>
         <div className={styles.card_container}>
           <h2>Cadastrar Professores</h2>
           <p>Arquivo</p>
           <input type="file" accept=".csv" onChange={(e) => setFile(e.target.files?.[0] || null)} />
           <p>Apenas arquivos .csv serão aceitos</p>
-          <ButtonAuth text={isLoading ? <span className="spinner"></span> : "Cadastrar"} type="submit" onClick={handleUpload} disabled={isLoading} theme="primary" margin="0"/>
+          <h3>Exemplo de arquivo .csv</h3>
+          <div className={styles.exemplo}>
+            <p>NOME</p>
+            <p>EMAIL</p>
+            <p>Luiz Márcio Severino Dias</p>
+            <p>luiz.dias@ifb.edu.br</p>
+          </div>
+          <div className={styles.obs}><strong>Observação: </strong>os valores contidos no arquivo .csv devem estar separados por vírgula.</div>
+          <ButtonAuth text={isLoading ? <span className="spinner"></span> : "Cadastrar"} type="button" onClick={handleUpload} disabled={isLoading || !file} theme="primary" margin="2rem 0 0 0"/>
         </div>
       </div>
     </div>

@@ -83,7 +83,7 @@ const NavBar = () => {
                   label=""
                   items={[
                     { type: "link", label: "Perfil", href: "/perfil" },
-                    { type: "link", label: "Configurações", href: "/configuracoes" },
+                    { type: "link", label: "Alterar Senha", href: "/alterar-senha" },
                     { type: "action", label: "Sair", onClick: logout },
                   ]}
                 />
