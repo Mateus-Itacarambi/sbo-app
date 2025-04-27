@@ -18,6 +18,7 @@ import StatusBadge from "@/components/StatusBadge";
 import { getInitials } from "@/utils/getInitials";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAlertaTemporario } from '@/hooks/useAlertaTemporario';
+import Link from "next/link";
 
 type StatusTipo = 'RESERVADO' | 'EM_ANDAMENTO' | 'DISPONIVEL' | 'INDISPONIVEL' | 'CONCLUIDO';
 
@@ -448,7 +449,7 @@ export default function Perfil() {
                               { type: "action", label: "Remover", onClick: () => setModalConfirmarRemocaoTemaAberto(true) },
                               { type: "action", label: "Adicionar Estudante", onClick: () => setModalAdicionarEstudanteTemaAberto(true) },
                               { type: "action", label: "Remover Estudante", onClick: () => setModalRemoverEstudanteTemaAberto(true) },
-                              { type: "action", label: "Cancelar Orientação", onClick: handleRemoverTema },
+                              { type: "action", label: "Cancelar Orientação", onClick: () => setModalConfirmarRemocaoTemaAberto(true) },
                             ]}
                           />
                       </div>
@@ -500,7 +501,9 @@ export default function Perfil() {
                   ) : (
                     <>
                       <p>Não possui um tema cadastrado.</p>
-                      <ButtonAuth text="Adicionar Tema" type="button" theme="primary" onClick={() => setModalTemaAberto(true)} />
+                      <Link href="/professores">
+                        <ButtonAuth text="Buscar orientador" type="button" theme="primary" margin="2rem 0 0 0"/>
+                      </Link>
                     </>
                 )}
               </div>
