@@ -6,5 +6,6 @@ export interface Usuario {
     genero: string;
     role?: string;
     ativo?: boolean;
+    cadastroCompleto?: boolean;
     profileImage?: string;
   }

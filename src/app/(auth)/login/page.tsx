@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import ButtonAuth from "@/components/ButtonAuth";
 import Alerta from "@/components/Alerta";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,6 +17,13 @@ export default function Login() {
   const [mostrarMensagem, setmostrarMensagem] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { usuario, setUsuario } = useAuth();
+
+  useEffect(() => {
+    if (usuario) {
+      router.push("/");
+    }
+  }, [usuario]);
 
   useEffect(() => {
     if (erro || sucesso) {
@@ -30,6 +38,8 @@ export default function Login() {
       return () => clearTimeout(timer);
     }
   }, [erro, sucesso]);
+
+  
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +56,9 @@ export default function Login() {
       });
 
       if (response.ok) {
+        const data = await response.json();
         router.push("/");
+
       } else {
         const error = await response.text();
         setErro(error);

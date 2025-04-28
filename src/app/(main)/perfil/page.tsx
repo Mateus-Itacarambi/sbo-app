@@ -375,7 +375,6 @@ export default function Perfil() {
         if (res.ok) {
           const orientador = await res.json();
           setOrientador(orientador);
-          console.log(orientador);
         } else {
           throw new Error("Erro ao buscar orientador");
         }

@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const fetchUsuario = async () => {
       try {
+        setLoading(true);
         const res = await fetch("http://localhost:8080/auth/me", {
           credentials: "include",
         });
