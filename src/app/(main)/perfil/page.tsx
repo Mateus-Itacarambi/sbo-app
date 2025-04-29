@@ -17,7 +17,7 @@ import ModalEditarPerfil from "@/components/ModalEditarPerfil";
 import StatusBadge from "@/components/StatusBadge";
 import { getInitials } from "@/utils/getInitials";
 import { useAuth } from "@/contexts/AuthContext";
-import { useAlertaTemporario } from '@/hooks/useAlertaTemporario';
+import { useAlertaTemporario, useTema, useModal } from '@/hooks';
 import Link from "next/link";
 
 type StatusTipo = 'RESERVADO' | 'EM_ANDAMENTO' | 'DISPONIVEL' | 'INDISPONIVEL' | 'CONCLUIDO';
@@ -25,6 +25,28 @@ type StatusTipo = 'RESERVADO' | 'EM_ANDAMENTO' | 'DISPONIVEL' | 'INDISPONIVEL' |
 type UsuarioCompleto = Estudante | Professor;
 
 export default function Perfil() {
+  const {
+    temaTitulo,
+    setTemaTitulo,
+    temaDescricao,
+    setTemaDescricao,
+    temaPalavrasChave,
+    setTemaPalavrasChave
+  } = useTema();
+
+  const {
+    modalTemaAberto,
+    setModalTemaAberto,
+    modalEditarPerfilAberto,
+    setModalEditarPerfilAberto,
+    modalAdicionarEstudanteTemaAberto,
+    setModalAdicionarEstudanteTemaAberto,
+    modalRemoverEstudanteTemaAberto,
+    setModalRemoverEstudanteTemaAberto,
+    modalConfirmarRemocaoTemaAberto,
+    setModalConfirmarRemocaoTemaAberto
+  } = useModal();
+
   const router = useRouter();
   const [orientador, setOrientador] = useState<Professor | null>(null);
   const [formData, setFormData] = useState<any>({});
@@ -32,15 +54,7 @@ export default function Perfil() {
   const [sucesso, setSucesso] = useState('');
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [modalTemaAberto, setModalTemaAberto] = useState(false);
-  const [temaTitulo, setTemaTitulo] = useState("");
-  const [temaDescricao, setTemaDescricao] = useState("");
-  const [temaPalavrasChave, setTemaPalavrasChave] = useState("");
   const [matricula, setMatricula] = useState("");
-  const [modalEditarPerfilAberto, setModalEditarPerfilAberto] = useState(false);
-  const [modalAdicionarEstudanteTemaAberto, setModalAdicionarEstudanteTemaAberto] = useState(false);
-  const [modalRemoverEstudanteTemaAberto, setModalRemoverEstudanteTemaAberto] = useState(false);
-  const [modalConfirmarRemocaoTemaAberto, setModalConfirmarRemocaoTemaAberto] = useState(false);
   const [cursos, setCursos] = useState<CursoSelect[]>([]);
   const [semestresDisponiveis, setSemestresDisponiveis] = useState<{ value: number, label: string }[]>([]);
   const { usuario, setUsuario } = useAuth();

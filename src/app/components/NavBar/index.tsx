@@ -104,7 +104,7 @@ const NavBar = () => {
                   items={[
                     { type: "link", label: "Perfil", href: "/perfil" },
                     { type: "link", label: "Configurações", href: "/configuracoes" },
-                    { type: "link", label: "Cadastro de Professores", href: "/professor-cadastro" },
+                    { type: "link", label: "Importar Professores", href: "/professor-cadastro" },
                     { type: "action", label: "Sair", onClick: logout },
                   ]}
                 />

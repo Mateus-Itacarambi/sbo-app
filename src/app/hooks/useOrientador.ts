@@ -1,0 +1,30 @@
+import { useState, useEffect } from 'react';
+
+export const useOrientador = (usuario: any) => {
+  const [orientador, setOrientador] = useState<any>(null);
+  
+  useEffect(() => {
+    const fetchOrientador = async () => {
+      if (!usuario || !(usuario as any).tema?.professor) return;
+  
+      try {
+        const res = await fetch(`http://localhost:8080/professores/${(usuario as any).tema?.professor.id}`, {
+          credentials: "include",
+        });
+  
+        if (res.ok) {
+          const orientador = await res.json();
+          setOrientador(orientador);
+        } else {
+          throw new Error("Erro ao buscar orientador");
+        }
+      } catch (error) {
+        console.error("Erro na requisição:", error);
+      }
+    };
+  
+    fetchOrientador();
+  }, [usuario]);
+
+  return { orientador };
+};

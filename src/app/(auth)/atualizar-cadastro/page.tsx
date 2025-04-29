@@ -9,12 +9,12 @@ import Alerta from "@/components/Alerta";
 import { generos } from "@/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
+import { useAlertaTemporario } from '@/hooks/useAlertaTemporario';
 
 export default function AtualizarCadastro() {
   const [formData, setFormData] = useState<any>({});
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
-  const [mostrarMensagem, setmostrarMensagem] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { usuario, setUsuario } = useAuth();
   const router = useRouter();
@@ -24,10 +24,13 @@ export default function AtualizarCadastro() {
   const [senhaNova, setSenhaNova] = useState("");
   const [senhaConfirmar, setSenhaConfirmar] = useState("");
   const [genero, setGenero] = useState("");
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  
+  useAlertaTemporario({ erro, sucesso, setErro, setSucesso, setMostrarAlerta });
 
   useEffect(() => {
     if (usuario) {
-      if (usuario.role !== "PROFESSOR") {
+      if (usuario.role !== "PROFESSOR" || usuario.cadastroCompleto === true) {
         router.push("/");
       }
       setFormData({ ...usuario });
@@ -87,8 +90,9 @@ export default function AtualizarCadastro() {
   return (
     <div className={styles.container}>
       <section>
-        {sucesso && mostrarMensagem && <Alerta text={sucesso} theme="sucesso" />}
-        {erro && mostrarMensagem && <Alerta text={erro} theme="erro" />}
+        {mostrarAlerta && (
+          <Alerta text={erro || sucesso} theme={erro ? "erro" : "sucesso"} top="10rem" />
+        )}
         <div className={styles.cadastro}>
           <h1>Atualizar Cadastro</h1>
           <p>Seja bem-vindo! Atualize seu acesso rapidamente.</p>
