@@ -8,7 +8,7 @@ export const useOrientador = (usuario: any) => {
       if (!usuario || !(usuario as any).tema?.professor) return;
   
       try {
-        const res = await fetch(`http://localhost:8080/professores/${(usuario as any).tema?.professor.id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/professores/${(usuario as any).tema?.professor.id}`, {
           credentials: "include",
         });
   

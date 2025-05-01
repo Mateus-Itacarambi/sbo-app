@@ -1,0 +1,256 @@
+@import "../../styles/variaveis";
+
+.card_perfil {
+  display: grid;
+  grid-template-columns: .5fr 4fr 2.5fr;
+  gap: 3rem;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 20px;
+  width: 100%;
+  max-height: 120px;
+  border: 3px solid $verde4;
+
+  .profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+    .profileImage {
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  
+    .initials {
+      width: 11rem;
+      height: 11rem;
+      border-radius: 50%;
+      background-color: $verde9;
+      color: white;
+      font-size: 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 5px 5px 10px $cinza6;
+    }
+  }
+        
+  .detalhes {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+  
+    h1 {
+      font-size: 3rem;
+      font-weight: 600;
+      color: $verde9;
+    }
+  
+    p {
+      font-size: 1.7rem;
+      font-weight: 500;
+      color: $cinza10;
+    }
+
+    label {
+      color: $cinza12;
+    }
+
+    strong {
+      color: $verde10;
+    }
+  }
+  
+  .editar {
+    text-align: end;
+
+    button {
+      width: 12rem;
+      height: auto;
+      margin: auto;
+      margin-left: 1rem;
+      padding: .8rem 2rem;
+      border: none;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: white;
+      border-radius: 2rem;
+      cursor: pointer;
+      transition: 0.2s;
+
+      &.editBtn {
+        background-color: $verde9;
+
+        &:hover {
+          background-color: $verde10;
+        }
+      }
+    }
+  }
+}
+
+
+.card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 20px;
+  width: 100%;
+  border: 3px solid $verde4;
+
+  h2 {
+    margin-right: .5rem;
+  }
+
+  &_tema {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 20px;
+    width: 100%;
+    border: 3px solid $verde4;
+
+    p {
+      margin: 2rem 0;
+    }
+
+    button {
+      width: 100%;
+      height: auto;
+      padding: .8rem 2rem;
+      border: none;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: white;
+      border-radius: 2rem;
+      cursor: pointer;
+      transition: 0.2s;
+      margin: 0;
+    }
+
+    .tema {
+      display: flex;
+      border-radius: 16px;
+      border: 3px solid $verde4;
+      margin-top: 2rem;
+    
+      .tema_content {
+        width: 100%;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    
+        .title {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          font-size: 1.8rem;
+          font-weight: 600;
+          color: $cinza11;
+
+          a {
+            display: none;
+          }
+
+          button:nth-child(1) {
+            width: 0;
+            height: 0;
+            background-color: white;
+          }
+
+          button:nth-child(2), button:nth-child(3), button:nth-child(4), button:nth-child(5), button:nth-child(6) {
+            background-color: white;
+            color: $cinza12;
+            font-size: 1.5rem;
+            font-weight: 400;
+            padding: .5rem 1rem;
+            border-radius: 0 0 3px 3px;
+
+            &:hover {
+              background-color: #f3f4f6;
+            }
+          }
+
+          .icon {
+            display: flex;
+            align-items: center;
+          }
+        }
+    
+        .keywords {
+          font-size: 1.4rem;
+          color: #666;
+        }
+    
+        .description {
+          max-width: 850px;
+          font-size: 1.4rem;
+          line-height: 1.8rem;
+          color: #444;
+        }
+    
+        .status {
+          font-size: 1.4rem;
+          padding: 4px 8px;
+          border-radius: 12px;
+          background-color: $verde4;
+          color: $verde11;
+          width: fit-content;
+        }
+      }
+    }
+    
+  }
+
+  &_orientador {
+    width: 100%;
+    padding: 2rem;
+    border: 3px solid $verde4;
+    border-radius: 20px;
+    box-sizing: border-box;
+
+    button {
+      width: 100%;
+      height: auto;
+      padding: .8rem 2rem;
+      border: none;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: white;
+      border-radius: 2rem;
+      cursor: pointer;
+      transition: 0.2s;
+      margin: 0;
+    }
+
+    h2 {
+      margin-bottom: 2rem;
+    }
+
+    .card_perfil {
+      width: calc(100% - 4rem - 6px);
+    }
+
+    p {
+    
+    &.status {
+      font-size: 1.4rem;
+      padding: 4px 8px;
+      border-radius: 12px;
+      background-color: $verde4;
+      color: $verde11;
+      width: fit-content;
+    }
+  }
+}
+    
+
+form {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 3rem;
+}
+}

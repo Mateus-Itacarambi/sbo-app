@@ -6,10 +6,20 @@ export const useFormulario = (initialState: any) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const handleGeneroChange = (genero: string) => {
+    setFormData({ ...formData, genero: genero });
+  };
+
+  const handleSemestreChange = (semestre: string) => {
+    setFormData({ ...formData, semestre: Number(semestre) });
+  };
   
   return {
     formData,
     setFormData,
-    handleChange
+    handleChange,
+    handleGeneroChange,
+    handleSemestreChange
   };
 };

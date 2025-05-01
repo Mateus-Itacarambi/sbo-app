@@ -7,3 +7,4 @@ export * from "./areaInteresse";
 export * from "./generos";
 export * from "./cursoSelect";
 export * from "./statusTipo";
+export * from "./usuarioCompleto";

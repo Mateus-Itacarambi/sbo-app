@@ -7,7 +7,7 @@ export const useCursos = (usuario: any, formData: any) => {
   useEffect(() => {
     const fetchCursos = async () => {
       try {
-        const res = await fetch("http://localhost:8080/cursos");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cursos`);
         if (!res.ok) throw new Error("Erro ao buscar cursos");
 
         const data = await res.json();
@@ -37,7 +37,6 @@ export const useCursos = (usuario: any, formData: any) => {
 
   const handleCursoChange = (cursoId: string) => {
     const id = Number(cursoId);
-    // Atualize o formData conforme necessário
     const cursoSelecionado = cursos.find(curso => curso.value === id);
     if (cursoSelecionado) {
       const semestres = Array.from({ length: cursoSelecionado.semestres }, (_, i) => ({
@@ -51,6 +50,7 @@ export const useCursos = (usuario: any, formData: any) => {
   };
 
   return {
+    setSemestresDisponiveis,
     cursos,
     semestresDisponiveis,
     handleCursoChange
