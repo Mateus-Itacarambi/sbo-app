@@ -4,7 +4,7 @@ import styles from "./modalEditarPerfil.module.scss";
 import InputAuth from "@/components/InputAuth";
 import SelectAuth from "@/components/SelectAuth";
 import ButtonAuth from "@/components/ButtonAuth";
-import { generos, UsuarioCompleto } from "@/types";
+import { Estudante, generos, UsuarioCompleto } from "@/types";
 
 
 interface ModalEditarPerfilProps {
@@ -13,7 +13,7 @@ interface ModalEditarPerfilProps {
   cursos: any[];
   semestresDisponiveis: any[];
   onClose: () => void;
-  onSalvarPerfil: (e: React.FormEvent) => void;
+  onSalvarPerfil: (e: React.FormEvent, formData: any) => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   handleGeneroChange: (genero: string) => void;
   handleCursoChange: (cursoId: string) => void;
@@ -30,12 +30,16 @@ export default function ModalEditarPerfil({ usuario, formData, cursos, semestres
     document.addEventListener("keydown", handleEsc);
     return () => document.removeEventListener("keydown", handleEsc);
   }, [onClose]);
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    onSalvarPerfil(e, formData);
+  };
 
   return ReactDOM.createPortal(
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <h2>Editar Perfil</h2>
-        <form onSubmit={onSalvarPerfil}>          
+        <form onSubmit={handleSubmit}>          
           <InputAuth label="Nome Completo" name="nome" type="text" value={formData.nome} onChange={handleChange}/>
           <InputAuth label="Data de Nascimento" name="dataNascimento" type="date" value={formData.dataNascimento} onChange={handleChange}/>
           <SelectAuth text="Gênero" options={generos} onChange={handleGeneroChange} selected={formData.genero} />

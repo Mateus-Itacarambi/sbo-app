@@ -13,9 +13,6 @@ import { useAlertaTemporario } from '@/hooks/useAlertaTemporario';
 
 export default function AtualizarCadastro() {
   const [formData, setFormData] = useState<any>({});
-  const [erro, setErro] = useState("");
-  const [sucesso, setSucesso] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const { usuario, setUsuario } = useAuth();
   const router = useRouter();
   const [dataNascimento, setDataNascimento] = useState("");
@@ -24,9 +21,16 @@ export default function AtualizarCadastro() {
   const [senhaNova, setSenhaNova] = useState("");
   const [senhaConfirmar, setSenhaConfirmar] = useState("");
   const [genero, setGenero] = useState("");
-  const [mostrarAlerta, setMostrarAlerta] = useState(false);
-  
-  useAlertaTemporario({ erro, sucesso, setErro, setSucesso, setMostrarAlerta });
+
+  const {
+    erro,
+    setErro,
+    sucesso,
+    setSucesso,
+    mostrarAlerta,
+    isLoading,
+    setIsLoading
+  } = useAlertaTemporario();
 
   useEffect(() => {
     if (usuario) {

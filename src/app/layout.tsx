@@ -1,3 +1,4 @@
+import { AlertaProvider } from "./contexts/AlertaContext";
 import "./globals.css";
 import { Metadata } from "next";
 
@@ -16,7 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <body>{children}</body>
+      <body>
+        <AlertaProvider>
+          {children}
+        </AlertaProvider>
+      </body>
     </html>
   );
 }

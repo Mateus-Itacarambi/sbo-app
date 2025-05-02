@@ -40,7 +40,7 @@ export default function CardOrientador({ usuario, orientador }: CardOrientadorPr
           </div>
         ) : (
           <>
-            <p>Não possui um tema cadastrado.</p>
+            <p>Não possui orientador.</p>
             <Link href="/professores">
               <ButtonAuth text="Buscar orientador" type="button" theme="primary" margin="2rem 0 0 0"/>
             </Link>

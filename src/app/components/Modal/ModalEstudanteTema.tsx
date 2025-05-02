@@ -1,22 +1,28 @@
 import ButtonAuth from "@/components/ButtonAuth";
 import InputAuth from "../InputAuth";
 import Modal from "./Modal";
+import { useState } from "react";
+import { Estudante } from "@/types";
 
 interface ModalEstudanteTemaProps {
   titulo: string;
   onClose: () => void;
-  onSubmit: (e: React.FormEvent) => void;
-  matricula: string;
-  setMatricula: (value: string) => void;
+  onSubmit: (e: React.FormEvent, matricula: string) => void;
   isLoading: boolean;
   textoBotao: string;
 }
 
-export default function ModalEstudanteTema({ titulo, onClose, onSubmit, matricula, setMatricula, isLoading, textoBotao }: ModalEstudanteTemaProps) {
+export default function ModalEstudanteTema({ titulo, onClose, onSubmit, isLoading, textoBotao }: ModalEstudanteTemaProps) {
+  const [matricula, setMatricula] = useState("");
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    onSubmit(e, matricula);
+  };
+
   return (
     <Modal onClose={onClose}>
       <h2>{titulo}</h2>
-      <form name="adicionar_estudante" onSubmit={onSubmit}>
+      <form name="adicionar_estudante" onSubmit={handleSubmit}>
         <InputAuth
           label="Matrícula"
           type="text"

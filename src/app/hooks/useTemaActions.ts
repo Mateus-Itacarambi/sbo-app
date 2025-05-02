@@ -1,17 +1,18 @@
-import { useAlertaTemporario } from "@/hooks/useAlertaTemporario";
+import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
 import { handleFetchError } from "@/utils/handleFetchError";
 import {
   cadastrarTema,
-//   atualizarTema,
-  removerTemaEstudante,
-  listarTemasEstudante,
+  atualizarTema,
+  removerTema,
+  adicionarEstudanteTema,
+  removerEstudanteTema,
   TemaPayload,
 } from "@/services/temaService";
 
 export const useTemaActions = () => {
-  const { erro, sucesso, isLoading, setErro, setSucesso, setIsLoading } = useAlertaTemporario();
+  const { setErro, setSucesso, setIsLoading } = useAlertaTemporarioContext();
 
-  const handleCadastrarTema = async (e: React.FormEvent,idEstudante: number, dados: TemaPayload) => {
+  const handleCadastrarTema = async (e: React.FormEvent, idEstudante: number, dados: TemaPayload) => {
     try {
       setIsLoading(true);
       await cadastrarTema(e, idEstudante, dados);
@@ -19,51 +20,73 @@ export const useTemaActions = () => {
       location.reload();
     } catch (error: any) {
       setErro(handleFetchError(error));
+      setSucesso("");
     } finally {
       setIsLoading(false);
     }
   };
 
-//   const handleAtualizarTema = async (idTema: string, dados: TemaPayload) => {
-//     try {
-//       setIsLoading(true);
-//       await atualizarTema(idTema, dados);
-//       setSucesso("Tema atualizado com sucesso.");
-//     } catch (error: any) {
-//       setErro(error.message || "Erro ao atualizar tema.");
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-
-  const handleRemoverTemaEstudante = async (idEstudante: string) => {
+  const handleAtualizarTema = async (e: React.FormEvent, idTema: number, idEstudante: number, dados: TemaPayload) => {
     try {
       setIsLoading(true);
-      await removerTemaEstudante(idEstudante);
-      setSucesso("Tema removido com sucesso.");
+      await atualizarTema(e, idTema, idEstudante, dados);
+      localStorage.setItem("mensagemSucesso", "Tema atualizado com sucesso!");
+      location.reload();
     } catch (error: any) {
-      setErro(error.message || "Erro ao remover tema.");
+      setErro(handleFetchError(error));
+      setSucesso("");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleListarTemasEstudante = async (idEstudante: string) => {
+  const handleRemoverTema = async (idTema: number, idEstudante: number) => {
     try {
-      return await listarTemasEstudante(idEstudante);
+      setIsLoading(true);
+      await removerTema(idTema, idEstudante);
+      localStorage.setItem("mensagemSucesso", "Tema removido com sucesso!");
+      location.reload();
     } catch (error: any) {
-      setErro(error.message || "Erro ao listar temas.");
-      return [];
+      setErro(handleFetchError(error));
+      setSucesso("");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleAdicionarEstudanteTema = async (e: React.FormEvent, idTema: number, idEstudante: number, matricula: string) => {
+    try {
+      setIsLoading(true);
+      await adicionarEstudanteTema(e, idTema, idEstudante, matricula);
+      localStorage.setItem("mensagemSucesso", "Estudante adicionado com sucesso!");
+      location.reload();
+    } catch (error: any) {
+      setErro(handleFetchError(error));
+      setSucesso("");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRemoverEstudanteTema = async (e: React.FormEvent, idTema: number, idEstudante: number, matricula: string) => {
+    try {
+      setIsLoading(true);
+      await removerEstudanteTema(e, idTema, idEstudante, matricula);
+      localStorage.setItem("mensagemSucesso", "Estudante removido com sucesso!");
+      location.reload();
+    } catch (error: any) {
+      setErro(handleFetchError(error));
+      setSucesso("");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return {
-    erro,
-    sucesso,
-    isLoading,
     handleCadastrarTema,
-    // handleAtualizarTema,
-    handleRemoverTemaEstudante,
-    handleListarTemasEstudante,
+    handleAtualizarTema,
+    handleRemoverTema,
+    handleAdicionarEstudanteTema,
+    handleRemoverEstudanteTema,
   };
 };
