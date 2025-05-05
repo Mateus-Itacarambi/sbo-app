@@ -9,6 +9,7 @@ import iconBell from "@/assets/bell.png";
 import Dropdown from "@/components/Dropdown";
 import { getInitials } from "@/utils/getInitials";
 import { useAuth } from "@/contexts/AuthContext";
+import { Professor, Estudante } from "@/types";
 
 const NavLink = ({
   href,
@@ -33,6 +34,10 @@ const NavLink = ({
 
 const NavBar = () => {
   const { usuario, logout, loading } = useAuth();
+  
+  const professor = usuario?.role === "PROFESSOR" ? (usuario as Professor) : null;
+  const estudante = usuario?.role === "ESTUDANTE" ? (usuario as Estudante) : null;
+  const endpoint = estudante ? `/perfil/${estudante.matricula}` : professor ? `/perfil/${professor?.idLattes}` : "/perfil";
 
   return (
     <nav className={styles.nav}>
@@ -60,7 +65,7 @@ const NavBar = () => {
             <div className={styles.userSection}>
               <Image src={iconBell} width={23} alt="Ícone de sino" />
 
-              <Link href={`/perfil`}>
+              <Link href={`${endpoint}`}>
                 <div className={styles.profile}>
                   {usuario.profileImage ? (
                     <Image
@@ -78,20 +83,20 @@ const NavBar = () => {
                 </div>
               </Link>
               
-              {usuario.role === "ESTUDANTE" ? (
+              {estudante ? (
                 <Dropdown
                   label=""
                   items={[
-                    { type: "link", label: "Perfil", href: "/perfil" },
+                    { type: "link", label: "Perfil", href: `${endpoint}` },
                     { type: "link", label: "Alterar Senha", href: "/alterar-senha" },
                     { type: "action", label: "Sair", onClick: logout },
                   ]}
                 />
-              ) : usuario.role === "PROFESSOR" ? (
+              ) : professor ? (
                 <Dropdown
                   label=""
                   items={[
-                    { type: "link", label: "Perfil", href: "/perfil" },
+                    { type: "link", label: "Perfil", href: `${endpoint}` },
                     { type: "link", label: "Configurações", href: "/configuracoes" },
                     { type: "link", label: "Temas", href: "/temas" },
                     { type: "action", label: "Sair", onClick: logout },
@@ -102,7 +107,7 @@ const NavBar = () => {
                   width="195px"
                   label=""
                   items={[
-                    { type: "link", label: "Perfil", href: "/perfil" },
+                    { type: "link", label: "Perfil", href: `${endpoint}` },
                     { type: "link", label: "Configurações", href: "/configuracoes" },
                     { type: "link", label: "Importar Professores", href: "/professor-cadastro" },
                     { type: "action", label: "Sair", onClick: logout },

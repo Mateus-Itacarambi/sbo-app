@@ -6,9 +6,10 @@ import Image from "next/image";
 interface PerfilCabecalhoProps {
   usuario: UsuarioCompleto;
   onEditar: () => void;
+  mostrarBotoes: boolean;
 }
 
-export default function PerfilCabecalho({ usuario, onEditar  }: PerfilCabecalhoProps) {
+export default function PerfilCabecalho({ usuario, onEditar, mostrarBotoes }: PerfilCabecalhoProps) {
   return (
     <div className={styles.card_perfil}>
         <div className={styles.profile}>
@@ -24,9 +25,11 @@ export default function PerfilCabecalho({ usuario, onEditar  }: PerfilCabecalhoP
             {usuario.role === "ESTUDANTE" && <p>{(usuario as Estudante).curso?.nome} - {(usuario as Estudante).semestre}º semestre</p>}
             {usuario.role === "PROFESSOR" && <p>{(usuario as Professor).disponibilidade}</p>}
         </div>
-        <div className={styles.editar}>
+        {mostrarBotoes && (
+          <div className={styles.editar}>
             <button className={styles.editBtn} onClick={onEditar}>Editar</button>
-        </div>
+          </div>
+        )}
     </div>
   );
 }

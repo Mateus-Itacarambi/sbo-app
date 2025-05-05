@@ -5,7 +5,7 @@ import { Estudante, Professor } from "@/types";
 type UsuarioCompleto = Estudante | Professor;
 
 interface AuthContextType {
-  usuario: UsuarioCompleto | null;
+  usuario: Estudante | Professor | null;
   setUsuario: (usuario: UsuarioCompleto | null) => void;
   loading: boolean;
   logout: () => void;

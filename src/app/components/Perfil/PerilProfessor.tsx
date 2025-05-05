@@ -6,7 +6,7 @@ import { Estudante, Professor } from "@/types";
 import { FC } from "react";
 
 interface PerfilEstudanteProps {
-  estudante: Estudante;
+  professor: Professor;
   orientador: Professor;
   onEditarTema: () => void;
   onRemoverTema: () => void;
@@ -18,7 +18,7 @@ interface PerfilEstudanteProps {
 }
 
 const PerfilEstudante: FC<PerfilEstudanteProps> = ({
-  estudante,
+  professor,
   orientador,
   onEditarTema,
   onRemoverTema,
@@ -29,9 +29,9 @@ const PerfilEstudante: FC<PerfilEstudanteProps> = ({
   isMeuPerfil,
 }) => (
   <>
-    <CardInfo titulo="Matrícula" texto={estudante.matricula} />
+    <CardInfo titulo="ID Lattes" texto={professor.idLattes} />
 
-    <CardTema
+    {/* <CardTema
       usuario={estudante}
       onEditar={onEditarTema}
       onRemover={onRemoverTema}
@@ -42,7 +42,7 @@ const PerfilEstudante: FC<PerfilEstudanteProps> = ({
       mostrarBotoes={isMeuPerfil}
     />
 
-    <CardOrientador usuario={estudante} orientador={orientador} mostrarBotoes={isMeuPerfil} />
+    <CardOrientador usuario={estudante} orientador={orientador} mostrarBotoes={isMeuPerfil} /> */}
   </>
 );
 

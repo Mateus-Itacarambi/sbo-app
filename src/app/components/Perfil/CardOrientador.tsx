@@ -11,9 +11,10 @@ type StatusTipo = 'RESERVADO' | 'EM_ANDAMENTO' | 'DISPONIVEL' | 'INDISPONIVEL' |
 interface CardOrientadorProps {
   usuario: UsuarioCompleto;
   orientador: Professor;
+  mostrarBotoes: boolean;
 }
 
-export default function CardOrientador({ usuario, orientador }: CardOrientadorProps) {
+export default function CardOrientador({ usuario, orientador, mostrarBotoes }: CardOrientadorProps) {
 
   return ( 
     <div className={styles.card_orientador}>
@@ -42,7 +43,9 @@ export default function CardOrientador({ usuario, orientador }: CardOrientadorPr
           <>
             <p>Não possui orientador.</p>
             <Link href="/professores">
-              <ButtonAuth text="Buscar orientador" type="button" theme="primary" margin="2rem 0 0 0"/>
+              {mostrarBotoes && (
+                <ButtonAuth text="Buscar orientador" type="button" theme="primary" margin="2rem 0 0 0"/>
+              )}
             </Link>
           </>
       )}

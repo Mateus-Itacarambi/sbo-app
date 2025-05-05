@@ -16,9 +16,10 @@ interface CardTemaProps {
   onRemoverEstudante: () => void;
   onCancelarOrientação: () => void;
   onAdicionarTema: () => void;
+  mostrarBotoes: boolean;
 }
 
-export default function CardTema({ usuario, onEditar, onRemover, onAdicionarEstudante, onRemoverEstudante, onCancelarOrientação, onAdicionarTema }: CardTemaProps) {
+export default function CardTema({ usuario, onEditar, onRemover, onAdicionarEstudante, onRemoverEstudante, onCancelarOrientação, onAdicionarTema, mostrarBotoes }: CardTemaProps) {
   return (
     <div className={styles.card_tema}>
       <h2>Tema</h2>
@@ -27,20 +28,22 @@ export default function CardTema({ usuario, onEditar, onRemover, onAdicionarEstu
           <div className={styles.tema_content}>
             <div className={styles.title}>
               {(usuario as Estudante).tema?.titulo}
-                <Dropdown
-                  label=""
-                  width="17rem"
-                  top="2rem"
-                  icon={<div className={styles.icon}><Image src={Icone} alt=""/></div>}
-                  items={[
-                    { type: "link", label: "", href: "" },
-                    { type: "action", label: "Editar", onClick: onEditar },
-                    { type: "action", label: "Remover", onClick: onRemover },
-                    { type: "action", label: "Adicionar Estudante", onClick: onAdicionarEstudante },
-                    { type: "action", label: "Remover Estudante", onClick: onRemoverEstudante },
-                    { type: "action", label: "Cancelar Orientação", onClick: onCancelarOrientação },
-                  ]}
-                />
+                {mostrarBotoes && (
+                  <Dropdown
+                    label=""
+                    width="17rem"
+                    top="2rem"
+                    icon={<div className={styles.icon}><Image src={Icone} alt=""/></div>}
+                    items={[
+                      { type: "link", label: "", href: "" },
+                      { type: "action", label: "Editar", onClick: onEditar },
+                      { type: "action", label: "Remover", onClick: onRemover },
+                      { type: "action", label: "Adicionar Estudante", onClick: onAdicionarEstudante },
+                      { type: "action", label: "Remover Estudante", onClick: onRemoverEstudante },
+                      { type: "action", label: "Cancelar Orientação", onClick: onCancelarOrientação },
+                    ]}
+                  />
+                )}
             </div>
             {(usuario as Estudante).tema?.statusTema && (
                 <StatusBadge status={(usuario as Estudante).tema?.statusTema as StatusTipo} />
@@ -59,7 +62,9 @@ export default function CardTema({ usuario, onEditar, onRemover, onAdicionarEstu
       ) : (
         <>
           <p>Não possui um tema cadastrado.</p>
-          <ButtonAuth text="Adicionar Tema" type="button" theme="primary" onClick={onAdicionarTema} />
+          {mostrarBotoes && (
+            <ButtonAuth text="Adicionar Tema" type="button" theme="primary" onClick={onAdicionarTema} />
+          )}
         </>
       )}
     </div>
