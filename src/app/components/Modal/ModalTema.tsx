@@ -6,7 +6,7 @@ import { useTema } from "@/hooks";
 import { useEffect } from "react";
 
 interface ModalTemaProps {
-  usuario: UsuarioCompleto;
+  usuario: any;
   onClose: () => void;
   atualizarTema: (e: React.FormEvent, titulo: string, palavrasChave: string, descricao: string) => void;
   cadastrarTema: (e: React.FormEvent, titulo: string, palavrasChave: string, descricao: string) => void;

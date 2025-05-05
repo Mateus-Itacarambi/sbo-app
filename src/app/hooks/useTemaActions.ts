@@ -9,13 +9,13 @@ import {
   TemaPayload,
 } from "@/services/temaService";
 
-export const useTemaActions = () => {
+export const useTemaActions = (usuario: any) => {
   const { setErro, setSucesso, setIsLoading } = useAlertaTemporarioContext();
 
-  const handleCadastrarTema = async (e: React.FormEvent, idEstudante: number, dados: TemaPayload) => {
+  const handleCadastrarTema = async (e: React.FormEvent, dados: TemaPayload) => {
     try {
       setIsLoading(true);
-      await cadastrarTema(e, idEstudante, dados);
+      await cadastrarTema(e, usuario, dados);
       localStorage.setItem("mensagemSucesso", "Tema cadastrado com sucesso!");
       location.reload();
     } catch (error: any) {
@@ -26,10 +26,10 @@ export const useTemaActions = () => {
     }
   };
 
-  const handleAtualizarTema = async (e: React.FormEvent, idTema: number, idEstudante: number, dados: TemaPayload) => {
+  const handleAtualizarTema = async (e: React.FormEvent, dados: TemaPayload) => {
     try {
       setIsLoading(true);
-      await atualizarTema(e, idTema, idEstudante, dados);
+      await atualizarTema(e, usuario, dados);
       localStorage.setItem("mensagemSucesso", "Tema atualizado com sucesso!");
       location.reload();
     } catch (error: any) {
@@ -40,10 +40,10 @@ export const useTemaActions = () => {
     }
   };
 
-  const handleRemoverTema = async (idTema: number, idEstudante: number) => {
+  const handleRemoverTema = async () => {
     try {
       setIsLoading(true);
-      await removerTema(idTema, idEstudante);
+      await removerTema(usuario);
       localStorage.setItem("mensagemSucesso", "Tema removido com sucesso!");
       location.reload();
     } catch (error: any) {
@@ -54,10 +54,10 @@ export const useTemaActions = () => {
     }
   };
 
-  const handleAdicionarEstudanteTema = async (e: React.FormEvent, idTema: number, idEstudante: number, matricula: string) => {
+  const handleAdicionarEstudanteTema = async (e: React.FormEvent, matricula: string) => {
     try {
       setIsLoading(true);
-      await adicionarEstudanteTema(e, idTema, idEstudante, matricula);
+      await adicionarEstudanteTema(e, usuario, matricula);
       localStorage.setItem("mensagemSucesso", "Estudante adicionado com sucesso!");
       location.reload();
     } catch (error: any) {
@@ -68,10 +68,10 @@ export const useTemaActions = () => {
     }
   };
 
-  const handleRemoverEstudanteTema = async (e: React.FormEvent, idTema: number, idEstudante: number, matricula: string) => {
+  const handleRemoverEstudanteTema = async (e: React.FormEvent, matricula: string) => {
     try {
       setIsLoading(true);
-      await removerEstudanteTema(e, idTema, idEstudante, matricula);
+      await removerEstudanteTema(e, usuario, matricula);
       localStorage.setItem("mensagemSucesso", "Estudante removido com sucesso!");
       location.reload();
     } catch (error: any) {

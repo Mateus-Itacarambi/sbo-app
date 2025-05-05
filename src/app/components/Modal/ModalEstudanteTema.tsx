@@ -2,7 +2,6 @@ import ButtonAuth from "@/components/ButtonAuth";
 import InputAuth from "../InputAuth";
 import Modal from "./Modal";
 import { useState } from "react";
-import { Estudante } from "@/types";
 
 interface ModalEstudanteTemaProps {
   titulo: string;

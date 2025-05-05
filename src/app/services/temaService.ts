@@ -1,3 +1,5 @@
+import { Estudante, UsuarioCompleto } from "@/types";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export interface TemaPayload {
@@ -5,19 +7,11 @@ export interface TemaPayload {
   palavrasChave: string;
   descricao: string;
 }
-  
-export const listarTemasEstudante = async (id: string) => {
-  const response = await fetch(`/temas/estudante/${id}`, {
-    method: "GET",
-    credentials: "include",
-  });
-  if (!response.ok) throw new Error(await response.text());
-  return response.json();
-};
 
-export const cadastrarTema = async (e: React.FormEvent, idEstudante: number, dados: TemaPayload) => {
+export const cadastrarTema = async (e: React.FormEvent, usuario: UsuarioCompleto, dados: TemaPayload) => {
+  if (!usuario || (usuario as Estudante).tema) return;
   e.preventDefault();
-  const response = await fetch(`${API_URL}/temas/estudante/${idEstudante}`, {
+  const response = await fetch(`${API_URL}/temas/estudante/${usuario.id}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
@@ -27,9 +21,10 @@ export const cadastrarTema = async (e: React.FormEvent, idEstudante: number, dad
   return response.json();
 };
 
-export const atualizarTema = async (e: React.FormEvent, idTema: number, idEstudante: number,  dados: TemaPayload) => {
+export const atualizarTema = async (e: React.FormEvent, usuario: UsuarioCompleto, dados: TemaPayload) => {
+  if (!usuario || !(usuario as Estudante).tema) return;
   e.preventDefault();
-  const response = await fetch(`${API_URL}/temas/${idTema}/atualizar/${idEstudante}`, {
+  const response = await fetch(`${API_URL}/temas/${(usuario as Estudante).tema?.id}/atualizar/${usuario.id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
@@ -44,8 +39,8 @@ export const atualizarTema = async (e: React.FormEvent, idTema: number, idEstuda
   return await response.json();
 };
 
-export const removerTema = async (idTema: number, idEstudante: number) => {
-  const response = await fetch(`${API_URL}/temas/${idTema}/deletar/${idEstudante}`, {
+export const removerTema = async (usuario: UsuarioCompleto) => {
+  const response = await fetch(`${API_URL}/temas/${(usuario as Estudante).tema?.id}/deletar/${usuario.id}`, {
     method: "DELETE",
     credentials: "include",
   });
@@ -53,9 +48,10 @@ export const removerTema = async (idTema: number, idEstudante: number) => {
   if (!response.ok) throw new Error(await response.text());
 };
 
-export const adicionarEstudanteTema = async (e: React.FormEvent, idTema: number, idEstudante: number,  matricula: string) => {
+export const adicionarEstudanteTema = async (e: React.FormEvent, usuario: UsuarioCompleto,  matricula: string) => {
+  if (!usuario || !(usuario as Estudante).tema) return;
   e.preventDefault();
-  const response = await fetch(`${API_URL}/temas/${idTema}/adicionarEstudante/${idEstudante}`, {
+  const response = await fetch(`${API_URL}/temas/${(usuario as Estudante).tema?.id}/adicionarEstudante/${usuario.id}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
@@ -72,9 +68,10 @@ export const adicionarEstudanteTema = async (e: React.FormEvent, idTema: number,
   return await response.json();
 };
 
-export const removerEstudanteTema = async (e: React.FormEvent, idTema: number, idEstudante: number,  matricula: string) => {
+export const removerEstudanteTema = async (e: React.FormEvent, usuario: UsuarioCompleto,  matricula: string) => {
+  if (!usuario || !(usuario as Estudante).tema) return;
   e.preventDefault();
-  const response = await fetch(`${API_URL}/temas/${idTema}/removerEstudante/${idEstudante}`, {
+  const response = await fetch(`${API_URL}/temas/${(usuario as Estudante).tema?.id}/removerEstudante/${usuario.id}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
     credentials: "include",

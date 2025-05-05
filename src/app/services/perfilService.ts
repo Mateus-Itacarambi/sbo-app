@@ -1,8 +1,12 @@
+import { UsuarioCompleto } from "@/types";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export async function atualizarPerfil(e: React.FormEvent, formData: any, role: string) {
+export async function atualizarPerfil(e: React.FormEvent, usuario: UsuarioCompleto, formData: any) {
+  if (!usuario) return;
+  
   e.preventDefault();
-  const endpoint = role === "ESTUDANTE" ? "/estudantes" : "/professores";
+  const endpoint = usuario.role === "ESTUDANTE" ? "/estudantes" : "/professores";
   const response = await fetch(`${API_URL}${endpoint}`, {
     method: "PUT",
     headers: {

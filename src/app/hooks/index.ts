@@ -4,3 +4,5 @@ export * from "./useFormulario";
 export * from "./useModal";
 export * from "./useOrientador";
 export * from "./useTema";
+export * from "./useTemaActions";
+export * from "./usePerfilActions";
