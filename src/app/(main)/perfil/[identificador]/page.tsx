@@ -1,16 +1,14 @@
 import Perfil from "@/components/Perfil/Perfil";
-import { cookies } from "next/headers";
+import PerfilNaoEncontrado from "@/components/Perfil/PerfilNaoEncontrado";
 
 export default async function PerfilPage({ params }: { params: { identificador: string } }) {
-  const cookieStore = cookies();
-  const token = cookieStore.get("token")?.value;
-
-  const res = await fetch(`http://localhost:8080/usuarios/${params.identificador}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/usuarios/${params.identificador}`, {
     credentials: "include",
+    cache: "no-store",
   });
 
   if (!res.ok) {
-    throw new Error("Usuário não encontrado");
+    return <PerfilNaoEncontrado/>;
   }
 
   const usuario = await res.json();

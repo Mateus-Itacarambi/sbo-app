@@ -73,6 +73,9 @@
     .profileImage {
       border-radius: 50%;
       object-fit: cover;
+      background-color: $verde9;
+      border: 10px solid $verde9;
+      box-sizing: border-box;
     }
   
     .initials {

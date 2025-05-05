@@ -106,7 +106,7 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
         <div className={styles.card_container}>
             <PerfilCabecalho usuario={usuarioVisualizado} onEditar={() => modal.setModalEditarPerfilAberto(true)} mostrarBotoes={isMeuPerfil}/>
             
-            <CardInfo titulo="Data de Nascimento" texto={new Date(usuarioVisualizado.dataNascimento).toLocaleDateString("pt-BR")} />
+            <CardInfo titulo="Data de Nascimento" texto={new Date(`${usuarioVisualizado.dataNascimento}T12:00:00`).toLocaleDateString("pt-BR")} />
             <CardInfo titulo="Gênero" texto={usuarioVisualizado.genero} />
 
             {estudante && (

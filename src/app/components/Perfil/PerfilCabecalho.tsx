@@ -1,10 +1,10 @@
 import styles from "./perfil.module.scss";
 import { getInitials } from "@/utils/getInitials";
-import { Estudante, Professor, UsuarioCompleto } from "@/types";
+import { Estudante, Professor, UsuarioNaoEncontrado, UsuarioCompleto } from "@/types";
 import Image from "next/image";
 
 interface PerfilCabecalhoProps {
-  usuario: UsuarioCompleto;
+  usuario: UsuarioCompleto | UsuarioNaoEncontrado;
   onEditar: () => void;
   mostrarBotoes: boolean;
 }
