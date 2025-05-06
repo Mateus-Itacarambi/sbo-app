@@ -1,6 +1,7 @@
-import { Estudante } from '@/types';
+import { Estudante, Formacao } from '@/types';
 import { useState } from 'react';
 import { useTema } from './useTema';
+import { useFormacao } from './useFormacao';
 
 export const useModal = (usuario: any) => {
   const [modalTemaAberto, setModalTemaAberto] = useState(false);
@@ -9,11 +10,16 @@ export const useModal = (usuario: any) => {
   const [modalRemoverEstudanteTemaAberto, setModalRemoverEstudanteTemaAberto] = useState(false);
   const [modalConfirmarRemocaoTemaAberto, setModalConfirmarRemocaoTemaAberto] = useState(false);
 
+  const [modalFormacaoAberto, setModalFormacaoAberto] = useState(false);
+  const [modalAdicionarFormacaoAberto, setModalAdicionarFormacaoAberto] = useState(false);
+
   const {
     setTemaTitulo,
     setTemaDescricao,
     setTemaPalavrasChave
   } = useTema();
+
+  const formacao = useFormacao();
 
   const handleAbrirModalTema = () => {
     const tema = (usuario as Estudante)?.tema;
@@ -29,6 +35,23 @@ export const useModal = (usuario: any) => {
     setModalTemaAberto(true);
   };
   
+  const handleAbrirModalFormacao = (formacaoSelecionada?: Formacao) => {
+    if (formacaoSelecionada) {
+      formacao.setCurso(formacaoSelecionada.curso || "");
+      formacao.setFaculdade(formacaoSelecionada.faculdade || "");
+      formacao.setTitulo(formacaoSelecionada.titulo || "");
+      formacao.setAnoInicio(String(formacaoSelecionada.anoInicio || ""));
+      formacao.setAnoFim(String(formacaoSelecionada.anoFim || ""));
+    } else {
+      formacao.setCurso("");
+      formacao.setFaculdade("");
+      formacao.setTitulo("");
+      formacao.setAnoInicio("");
+      formacao.setAnoFim("");
+    }
+    setModalFormacaoAberto(true);
+  };
+  
   return {
     modalTemaAberto,
     setModalTemaAberto,
@@ -40,6 +63,11 @@ export const useModal = (usuario: any) => {
     setModalRemoverEstudanteTemaAberto,
     modalConfirmarRemocaoTemaAberto,
     setModalConfirmarRemocaoTemaAberto,
-    handleAbrirModalTema
+    handleAbrirModalTema,
+    modalFormacaoAberto, 
+    setModalFormacaoAberto,
+    modalAdicionarFormacaoAberto, 
+    setModalAdicionarFormacaoAberto,
+    handleAbrirModalFormacao
   };
 };

@@ -12,12 +12,14 @@ import ModalConfirmarTema from "@/components/Modal/ModalConfirmar";
 
 import PerfilCabecalho from "@/components/Perfil/PerfilCabecalho";
 import CardInfo from "@/components/Perfil/CardInfo";
-import PerfilEstudante from "@/components/Perfil/PerilEstudante";
+import PerfilEstudante from "@/components/Perfil/PerfilEstudante";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
 import { useModal, useFormulario, useCursos, useOrientador, useTemaActions, usePerfilActions } from "@/hooks";
 import { Estudante, Professor } from "@/types";
+import PerfilProfessor from "./PerfilProfessor";
+import ModalFormacoes from "../Modal/ModalFormacoes";
 
 interface PerfilProps {
   usuarioVisualizado: Estudante | Professor | null;
@@ -106,8 +108,12 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
         <div className={styles.card_container}>
             <PerfilCabecalho usuario={usuarioVisualizado} onEditar={() => modal.setModalEditarPerfilAberto(true)} mostrarBotoes={isMeuPerfil}/>
             
-            <CardInfo titulo="Data de Nascimento" texto={new Date(`${usuarioVisualizado.dataNascimento}T12:00:00`).toLocaleDateString("pt-BR")} />
-            <CardInfo titulo="Gênero" texto={usuarioVisualizado.genero} />
+            {isMeuPerfil && (
+              <>
+                <CardInfo titulo="Data de Nascimento" texto={new Date(`${usuarioVisualizado.dataNascimento}T12:00:00`).toLocaleDateString("pt-BR")} />
+                <CardInfo titulo="Gênero" texto={usuarioVisualizado.genero} />
+              </>
+            )}
 
             {estudante && (
               <PerfilEstudante
@@ -116,6 +122,20 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
                 onEditarTema={modal.handleAbrirModalTema}
                 onRemoverTema={() => modal.setModalConfirmarRemocaoTemaAberto(true)}
                 onAdicionarEstudante={() => modal.setModalAdicionarEstudanteTemaAberto(true)}
+                onRemoverEstudante={() => modal.setModalRemoverEstudanteTemaAberto(true)}
+                onCancelarOrientacao={() => modal.setModalConfirmarRemocaoTemaAberto(true)}
+                onAdicionarTema={() => modal.setModalTemaAberto(true)}
+                isMeuPerfil={isMeuPerfil}
+              />
+            )}
+
+            {professor && (
+              <PerfilProfessor
+                professor={professor}
+                orientador={orientador}
+                onGerenciar={modal.handleAbrirModalFormacao}
+                onRemoverTema={() => modal.setModalConfirmarRemocaoTemaAberto(true)}
+                onAdicionarFormacao={() => modal.setModalAdicionarFormacaoAberto(true)}
                 onRemoverEstudante={() => modal.setModalRemoverEstudanteTemaAberto(true)}
                 onCancelarOrientacao={() => modal.setModalConfirmarRemocaoTemaAberto(true)}
                 onAdicionarTema={() => modal.setModalTemaAberto(true)}
@@ -132,6 +152,15 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
           atualizarTema={atualizarTema}
           cadastrarTema={cadastrarTema}
           onCancelar={() => modal.setModalTemaAberto(false)}
+          isLoading={isLoading}
+        />
+      )}
+      
+      {modal.modalFormacaoAberto && (
+        <ModalFormacoes
+          formacoesIniciais={professor?.formacoes ?? undefined}
+          // onSalvar={}
+          onClose={() => modal.setModalFormacaoAberto(false)}
           isLoading={isLoading}
         />
       )}

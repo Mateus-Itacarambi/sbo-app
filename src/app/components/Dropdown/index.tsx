@@ -34,10 +34,10 @@ export default function Dropdown({ label, items, icon, width="13rem", top="calc(
   }, []);
 
   return (
-    <div className={styles.dropdown} ref={dropdownRef}>
+    <div className={styles.dropdown} ref={dropdownRef} style={{minWidth: "24px"}}>
       <button onClick={() => setIsOpen((prev) => !prev)} className={styles.button}>
         {label}
-        {icon || <ChevronDown className={styles.icon} />} {/* Ícone customizável */}
+        {icon || <ChevronDown className={styles.icon} />}
       </button>
 
       {isOpen && (

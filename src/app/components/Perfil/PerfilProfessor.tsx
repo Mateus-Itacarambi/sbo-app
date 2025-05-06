@@ -2,27 +2,28 @@ import CardInfo from "./CardInfo";
 import CardTema from "./CardTema";
 import CardOrientador from "./CardOrientador";
 
-import { Estudante, Professor } from "@/types";
+import { Professor } from "@/types";
 import { FC } from "react";
+import CardFormacao from "./CardFormacao";
 
-interface PerfilEstudanteProps {
+interface PerfilProfessorProps {
   professor: Professor;
   orientador: Professor;
-  onEditarTema: () => void;
+  onGerenciar: () => void;
   onRemoverTema: () => void;
-  onAdicionarEstudante: () => void;
+  onAdicionarFormacao: () => void;
   onRemoverEstudante: () => void;
   onCancelarOrientacao: () => void;
   onAdicionarTema: () => void;
   isMeuPerfil: boolean;
 }
 
-const PerfilEstudante: FC<PerfilEstudanteProps> = ({
+const PerfilProfessor: FC<PerfilProfessorProps> = ({
   professor,
   orientador,
-  onEditarTema,
+  onGerenciar,
   onRemoverTema,
-  onAdicionarEstudante,
+  onAdicionarFormacao,
   onRemoverEstudante,
   onCancelarOrientacao,
   onAdicionarTema,
@@ -31,11 +32,22 @@ const PerfilEstudante: FC<PerfilEstudanteProps> = ({
   <>
     <CardInfo titulo="ID Lattes" texto={professor.idLattes} />
 
+    <CardFormacao 
+      formacoes={professor.formacoes} 
+      onGerenciar={onGerenciar}
+      onRemover={onRemoverTema}
+      onAdicionarFormacao={onAdicionarFormacao}
+      onRemoverEstudante={onRemoverEstudante}
+      onCancelarOrientação={onCancelarOrientacao}
+      onAdicionarTema={onAdicionarTema}
+      mostrarBotoes={isMeuPerfil} 
+    />
+
     {/* <CardTema
       usuario={estudante}
-      onEditar={onEditarTema}
+      onGerenciar={onGerenciarFormacao}
       onRemover={onRemoverTema}
-      onAdicionarEstudante={onAdicionarEstudante}
+      onAdicionarFormacao={onAdicionarFormacao}
       onRemoverEstudante={onRemoverEstudante}
       onCancelarOrientação={onCancelarOrientacao}
       onAdicionarTema={onAdicionarTema}
@@ -46,4 +58,4 @@ const PerfilEstudante: FC<PerfilEstudanteProps> = ({
   </>
 );
 
-export default PerfilEstudante;
+export default PerfilProfessor;
