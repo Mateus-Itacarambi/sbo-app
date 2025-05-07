@@ -4,14 +4,15 @@ import { useTema } from './useTema';
 import { useFormacao } from './useFormacao';
 
 export const useModal = (usuario: any) => {
-  const [modalTemaAberto, setModalTemaAberto] = useState(false);
-  const [modalEditarPerfilAberto, setModalEditarPerfilAberto] = useState(false);
-  const [modalAdicionarEstudanteTemaAberto, setModalAdicionarEstudanteTemaAberto] = useState(false);
-  const [modalRemoverEstudanteTemaAberto, setModalRemoverEstudanteTemaAberto] = useState(false);
-  const [modalConfirmarRemocaoTemaAberto, setModalConfirmarRemocaoTemaAberto] = useState(false);
+  const [modalTema, setModalTema] = useState(false);
+  const [modalEditarPerfil, setModalEditarPerfil] = useState(false);
+  const [modalAdicionarEstudanteTema, setModalAdicionarEstudanteTema] = useState(false);
+  const [modalRemoverEstudanteTema, setModalRemoverEstudanteTema] = useState(false);
+  const [modalConfirmarRemocaoTema, setModalConfirmarRemocaoTema] = useState(false);
 
-  const [modalFormacaoAberto, setModalFormacaoAberto] = useState(false);
-  const [modalAdicionarFormacaoAberto, setModalAdicionarFormacaoAberto] = useState(false);
+  const [modalFormacao, setModalFormacao] = useState(false);
+  const [modalFormacoes, setModalFormacoes] = useState(false);
+  const [modalAdicionarFormacao, setModalAdicionarFormacao] = useState(false);
 
   const {
     setTemaTitulo,
@@ -32,42 +33,44 @@ export const useModal = (usuario: any) => {
       setTemaDescricao("");
       setTemaPalavrasChave("");
     }
-    setModalTemaAberto(true);
+    setModalTema(true);
   };
   
   const handleAbrirModalFormacao = (formacaoSelecionada?: Formacao) => {
     if (formacaoSelecionada) {
       formacao.setCurso(formacaoSelecionada.curso || "");
-      formacao.setFaculdade(formacaoSelecionada.faculdade || "");
+      formacao.setInstituicao(formacaoSelecionada.instituicao || "");
       formacao.setTitulo(formacaoSelecionada.titulo || "");
       formacao.setAnoInicio(String(formacaoSelecionada.anoInicio || ""));
       formacao.setAnoFim(String(formacaoSelecionada.anoFim || ""));
     } else {
       formacao.setCurso("");
-      formacao.setFaculdade("");
+      formacao.setInstituicao("");
       formacao.setTitulo("");
       formacao.setAnoInicio("");
       formacao.setAnoFim("");
     }
-    setModalFormacaoAberto(true);
+    setModalFormacoes(true);
   };
   
   return {
-    modalTemaAberto,
-    setModalTemaAberto,
-    modalEditarPerfilAberto,
-    setModalEditarPerfilAberto,
-    modalAdicionarEstudanteTemaAberto,
-    setModalAdicionarEstudanteTemaAberto,
-    modalRemoverEstudanteTemaAberto,
-    setModalRemoverEstudanteTemaAberto,
-    modalConfirmarRemocaoTemaAberto,
-    setModalConfirmarRemocaoTemaAberto,
+    modalTema,
+    setModalTema,
+    modalEditarPerfil,
+    setModalEditarPerfil,
+    modalAdicionarEstudanteTema,
+    setModalAdicionarEstudanteTema,
+    modalRemoverEstudanteTema,
+    setModalRemoverEstudanteTema,
+    modalConfirmarRemocaoTema,
+    setModalConfirmarRemocaoTema,
     handleAbrirModalTema,
-    modalFormacaoAberto, 
-    setModalFormacaoAberto,
-    modalAdicionarFormacaoAberto, 
-    setModalAdicionarFormacaoAberto,
+    modalFormacao, 
+    setModalFormacao,
+    modalFormacoes, 
+    setModalFormacoes,
+    modalAdicionarFormacao, 
+    setModalAdicionarFormacao,
     handleAbrirModalFormacao
   };
 };

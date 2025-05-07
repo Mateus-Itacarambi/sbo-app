@@ -4,7 +4,7 @@ import InputAuth from "../InputAuth";
 import ButtonAuth from "@/components/ButtonAuth";
 import { useFormacoes } from "@/hooks/useFormacoes";
 import { useEffect } from "react";
-import ModalEditarPerfil from "./ModalEditarPerfil";
+import styles from "./modal.module.scss";
 
 interface ModalFormacoesProps {
   onClose: () => void;
@@ -20,10 +20,10 @@ export default function ModalFormacoes({ onClose, formacoesIniciais = [], isLoad
     formacaoAtual,
     setFormacaoAtual,
     editIndex,
-    handleAddOrUpdate,
-    handleEdit,
-    handleRemove,
-    resetFormacao,
+    // handleAddOrUpdate,
+    handleEditar,
+    // handleRemove,
+    // resetFormacao,
   } = useFormacoes();
 
   // Inicializar com formacoes do professor
@@ -44,32 +44,31 @@ export default function ModalFormacoes({ onClose, formacoesIniciais = [], isLoad
     <Modal onClose={onClose}>
       <h2>Gerenciar Formações</h2>
 
-      <form onSubmit={handleSubmit}>
-        <InputAuth label="Curso" type="text" value={formacaoAtual.curso} onChange={(e) => handleChange("curso", e.target.value)} />
-        <InputAuth label="Faculdade" type="text" value={formacaoAtual.faculdade} onChange={(e) => handleChange("faculdade", e.target.value)} />
-        <InputAuth label="Título" type="text" value={formacaoAtual.titulo} onChange={(e) => handleChange("titulo", e.target.value)} />
-        <InputAuth label="Ano de Início" type="number" value={formacaoAtual.anoInicio.toString()} onChange={(e) => handleChange("anoInicio", e.target.value)} />
-        <InputAuth label="Ano de Conclusão" type="number" value={formacaoAtual.anoFim.toString()} onChange={(e) => handleChange("anoFim", e.target.value)} />
-
-        <ButtonAuth type="submit" text={editIndex !== null ? "Atualizar Formação" : "Adicionar Formação"} theme="primary" />
-      </form>
-
       <ul style={{ marginTop: "1rem" }}>
         {formacoes.map((f, idx) => (
           <li key={idx} style={{ borderBottom: "1px solid #ccc", padding: "0.5rem 0" }}>
-            <strong>{f.curso}</strong> – {f.faculdade} ({f.anoInicio}–{f.anoFim})
+            <strong>{f.curso}</strong> – {f.instituicao} ({f.anoInicio}–{f.anoFim})
             <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.25rem" }}>
-              <button onClick={() => handleEdit(idx)}>Editar</button>
-              <button onClick={() => handleRemove(idx)}>Remover</button>
+              <button onClick={() => handleEditar(idx)}>Editar</button>
+              <button onClick={() => onClose()}>Remover</button>
             </div>
           </li>
         ))}
       </ul>
 
-      <div style={{ marginTop: "1rem", display: "flex", justifyContent: "flex-end", gap: "1rem" }}>
-        <ButtonAuth type="button" text="Cancelar" theme="secondary" onClick={onClose} />
-        <ButtonAuth type="submit" text={isLoading ? <span className="spinner" /> : "Salvar Todas"} theme="primary" />
-      </div>
+      <form onSubmit={handleSubmit}>
+        <InputAuth label="Curso" type="text" value={formacaoAtual.curso} onChange={(e) => handleChange("curso", e.target.value)} />
+        <InputAuth label="Instituição" type="text" value={formacaoAtual.instituicao} onChange={(e) => handleChange("instituicao", e.target.value)} />
+        <InputAuth label="Título" type="text" value={formacaoAtual.titulo} onChange={(e) => handleChange("titulo", e.target.value)} />
+
+        <div className={styles.flex}>
+          <InputAuth label="Ano de Início" type="number" value={formacaoAtual.anoInicio.toString()} onChange={(e) => handleChange("anoInicio", e.target.value)} />
+          <InputAuth label="Ano de Conclusão" type="number" value={formacaoAtual.anoFim.toString()} onChange={(e) => handleChange("anoFim", e.target.value)} />
+
+          <ButtonAuth type="button" text="Cancelar" theme="secondary" onClick={onClose} margin="0" />
+          <ButtonAuth type="submit" text={"Atualizar Formação"} theme="primary" margin="0" />
+        </div>
+      </form>
     </Modal>
   );
 }

@@ -1,7 +1,7 @@
 export interface Formacao {
     id?: number;
     curso: string;
-    faculdade: string;
+    instituicao: string;
     titulo: string;
     anoInicio: number;
     anoFim: number;

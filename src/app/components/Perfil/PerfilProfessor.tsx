@@ -8,25 +8,15 @@ import CardFormacao from "./CardFormacao";
 
 interface PerfilProfessorProps {
   professor: Professor;
-  orientador: Professor;
   onGerenciar: () => void;
-  onRemoverTema: () => void;
   onAdicionarFormacao: () => void;
-  onRemoverEstudante: () => void;
-  onCancelarOrientacao: () => void;
-  onAdicionarTema: () => void;
   isMeuPerfil: boolean;
 }
 
 const PerfilProfessor: FC<PerfilProfessorProps> = ({
   professor,
-  orientador,
   onGerenciar,
-  onRemoverTema,
   onAdicionarFormacao,
-  onRemoverEstudante,
-  onCancelarOrientacao,
-  onAdicionarTema,
   isMeuPerfil,
 }) => (
   <>
@@ -35,11 +25,7 @@ const PerfilProfessor: FC<PerfilProfessorProps> = ({
     <CardFormacao 
       formacoes={professor.formacoes} 
       onGerenciar={onGerenciar}
-      onRemover={onRemoverTema}
       onAdicionarFormacao={onAdicionarFormacao}
-      onRemoverEstudante={onRemoverEstudante}
-      onCancelarOrientação={onCancelarOrientacao}
-      onAdicionarTema={onAdicionarTema}
       mostrarBotoes={isMeuPerfil} 
     />
 

@@ -4,45 +4,46 @@ import { Formacao } from "@/types";
 export function useFormacoes() {
   const [formacoes, setFormacoes] = useState<Formacao[]>([]);
   const [formacaoAtual, setFormacaoAtual] = useState<Formacao>({
+    id: 0,
     curso: "",
-    faculdade: "",
+    instituicao: "",
     titulo: "",
     anoInicio: new Date().getFullYear(),
     anoFim: new Date().getFullYear()
   });
   const [editIndex, setEditIndex] = useState<number | null>(null);
 
-  const resetFormacao = () => {
-    setFormacaoAtual({
-      curso: "",
-      faculdade: "",
-      titulo: "",
-      anoInicio: new Date().getFullYear(),
-      anoFim: new Date().getFullYear()
-    });
-    setEditIndex(null);
-  };
+  // const resetFormacao = () => {
+  //   setFormacaoAtual({
+  //     curso: "",
+  //     instituicao: "",
+  //     titulo: "",
+  //     anoInicio: new Date().getFullYear(),
+  //     anoFim: new Date().getFullYear()
+  //   });
+  //   setEditIndex(null);
+  // };
 
-  const handleAddOrUpdate = () => {
-    if (editIndex !== null) {
-      const novas = [...formacoes];
-      novas[editIndex] = formacaoAtual;
-      setFormacoes(novas);
-    } else {
-      setFormacoes([...formacoes, formacaoAtual]);
-    }
-    resetFormacao();
-  };
+  // const handleAddOrUpdate = () => {
+  //   if (editIndex !== null) {
+  //     const novas = [...formacoes];
+  //     novas[editIndex] = formacaoAtual;
+  //     setFormacoes(novas);
+  //   } else {
+  //     setFormacoes([...formacoes, formacaoAtual]);
+  //   }
+  //   resetFormacao();
+  // };
 
-  const handleEdit = (index: number) => {
+  const handleEditar = (index: number) => {
     setFormacaoAtual(formacoes[index]);
     setEditIndex(index);
   };
 
-  const handleRemove = (index: number) => {
-    setFormacoes(formacoes.filter((_, i) => i !== index));
-    if (editIndex === index) resetFormacao();
-  };
+  // const handleRemove = (index: number) => {
+  //   setFormacoes(formacoes.filter((_, i) => i !== index));
+  //   if (editIndex === index) resetFormacao();
+  // };
 
   return {
     formacoes,
@@ -50,9 +51,9 @@ export function useFormacoes() {
     formacaoAtual,
     setFormacaoAtual,
     editIndex,
-    handleAddOrUpdate,
-    handleEdit,
-    handleRemove,
-    resetFormacao
+    // handleAddOrUpdate,
+    handleEditar,
+    // handleRemove,
+    // resetFormacao
   };
 }

@@ -8,15 +8,11 @@ import Icone from "@/assets/tres-pontos.png";
 interface CardFormacaoProps {
   formacoes?: Formacao[] | null;
   onGerenciar: () => void;
-  onRemover: () => void;
   onAdicionarFormacao: () => void;
-  onRemoverEstudante: () => void;
-  onCancelarOrientação: () => void;
-  onAdicionarTema: () => void;
   mostrarBotoes: boolean;
 }
 
-export default function CardFormacao({ formacoes, mostrarBotoes, onGerenciar, onRemover, onAdicionarFormacao, onRemoverEstudante, onCancelarOrientação, onAdicionarTema }: CardFormacaoProps) {
+export default function CardFormacao({ formacoes, mostrarBotoes, onGerenciar, onAdicionarFormacao }: CardFormacaoProps) {
   if (!formacoes || formacoes.length === 0) {
     return (
       <>
@@ -45,11 +41,8 @@ export default function CardFormacao({ formacoes, mostrarBotoes, onGerenciar, on
             icon={<div className={styles.icon}><Image src={Icone} alt=""/></div>}
             items={[
               { type: "link", label: "", href: "" },
-              { type: "action", label: "Editar", onClick: onGerenciar },
-              { type: "action", label: "Remover", onClick: onRemover },
               { type: "action", label: "Adicionar Formação", onClick: onAdicionarFormacao },
-              { type: "action", label: "Remover Estudante", onClick: onRemoverEstudante },
-              { type: "action", label: "Cancelar Orientação", onClick: onCancelarOrientação },
+              { type: "action", label: "Gerenciar Formações", onClick: onGerenciar },
             ]}
           />
         )}
@@ -70,7 +63,7 @@ export default function CardFormacao({ formacoes, mostrarBotoes, onGerenciar, on
             </div>
             <div className={styles.formacao}>
               <p><strong>{formacao.curso}</strong></p>
-              <p><strong>{formacao.faculdade}</strong></p>
+              <p><strong>{formacao.instituicao}</strong></p>
               <p><strong>Título: </strong>{formacao.titulo}</p>
             </div>
           </li>

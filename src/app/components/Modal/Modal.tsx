@@ -5,9 +5,10 @@ import styles from "./modal.module.scss";
 interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
+  minHeight?: string;
 }
 
-export default function Modal({ onClose, children }: ModalProps) {
+export default function Modal({ onClose, children, minHeight }: ModalProps) {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -18,7 +19,7 @@ export default function Modal({ onClose, children }: ModalProps) {
 
   return ReactDOM.createPortal(
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()} style={{ minHeight: minHeight }}>
         {children}
       </div>
     </div>,

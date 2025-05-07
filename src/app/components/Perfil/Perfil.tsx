@@ -9,18 +9,19 @@ import ModalEditarPerfil from "@/components/Modal/ModalEditarPerfil";
 import ModalTema from "@/components/Modal/ModalTema";
 import ModalEstudanteTema from "@/components/Modal/ModalEstudanteTema";
 import ModalConfirmarTema from "@/components/Modal/ModalConfirmar";
+import ModalFormacoes from "../Modal/ModalFormacoes";
+import ModalFormacao from "../Modal/ModalFormacao";
 
 import PerfilCabecalho from "@/components/Perfil/PerfilCabecalho";
 import CardInfo from "@/components/Perfil/CardInfo";
 import PerfilEstudante from "@/components/Perfil/PerfilEstudante";
+import PerfilProfessor from "./PerfilProfessor";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
-import { useModal, useFormulario, useCursos, useOrientador, useTemaActions, usePerfilActions } from "@/hooks";
-import { Estudante, Professor } from "@/types";
-import PerfilProfessor from "./PerfilProfessor";
-import ModalFormacoes from "../Modal/ModalFormacoes";
-import ModalFormacao from "../Modal/ModalFormacao";
+import { useModal, useFormulario, useCursos, useOrientador, useTemaActions, usePerfilActions, useFormacaoActions } from "@/hooks";
+import { Estudante, Formacao, Professor } from "@/types";
+import ModalGerenciarFormacoes from "../Modal/ModalGerenciarFormacoes";
 
 interface PerfilProps {
   usuarioVisualizado: Estudante | Professor | null;
@@ -44,6 +45,7 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
   const { orientador } = useOrientador(usuarioVisualizado);
   const perfilActions = usePerfilActions(usuarioVisualizado, form.formData);
   const temaActions = useTemaActions(usuarioVisualizado);
+  const formacaoActions = useFormacaoActions(usuarioVisualizado);
 
   useEffect(() => {
     resetFormData();
@@ -71,7 +73,8 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
 
   const handleCancelar = () => {
     resetFormData();
-    modal.setModalEditarPerfilAberto(false);
+    modal.setModalEditarPerfil(false);
+    modal.setModalFormacao(false);
   };
 
   const cadastrarTema = async (e: React.FormEvent, titulo: string, palavrasChave: string, descricao: string) => {
@@ -98,6 +101,10 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
     await perfilActions.handleAtualizarPerfil(e);
   };
 
+  const adicionarFormacao = async (formacao: Formacao) => {
+    await formacaoActions.handleAdicionarFormacao(formacao);
+  };
+
   if (!usuarioVisualizado) return <Loading />;
 
   return (
@@ -107,7 +114,7 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
       )}
       <div className={styles.container}>
         <div className={styles.card_container}>
-            <PerfilCabecalho usuario={usuarioVisualizado} onEditar={() => modal.setModalEditarPerfilAberto(true)} mostrarBotoes={isMeuPerfil}/>
+            <PerfilCabecalho usuario={usuarioVisualizado} onEditar={() => modal.setModalEditarPerfil(true)} mostrarBotoes={isMeuPerfil}/>
             
             {isMeuPerfil && (
               <>
@@ -121,11 +128,11 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
                 estudante={estudante}
                 orientador={orientador}
                 onEditarTema={modal.handleAbrirModalTema}
-                onRemoverTema={() => modal.setModalConfirmarRemocaoTemaAberto(true)}
-                onAdicionarEstudante={() => modal.setModalAdicionarEstudanteTemaAberto(true)}
-                onRemoverEstudante={() => modal.setModalRemoverEstudanteTemaAberto(true)}
-                onCancelarOrientacao={() => modal.setModalConfirmarRemocaoTemaAberto(true)}
-                onAdicionarTema={() => modal.setModalTemaAberto(true)}
+                onRemoverTema={() => modal.setModalConfirmarRemocaoTema(true)}
+                onAdicionarEstudante={() => modal.setModalAdicionarEstudanteTema(true)}
+                onRemoverEstudante={() => modal.setModalRemoverEstudanteTema(true)}
+                onCancelarOrientacao={() => modal.setModalConfirmarRemocaoTema(true)}
+                onAdicionarTema={() => modal.setModalTema(true)}
                 isMeuPerfil={isMeuPerfil}
               />
             )}
@@ -133,76 +140,71 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
             {professor && (
               <PerfilProfessor
                 professor={professor}
-                orientador={orientador}
                 onGerenciar={modal.handleAbrirModalFormacao}
-                onRemoverTema={() => modal.setModalConfirmarRemocaoTemaAberto(true)}
-                onAdicionarFormacao={() => modal.setModalAdicionarFormacaoAberto(true)}
-                onRemoverEstudante={() => modal.setModalRemoverEstudanteTemaAberto(true)}
-                onCancelarOrientacao={() => modal.setModalConfirmarRemocaoTemaAberto(true)}
-                onAdicionarTema={() => modal.setModalTemaAberto(true)}
+                onAdicionarFormacao={() => modal.setModalFormacao(true)}
                 isMeuPerfil={isMeuPerfil}
               />
             )}
 
         </div>
       </div>
-      {modal.modalTemaAberto && (
+      {modal.modalTema && (
         <ModalTema
           usuario={usuarioVisualizado}
-          onClose={() => modal.setModalTemaAberto(false)}
+          onClose={() => modal.setModalTema(false)}
           atualizarTema={atualizarTema}
           cadastrarTema={cadastrarTema}
-          onCancelar={() => modal.setModalTemaAberto(false)}
+          onCancelar={() => modal.setModalTema(false)}
           isLoading={isLoading}
         />
       )}
       
-      {/* {modal.modalFormacaoAberto && (
-        <ModalFormacoes
-          formacoesIniciais={professor?.formacoes ?? undefined}
+      {modal.modalFormacoes && (
+        <ModalGerenciarFormacoes
+          formacoesIniciais={professor?.formacoes}
           // onSalvar={}
-          onClose={() => modal.setModalFormacaoAberto(false)}
+          onClose={() => modal.setModalFormacoes(false)}
           isLoading={isLoading}
         />
-      )} */}
+      )}
       
-      {modal.modalFormacaoAberto && (
+      {modal.modalFormacao && (
         <ModalFormacao
-          formacoesIniciais={professor?.formacoes ?? undefined}
-          // onSalvar={}
-          onClose={() => modal.setModalFormacaoAberto(false)}
-          isLoading={isLoading}
+          // formacoesIniciais={professor?.formacoes ?? undefined}
+          onSalvar={adicionarFormacao}
+          onClose={() => modal.setModalFormacao(false)}
+          onCancelar={handleCancelar}
         />
       )}
 
-      {(modal.modalAdicionarEstudanteTemaAberto || modal.modalRemoverEstudanteTemaAberto) && (
+      {(modal.modalAdicionarEstudanteTema || modal.modalRemoverEstudanteTema) && (
         <ModalEstudanteTema
-          titulo={modal.modalAdicionarEstudanteTemaAberto ? "Adicionar Estudante ao Tema" : "Remover Estudante do Tema"}
+          titulo={modal.modalAdicionarEstudanteTema ? "Adicionar Estudante ao Tema" : "Remover Estudante do Tema"}
           onClose={() => {
-            modal.setModalAdicionarEstudanteTemaAberto(false);
-            modal.setModalRemoverEstudanteTemaAberto(false);
+            modal.setModalAdicionarEstudanteTema(false);
+            modal.setModalRemoverEstudanteTema(false);
           }}
-          onSubmit={modal.modalAdicionarEstudanteTemaAberto ? adicionarEstudanteTema : removerEstudanteTema}
+          onSubmit={modal.modalAdicionarEstudanteTema ? adicionarEstudanteTema : removerEstudanteTema}
           isLoading={isLoading}
-          textoBotao={modal.modalAdicionarEstudanteTemaAberto ? "Adicionar" : "Remover"}
+          textoBotao={modal.modalAdicionarEstudanteTema ? "Adicionar" : "Remover"}
         />
       )}
 
-      {modal.modalConfirmarRemocaoTemaAberto && (
+      {modal.modalConfirmarRemocaoTema && (
         <ModalConfirmarTema 
-          onClose={() => modal.setModalConfirmarRemocaoTemaAberto(false)}
+          onClose={() => modal.setModalConfirmarRemocaoTema(false)}
           handleRemoverTema={removerTema}
           isLoading={isLoading}
         />
       )}
 
-      {modal.modalEditarPerfilAberto && (
+      {modal.modalEditarPerfil && (
         <ModalEditarPerfil 
           usuario={usuarioVisualizado}
           formData={form.formData}
           cursos={cursosHook.cursos}
           semestresDisponiveis={cursosHook.semestresDisponiveis}
-          onClose={() => modal.setModalEditarPerfilAberto(false)}
+          onClose={() => modal.setModalEditarPerfil(false)}
           onSalvarPerfil={atualizarPerfil}
           handleChange={form.handleChange}
           handleGeneroChange={form.handleGeneroChange}

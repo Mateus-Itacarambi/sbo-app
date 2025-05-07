@@ -10,11 +10,11 @@ interface ModalFormacoesProps {
   onClose: () => void;
   onSalvar: (formacao: Formacao) => void;
   onCancelar: () => void;
-  formacoesIniciais?: Formacao[];
-  isLoading: boolean;
+  // formacoesIniciais?: Formacao[];
+  // isLoading: boolean;
 }
 
-export default function ModalFormacoes({ onSalvar, onClose, formacoesIniciais = [], isLoading, onCancelar }: ModalFormacoesProps) {
+export default function ModalFormacoes({ onSalvar, onClose, onCancelar }: ModalFormacoesProps) {
   const formacao = useFormacao();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -22,7 +22,7 @@ export default function ModalFormacoes({ onSalvar, onClose, formacoesIniciais = 
 
     const novaFormacao: Formacao = {
       curso: formacao.curso,
-      faculdade: formacao.faculdade,
+      instituicao: formacao.instituicao,
       titulo: formacao.titulo,
       anoInicio: Number(formacao.anoInicio),
       anoFim: Number(formacao.anoFim),
@@ -37,8 +37,8 @@ export default function ModalFormacoes({ onSalvar, onClose, formacoesIniciais = 
 
       <form onSubmit={handleSubmit}>
         <InputAuth label="Curso" type="text" value={formacao.curso} onChange={(e) => formacao.setCurso(e.target.value)} />
-        <InputAuth label="Faculdade" type="text" value={formacao.faculdade} onChange={(e) => formacao.setFaculdade(e.target.value)} />
-        <InputAuth label="Título" type="text" value={formacao.titulo} onChange={(e) => formacao.setTitulo(e.target.value)} />
+        <InputAuth label="Instituição" type="text" value={formacao.instituicao} onChange={(e) => formacao.setInstituicao(e.target.value)} />
+        <InputAuth label="Título do TCC" type="text" value={formacao.titulo} onChange={(e) => formacao.setTitulo(e.target.value)} />
 
         <div className={styles.flex}>
           <InputAuth label="Ano de Início" type="number" value={formacao.anoInicio.toString()} onChange={(e) => formacao.setAnoInicio(e.target.value)} />
