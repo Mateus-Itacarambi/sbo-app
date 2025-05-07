@@ -20,6 +20,7 @@ import { useModal, useFormulario, useCursos, useOrientador, useTemaActions, useP
 import { Estudante, Professor } from "@/types";
 import PerfilProfessor from "./PerfilProfessor";
 import ModalFormacoes from "../Modal/ModalFormacoes";
+import ModalFormacao from "../Modal/ModalFormacao";
 
 interface PerfilProps {
   usuarioVisualizado: Estudante | Professor | null;
@@ -156,8 +157,17 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
         />
       )}
       
-      {modal.modalFormacaoAberto && (
+      {/* {modal.modalFormacaoAberto && (
         <ModalFormacoes
+          formacoesIniciais={professor?.formacoes ?? undefined}
+          // onSalvar={}
+          onClose={() => modal.setModalFormacaoAberto(false)}
+          isLoading={isLoading}
+        />
+      )} */}
+      
+      {modal.modalFormacaoAberto && (
+        <ModalFormacao
           formacoesIniciais={professor?.formacoes ?? undefined}
           // onSalvar={}
           onClose={() => modal.setModalFormacaoAberto(false)}

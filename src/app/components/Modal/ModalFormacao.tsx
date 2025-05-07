@@ -1,82 +1,51 @@
-import { Formacao, Professor } from "@/types";
-import ButtonAuth from "@/components/ButtonAuth";
-import InputAuth from "../InputAuth";
-import Modal from "./Modal";
-import { useFormacao } from "@/hooks/useFormacao";
-import { useEffect } from "react";
+import styles from "./modal.module.scss";
 
-interface ModalFormacaoProps {
-  usuario: any;
-  formacaoSelecionada?: Formacao;
+import { Formacao } from "@/types";
+import Modal from "./Modal";
+import InputAuth from "../InputAuth";
+import ButtonAuth from "@/components/ButtonAuth";
+import { useFormacao } from "@/hooks/useFormacao";
+
+interface ModalFormacoesProps {
   onClose: () => void;
-  atualizarFormacao: (e: React.FormEvent, formacao: Formacao) => void;
-  cadastrarFormacao: (e: React.FormEvent, formacao: Formacao) => void;
+  onSalvar: (formacao: Formacao) => void;
   onCancelar: () => void;
+  formacoesIniciais?: Formacao[];
   isLoading: boolean;
 }
 
-export default function ModalFormacao({
-  usuario,
-  formacaoSelecionada,
-  onClose,
-  atualizarFormacao,
-  cadastrarFormacao,
-  onCancelar,
-  isLoading,
-}: ModalFormacaoProps) {
-  const {
-    curso, setCurso,
-    faculdade, setFaculdade,
-    titulo, setTitulo,
-    anoInicio, setAnoInicio,
-    anoFim, setAnoFim
-  } = useFormacao();
-
-  useEffect(() => {
-    if (formacaoSelecionada) {
-      setCurso(formacaoSelecionada.curso || "");
-      setFaculdade(formacaoSelecionada.faculdade || "");
-      setTitulo(formacaoSelecionada.titulo || "");
-      setAnoInicio(String(formacaoSelecionada.anoInicio || ""));
-      setAnoFim(String(formacaoSelecionada.anoFim || ""));
-    } else {
-      setCurso("");
-      setFaculdade("");
-      setTitulo("");
-      setAnoInicio("");
-      setAnoFim("");
-    }
-  }, [formacaoSelecionada]);
+export default function ModalFormacoes({ onSalvar, onClose, formacoesIniciais = [], isLoading, onCancelar }: ModalFormacoesProps) {
+  const formacao = useFormacao();
 
   const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
     const novaFormacao: Formacao = {
-      curso,
-      faculdade,
-      titulo,
-      anoInicio: Number(anoInicio),
-      anoFim: Number(anoFim)
+      curso: formacao.curso,
+      faculdade: formacao.faculdade,
+      titulo: formacao.titulo,
+      anoInicio: Number(formacao.anoInicio),
+      anoFim: Number(formacao.anoFim),
     };
 
-    if (formacaoSelecionada) {
-      atualizarFormacao(e, novaFormacao);
-    } else {
-      cadastrarFormacao(e, novaFormacao);
-    }
+    onSalvar(novaFormacao);
   };
 
   return (
     <Modal onClose={onClose}>
-      <h2>{formacaoSelecionada ? "Editar Formação" : "Cadastrar Formação"}</h2>
-      <form onSubmit={handleSubmit}>
-        <InputAuth label="Curso" type="text" value={curso} onChange={(e) => setCurso(e.target.value)} />
-        <InputAuth label="Faculdade" type="text" value={faculdade} onChange={(e) => setFaculdade(e.target.value)} />
-        <InputAuth label="Título" type="text" value={titulo} onChange={(e) => setTitulo(e.target.value)} />
-        <InputAuth label="Ano de Início" type="number" value={anoInicio} onChange={(e) => setAnoInicio(e.target.value)} />
-        <InputAuth label="Ano de Conclusão" type="number" value={anoFim} onChange={(e) => setAnoFim(e.target.value)} />
+      <h2>Adicionar Formação</h2>
 
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: "1rem" }}>
-          <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={onCancelar} />
-          <ButtonAuth text={isLoading ? <span className="spinner"></span> : "Salvar"} type="submit" theme="primary" />
+      <form onSubmit={handleSubmit}>
+        <InputAuth label="Curso" type="text" value={formacao.curso} onChange={(e) => formacao.setCurso(e.target.value)} />
+        <InputAuth label="Faculdade" type="text" value={formacao.faculdade} onChange={(e) => formacao.setFaculdade(e.target.value)} />
+        <InputAuth label="Título" type="text" value={formacao.titulo} onChange={(e) => formacao.setTitulo(e.target.value)} />
+
+        <div className={styles.flex}>
+          <InputAuth label="Ano de Início" type="number" value={formacao.anoInicio.toString()} onChange={(e) => formacao.setAnoInicio(e.target.value)} />
+          <InputAuth label="Ano de Conclusão" type="number" value={formacao.anoFim.toString()} onChange={(e) => formacao.setAnoFim(e.target.value)} />
+          
+          <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={onCancelar} margin="0" />
+          <ButtonAuth type="submit" text={"Adicionar Formação"} theme="primary" margin="0" />
         </div>
       </form>
     </Modal>

@@ -21,10 +21,12 @@ export default function CardFormacao({ formacoes, mostrarBotoes, onGerenciar, on
     return (
       <>
         <div className={styles.card_formacao}>
-          <h2>Formação/Titulação acadêmica</h2>
-          <p>Não possui formações cadastrado.</p>
+          <div className={styles.titulo}>
+            <h2>Formação/Titulação acadêmica</h2>
+          </div>
+          <p>Não possui formações cadastradas.</p>
           {mostrarBotoes && (
-            <ButtonAuth text="Adicionar Formação" type="button" theme="primary" onClick={onAdicionarFormacao} />
+            <ButtonAuth text="Adicionar Formação" type="button" theme="primary" margin="2rem 0 0 0" onClick={onGerenciar} />
           )}
         </div>
       </>
