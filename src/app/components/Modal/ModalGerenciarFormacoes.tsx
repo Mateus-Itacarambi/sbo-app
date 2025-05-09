@@ -1,4 +1,4 @@
-import { Formacao } from "@/types";
+import { Formacao, FormacaoDTO } from "@/types";
 import ReactDOM from "react-dom";
 import InputAuth from "../InputAuth";
 import ButtonAuth from "@/components/ButtonAuth";
@@ -8,7 +8,7 @@ import styles from "./modalGerenciarFormacoes.module.scss";
 
 interface ModalGerenciarFormacoesProps {
   onClose: () => void;
-  onAtualizar: (formacaoId: number, formacoes: Formacao) => void;
+  onAtualizar: (formacaoId: number, formacoes: FormacaoDTO) => void;
   formacoesIniciais: Formacao[];
   isLoading: boolean;
 }
@@ -30,7 +30,6 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, formacoe
     formacaoAtual,
     setFormacaoAtual,
     handleEditar,
-    // handleRemove,
   } = useFormacoes();
 
   useEffect(() => {
@@ -46,7 +45,6 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, formacoe
     if (indexOriginal !== -1) {
       handleEditar(indexOriginal);
       setIndiceSelecionado(indexOriginal);
-      
     }
   };
   
@@ -59,7 +57,7 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, formacoe
       return;
     }
 
-    const formacao: Formacao = {
+    const formacao: FormacaoDTO = {
       curso: formacaoAtual.curso,
       instituicao: formacaoAtual.instituicao,
       titulo: formacaoAtual.titulo,
@@ -68,6 +66,12 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, formacoe
     };
 
     onAtualizar(formacaoAtual.id, formacao);
+
+    setFormacoes((prev) =>
+      prev.map((f) =>
+        f.id === formacaoAtual.id ? { ...f, ...formacao } : f
+      )
+    );
   };
 
   return ReactDOM.createPortal(
@@ -90,6 +94,7 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, formacoe
       </div>
 
       <div className={styles.modal_lista} onClick={(e) => e.stopPropagation()}>
+        <h2>Selecione uma formação</h2>
         <ul>
           {formacoes
             ?.slice()
@@ -101,7 +106,7 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, formacoe
                 className={indiceSelecionado === formacoes.indexOf(f) ? styles.selecionado : ""}
               >
                 <div className={styles.formacao}>
-                  <strong>{f.curso}</strong> – {f.instituicao} - {f.titulo} ({f.anoInicio}–{f.anoFim})
+                  <strong>{f.curso}</strong> – {f.instituicao} – {f.titulo} ({f.anoInicio}–{f.anoFim})
                 </div>
               </li>
             ))}

@@ -1,4 +1,4 @@
-import { Professor, Formacao } from "@/types";
+import { Professor, Formacao, FormacaoDTO } from "@/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -13,8 +13,8 @@ export const adicionarFormacao = async (usuario: Professor, dados: Formacao) => 
   return response.json();
 };
 
-export const atualizarFormacao = async (formacaoId: number, dados: Formacao) => {
-  const response = await fetch(`${API_URL}/atualizarFormacoes/${formacaoId}`, {
+export const atualizarFormacao = async (formacaoId: number, dados: FormacaoDTO) => {
+  const response = await fetch(`${API_URL}/professores/atualizarFormacoes/${formacaoId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     credentials: "include",

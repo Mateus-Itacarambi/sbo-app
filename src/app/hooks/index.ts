@@ -7,3 +7,4 @@ export * from "./useTema";
 export * from "./useTemaActions";
 export * from "./usePerfilActions";
 export * from "./useFormacaoActions";
+export * from "./useFormacoes";

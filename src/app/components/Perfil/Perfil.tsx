@@ -19,8 +19,8 @@ import PerfilProfessor from "./PerfilProfessor";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
-import { useModal, useFormulario, useCursos, useOrientador, useTemaActions, usePerfilActions, useFormacaoActions } from "@/hooks";
-import { Estudante, Formacao, Professor } from "@/types";
+import { useModal, useFormulario, useCursos, useOrientador, useTemaActions, usePerfilActions, useFormacaoActions, useFormacoes } from "@/hooks";
+import { Estudante, Formacao, FormacaoDTO, Professor } from "@/types";
 import ModalGerenciarFormacoes from "../Modal/ModalGerenciarFormacoes";
 
 interface PerfilProps {
@@ -46,6 +46,8 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
   const perfilActions = usePerfilActions(usuarioVisualizado, form.formData);
   const temaActions = useTemaActions(usuarioVisualizado);
   const formacaoActions = useFormacaoActions(usuarioVisualizado);
+
+  const { setFormacoes } = useFormacoes();
 
   useEffect(() => {
     resetFormData();
@@ -105,6 +107,14 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
     await formacaoActions.handleAdicionarFormacao(formacao);
   };
 
+  const atualizarFormacao = async (formacaoId: number, formacao: FormacaoDTO) => {
+    await formacaoActions.handleAtualizarFormacao(formacaoId, formacao);
+
+    setFormacoes((prev) =>
+      prev.map((f) => (f.id === formacaoId ? { ...f, ...formacao } : f))
+    );
+  };
+
   if (!usuarioVisualizado) return <Loading />;
 
   return (
@@ -161,8 +171,8 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
       
       {modal.modalFormacoes && (
         <ModalGerenciarFormacoes
-          formacoesIniciais={professor?.formacoes}
-          // onSalvar={}
+          formacoesIniciais={professor?.formacoes ?? []}
+          onAtualizar={atualizarFormacao}
           onClose={() => modal.setModalFormacoes(false)}
           isLoading={isLoading}
         />

@@ -1,14 +1,18 @@
 import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
 import { handleFetchError } from "@/utils/handleFetchError";
-import { Formacao, Professor } from "@/types";
+import { Formacao, FormacaoDTO, Professor } from "@/types";
 
 import {
   adicionarFormacao,
   atualizarFormacao,
 } from "@/services/formacaoService";
 
+import { useFormacoes } from "@/hooks/useFormacoes";
+
 export const useFormacaoActions = (usuario: any) => {
   const { setErro, setSucesso, setIsLoading } = useAlertaTemporarioContext();
+
+  const { setFormacoes } = useFormacoes();
 
   const handleAdicionarFormacao = async (dados: Formacao) => {
     try {
@@ -24,12 +28,14 @@ export const useFormacaoActions = (usuario: any) => {
     }
   };
   
-  const handleAtualizarFormacao = async (formacaoId: number, dados: Formacao) => {
+  const handleAtualizarFormacao = async (formacaoId: number, dados: FormacaoDTO) => {
     try {
       setIsLoading(true);
-      await atualizarFormacao(formacaoId, dados);
-      localStorage.setItem("mensagemSucesso", "Formação atualizada com sucesso!");
-      location.reload();
+      const formacaoAtualizada = await atualizarFormacao(formacaoId, dados) as Formacao;
+      setFormacoes((prev) =>
+        prev.map((f) => (f.id === formacaoId ? formacaoAtualizada : f))
+      );
+      setSucesso("Formação atualizada com sucesso!");
     } catch (error: any) {
       setErro(handleFetchError(error));
       setSucesso("");
