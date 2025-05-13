@@ -13,6 +13,7 @@ export const useModal = (usuario: any) => {
   const [modalFormacao, setModalFormacao] = useState(false);
   const [modalFormacoes, setModalFormacoes] = useState(false);
   const [modalAdicionarFormacao, setModalAdicionarFormacao] = useState(false);
+  const [modalConfirmarRemocaoFormacao, setModalConfirmarRemocaoFormacao] = useState(false);
 
   const {
     setTemaTitulo,
@@ -71,6 +72,8 @@ export const useModal = (usuario: any) => {
     setModalFormacoes,
     modalAdicionarFormacao, 
     setModalAdicionarFormacao,
-    handleAbrirModalFormacao
+    handleAbrirModalFormacao,
+    modalConfirmarRemocaoFormacao,
+    setModalConfirmarRemocaoFormacao,
   };
 };

@@ -156,6 +156,7 @@
   border-radius: 20px;
   width: 100%;
   border: 3px solid $verde4;
+  justify-content: space-between;
 
   h2 {
     margin-right: .5rem;
@@ -322,10 +323,10 @@
             }
           }
 
-          .icon {
-            display: flex;
-            align-items: center;
-          }
+          // .icon {
+          //   display: flex;
+          //   align-items: center;
+          // }
         }
     
         .keywords {

@@ -1,17 +1,15 @@
-import styles from "./modal.module.scss";
+import styles from "../modal.module.scss";
 
-import { Formacao } from "@/types";
-import Modal from "./Modal";
-import InputAuth from "../InputAuth";
+import { FormacaoDTO } from "@/types";
+import Modal from "../Modal";
+import InputAuth from "../../InputAuth";
 import ButtonAuth from "@/components/ButtonAuth";
 import { useFormacao } from "@/hooks/useFormacao";
 
 interface ModalFormacoesProps {
   onClose: () => void;
-  onSalvar: (formacao: Formacao) => void;
+  onSalvar: (formacao: FormacaoDTO) => void;
   onCancelar: () => void;
-  // formacoesIniciais?: Formacao[];
-  // isLoading: boolean;
 }
 
 export default function ModalFormacoes({ onSalvar, onClose, onCancelar }: ModalFormacoesProps) {
@@ -20,7 +18,7 @@ export default function ModalFormacoes({ onSalvar, onClose, onCancelar }: ModalF
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const novaFormacao: Formacao = {
+    const novaFormacao: FormacaoDTO = {
       curso: formacao.curso,
       instituicao: formacao.instituicao,
       titulo: formacao.titulo,

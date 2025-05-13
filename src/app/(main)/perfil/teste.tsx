@@ -12,8 +12,8 @@ import ModalConfirmarTema from "@/components/Modal/ModalConfirmar";
 
 import PerfilCabecalho from "@/components/Perfil/PerfilCabecalho";
 import CardInfo from "@/components/Perfil/CardInfo";
-import CardTema from "@/components/Perfil/CardTema";
-import CardOrientador from "@/components/Perfil/CardOrientador";
+import CardTema from "@/components/Perfil/Estudante/CardTema";
+import CardOrientador from "@/components/Perfil/Estudante/CardOrientador";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";

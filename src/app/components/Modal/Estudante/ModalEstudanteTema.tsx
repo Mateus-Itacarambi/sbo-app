@@ -1,6 +1,6 @@
 import ButtonAuth from "@/components/ButtonAuth";
-import InputAuth from "../InputAuth";
-import Modal from "./Modal";
+import InputAuth from "../../InputAuth";
+import Modal from "../Modal";
 import { useState } from "react";
 
 interface ModalEstudanteTemaProps {

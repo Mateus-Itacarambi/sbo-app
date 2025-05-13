@@ -1,4 +1,4 @@
-import styles from "./perfil.module.scss";
+import styles from "../perfil.module.scss";
 import { Estudante, Professor, UsuarioCompleto } from "@/types";
 import Image from "next/image";
 import Dropdown from "@/components/Dropdown";

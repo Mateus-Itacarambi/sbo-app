@@ -1,7 +1,7 @@
-import styles from "./perfil.module.scss";
+import styles from "../perfil.module.scss";
 import { Professor, Formacao } from "@/types";
 import ButtonAuth from "@/components/ButtonAuth";
-import Dropdown from "../Dropdown";
+import Dropdown from "../../Dropdown";
 import Image from "next/image";
 import Icone from "@/assets/tres-pontos.png";
 
@@ -22,7 +22,7 @@ export default function CardFormacao({ formacoes, mostrarBotoes, onGerenciar, on
           </div>
           <p>Não possui formações cadastradas.</p>
           {mostrarBotoes && (
-            <ButtonAuth text="Adicionar Formação" type="button" theme="primary" margin="2rem 0 0 0" onClick={onGerenciar} />
+            <ButtonAuth text="Adicionar Formação" type="button" theme="primary" margin="2rem 0 0 0" onClick={onAdicionarFormacao} />
           )}
         </div>
       </>

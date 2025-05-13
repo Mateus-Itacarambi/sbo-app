@@ -1,15 +1,20 @@
 import styles from "./perfil.module.scss";
+import { ReactNode } from "react";
 
 interface CardInfoProps {
   titulo: string;
   texto: string;
+  link?: ReactNode;
 }
 
-export default function CardInfo({ titulo, texto  }: CardInfoProps) {
+export default function CardInfo({ titulo, texto, link  }: CardInfoProps) {
   return (
     <div className={styles.card}>
-      <h2>{titulo} -</h2>
-      <p>{texto}</p>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <h2>{titulo} -</h2>
+        <p>{texto}</p>
+      </div>
+      {link}
     </div>
   );
 }

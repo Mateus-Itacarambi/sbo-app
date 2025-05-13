@@ -1,19 +1,23 @@
 import { Formacao, FormacaoDTO } from "@/types";
 import ReactDOM from "react-dom";
-import InputAuth from "../InputAuth";
+import InputAuth from "../../InputAuth";
 import ButtonAuth from "@/components/ButtonAuth";
 import { useFormacoes } from "@/hooks/useFormacoes";
 import { useEffect, useState } from "react";
 import styles from "./modalGerenciarFormacoes.module.scss";
+import { useModal } from "@/hooks/useModal";
+import ModalConfirmar from "../ModalConfirmar";
 
 interface ModalGerenciarFormacoesProps {
   onClose: () => void;
   onAtualizar: (formacaoId: number, formacoes: FormacaoDTO) => void;
+  onRemoverFormacao: () => void;
+  onRemove: (formacaoId: number) => void;
   formacoesIniciais: Formacao[];
   isLoading: boolean;
 }
 
-export default function ModalGerenciarFormacoes({ onClose, onAtualizar, formacoesIniciais, isLoading }: ModalGerenciarFormacoesProps) {
+export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove, onRemoverFormacao, formacoesIniciais, isLoading }: ModalGerenciarFormacoesProps) {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -23,6 +27,8 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, formacoe
   }, [onClose]);
 
   const [indiceSelecionado, setIndiceSelecionado] = useState<number | null>(null);
+  
+  const [modalConfirmarRemocaoFormacao, setModalConfirmarRemocaoFormacao] = useState(false);
 
   const {
     formacoes,
@@ -47,11 +53,8 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, formacoe
       setIndiceSelecionado(indexOriginal);
     }
   };
-  
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     if (formacaoAtual.id === undefined) {
       console.error("ID da formação não definido.");
       return;
@@ -74,11 +77,33 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, formacoe
     );
   };
 
+  const handleRemove = () => {
+    if (formacaoAtual.id === undefined) {
+      console.error("ID da formação não definido.");
+      return;
+    }
+
+    onRemove(formacaoAtual.id);
+
+    setFormacoes((prev) => prev.filter((f) => f.id !== formacaoAtual.id));
+
+    setFormacaoAtual({
+      id: 0,
+      curso: "",
+      instituicao: "",
+      titulo: "",
+      anoInicio: new Date().getFullYear(),
+      anoFim: new Date().getFullYear(),
+    });
+
+    setModalConfirmarRemocaoFormacao(false)
+  };
+
   return ReactDOM.createPortal(
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal_form} onClick={(e) => e.stopPropagation()}>
         <h2>Gerenciar Formações</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(e) => e.preventDefault()}>
           <InputAuth label="Curso" type="text" value={formacaoAtual.curso} onChange={(e) => handleChange("curso", e.target.value)} />
           <InputAuth label="Instituição" type="text" value={formacaoAtual.instituicao} onChange={(e) => handleChange("instituicao", e.target.value)} />
           <InputAuth label="Título do TCC" type="text" value={formacaoAtual.titulo} onChange={(e) => handleChange("titulo", e.target.value)} />
@@ -87,8 +112,8 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, formacoe
             <InputAuth label="Ano de Início" type="number" value={formacaoAtual.anoInicio.toString()} onChange={(e) => handleChange("anoInicio", e.target.value)} />
             <InputAuth label="Ano de Conclusão" type="number" value={formacaoAtual.anoFim.toString()} onChange={(e) => handleChange("anoFim", e.target.value)} />
 
-            <ButtonAuth type="button" text="Remover Formação" theme="secondary" onClick={onClose} margin="0" />
-            <ButtonAuth type="submit" text="Atualizar Formação" theme="primary" margin="0" />
+            <ButtonAuth type="submit" text={isLoading ? <span className="spinner"></span> : "Remover Formação"} theme="secondary" margin="0" disabled={isLoading} onClick={() => setModalConfirmarRemocaoFormacao(true)} />
+            <ButtonAuth type="submit" text={isLoading ? <span className="spinner"></span> : "Atualizar Formação"} theme="primary" margin="0" disabled={isLoading} onClick={handleSubmit} />
           </div>
         </form>
       </div>
@@ -112,8 +137,18 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, formacoe
             ))}
         </ul>
 
-        <ButtonAuth type="button" text="Cancelar" theme="secondary" onClick={onClose} margin="0" />
+        <ButtonAuth type="button" text="Fechar" theme="secondary" onClick={onClose} margin="0" />
       </div>
+      
+      {modalConfirmarRemocaoFormacao && (
+        <ModalConfirmar 
+          titulo="Remover Formação"
+          descricao="Tem certeza que deseja remover esta formação?"
+          onClose={() => setModalConfirmarRemocaoFormacao(false)}
+          handleRemover={handleRemove}
+          isLoading={isLoading}
+        />
+      )}
     </div>,
     document.body
   );

@@ -7,21 +7,20 @@ import Loading from "@/components/Loading/loading";
 import Alerta from "@/components/Alerta";
 import ModalEditarPerfil from "@/components/Modal/ModalEditarPerfil";
 import ModalTema from "@/components/Modal/ModalTema";
-import ModalEstudanteTema from "@/components/Modal/ModalEstudanteTema";
-import ModalConfirmarTema from "@/components/Modal/ModalConfirmar";
-import ModalFormacoes from "../Modal/ModalFormacoes";
-import ModalFormacao from "../Modal/ModalFormacao";
+import ModalEstudanteTema from "@/components/Modal/Estudante/ModalEstudanteTema";
+import ModalConfirmar from "@/components/Modal/ModalConfirmar";
+import ModalFormacao from "../Modal/Professor/ModalFormacao";
 
 import PerfilCabecalho from "@/components/Perfil/PerfilCabecalho";
 import CardInfo from "@/components/Perfil/CardInfo";
-import PerfilEstudante from "@/components/Perfil/PerfilEstudante";
-import PerfilProfessor from "./PerfilProfessor";
+import PerfilEstudante from "@/components/Perfil/Estudante/PerfilEstudante";
+import PerfilProfessor from "./Professor/PerfilProfessor";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
 import { useModal, useFormulario, useCursos, useOrientador, useTemaActions, usePerfilActions, useFormacaoActions, useFormacoes } from "@/hooks";
 import { Estudante, Formacao, FormacaoDTO, Professor } from "@/types";
-import ModalGerenciarFormacoes from "../Modal/ModalGerenciarFormacoes";
+import ModalGerenciarFormacoes from "../Modal/Professor/ModalGerenciarFormacoes";
 
 interface PerfilProps {
   usuarioVisualizado: Estudante | Professor | null;
@@ -47,10 +46,15 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
   const temaActions = useTemaActions(usuarioVisualizado);
   const formacaoActions = useFormacaoActions(usuarioVisualizado);
 
-  const { setFormacoes } = useFormacoes();
+  const { formacoes, setFormacoes } = useFormacoes();
 
   useEffect(() => {
     resetFormData();
+    if (usuarioVisualizado) {
+      if (usuarioVisualizado.role === "PROFESSOR") {
+        setFormacoes((usuarioVisualizado as Professor).formacoes || []);
+      }
+    }
   }, [usuarioVisualizado]);
 
   const resetFormData = () => {
@@ -103,7 +107,7 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
     await perfilActions.handleAtualizarPerfil(e);
   };
 
-  const adicionarFormacao = async (formacao: Formacao) => {
+  const adicionarFormacao = async (formacao: FormacaoDTO) => {
     await formacaoActions.handleAdicionarFormacao(formacao);
   };
 
@@ -113,6 +117,12 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
     setFormacoes((prev) =>
       prev.map((f) => (f.id === formacaoId ? { ...f, ...formacao } : f))
     );
+  };
+
+  const removerFormacao = async (formacaoId: number) => {
+    await formacaoActions.handleRemoverFormacao(formacaoId);
+
+    setFormacoes((prev) => prev.filter((f) => f.id !== formacaoId));
   };
 
   if (!usuarioVisualizado) return <Loading />;
@@ -152,7 +162,9 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
                 professor={professor}
                 onGerenciar={modal.handleAbrirModalFormacao}
                 onAdicionarFormacao={() => modal.setModalFormacao(true)}
+                onAdicionarTema={() => modal.setModalTema(true)}
                 isMeuPerfil={isMeuPerfil}
+                formacoes={formacoes}
               />
             )}
 
@@ -171,8 +183,10 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
       
       {modal.modalFormacoes && (
         <ModalGerenciarFormacoes
-          formacoesIniciais={professor?.formacoes ?? []}
+          formacoesIniciais={formacoes}
           onAtualizar={atualizarFormacao}
+          onRemove={removerFormacao}
+          onRemoverFormacao={() => modal.setModalConfirmarRemocaoFormacao(true)}
           onClose={() => modal.setModalFormacoes(false)}
           isLoading={isLoading}
         />
@@ -180,7 +194,6 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
       
       {modal.modalFormacao && (
         <ModalFormacao
-          // formacoesIniciais={professor?.formacoes ?? undefined}
           onSalvar={adicionarFormacao}
           onClose={() => modal.setModalFormacao(false)}
           onCancelar={handleCancelar}
@@ -201,9 +214,11 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
       )}
 
       {modal.modalConfirmarRemocaoTema && (
-        <ModalConfirmarTema 
+        <ModalConfirmar 
+          titulo="Remover Tema"
+          descricao="Tem certeza que deseja remover este tema?"
           onClose={() => modal.setModalConfirmarRemocaoTema(false)}
-          handleRemoverTema={removerTema}
+          handleRemover={removerTema}
           isLoading={isLoading}
         />
       )}
