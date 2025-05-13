@@ -8,12 +8,21 @@ interface ButtonAuthProps {
   onClick?: () => void;
   disabled?: boolean;
   margin?: string;
+  icon?: boolean;
 }
 
-export default function ButtonAuth({ text, type, onClick, theme, disabled, margin }: ButtonAuthProps) {
+export default function ButtonAuth({ text, type, onClick, theme, disabled, margin, icon=false }: ButtonAuthProps) {
   return (
-    <button className={`${styles.button} ${styles[theme]}`} onClick={onClick} type={type} disabled={disabled} style={{ margin: margin}}>
-      {text}
-    </button>
+    <>
+      {!icon ? (
+        <button className={`${styles.button} ${styles[theme]}`} onClick={onClick} type={type} disabled={disabled} style={{ margin: margin }}>
+          {text}
+        </button>
+      ) : (
+        <button className={`${styles.button} ${styles[theme]}`} onClick={onClick} type={type} disabled={disabled} style={{  margin: margin, width: "0", height:"0", backgroundColor: "white" }}>
+          {text}
+        </button>
+      )}
+    </>
   );
 }

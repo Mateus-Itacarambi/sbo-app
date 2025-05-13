@@ -9,7 +9,8 @@ import { SquareArrowOutUpRight } from "lucide-react";
 
 interface PerfilProfessorProps {
   professor: Professor;
-  onGerenciar: () => void;
+  onGerenciarFormacao: () => void;
+  onGerenciarTemas: () => void;
   onAdicionarFormacao: () => void;
   onAdicionarTema: () => void;
   isMeuPerfil: boolean;
@@ -19,7 +20,8 @@ interface PerfilProfessorProps {
 
 const PerfilProfessor: FC<PerfilProfessorProps> = ({
   professor,
-  onGerenciar,
+  onGerenciarFormacao,
+  onGerenciarTemas,
   onAdicionarFormacao,
   onAdicionarTema,
   isMeuPerfil,
@@ -31,14 +33,14 @@ const PerfilProfessor: FC<PerfilProfessorProps> = ({
 
     <CardFormacao 
       formacoes={formacoes} 
-      onGerenciar={onGerenciar}
+      onGerenciar={onGerenciarFormacao}
       onAdicionarFormacao={onAdicionarFormacao}
       mostrarBotoes={isMeuPerfil} 
     />
 
     <CardTema
       temas={temas} 
-      onGerenciar={onGerenciar}
+      onGerenciar={onGerenciarTemas}
       onAdicionarTema={onAdicionarTema}
       mostrarBotoes={isMeuPerfil} 
     />

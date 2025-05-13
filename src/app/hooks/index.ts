@@ -8,3 +8,4 @@ export * from "./useTemaActions";
 export * from "./usePerfilActions";
 export * from "./useFormacaoActions";
 export * from "./useFormacoes";
+export * from "./useTemas";

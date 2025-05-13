@@ -2,12 +2,14 @@ import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
 import { handleFetchError } from "@/utils/handleFetchError";
 import {
   cadastrarTema,
+  adicionarTema,
   atualizarTema,
   removerTema,
   adicionarEstudanteTema,
   removerEstudanteTema,
   TemaPayload,
 } from "@/services/temaService";
+import { TemaDTO } from "@/types";
 
 export const useTemaActions = (usuario: any) => {
   const { setErro, setSucesso, setIsLoading } = useAlertaTemporarioContext();
@@ -17,6 +19,20 @@ export const useTemaActions = (usuario: any) => {
       setIsLoading(true);
       await cadastrarTema(e, usuario, dados);
       localStorage.setItem("mensagemSucesso", "Tema cadastrado com sucesso!");
+      location.reload();
+    } catch (error: any) {
+      setErro(handleFetchError(error));
+      setSucesso("");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const handleAdicionarTema = async (dados: TemaDTO) => {
+    try {
+      setIsLoading(true);
+      await adicionarTema(usuario, dados);
+      localStorage.setItem("mensagemSucesso", "Tema adicionado com sucesso!");
       location.reload();
     } catch (error: any) {
       setErro(handleFetchError(error));
@@ -84,6 +100,7 @@ export const useTemaActions = (usuario: any) => {
 
   return {
     handleCadastrarTema,
+    handleAdicionarTema,
     handleAtualizarTema,
     handleRemoverTema,
     handleAdicionarEstudanteTema,

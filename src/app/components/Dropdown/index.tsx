@@ -18,7 +18,7 @@ interface DropdownProps {
   top?: string;
 }
 
-export default function Dropdown({ label, items, icon, width="13rem", top="calc(8rem - ((8rem - 4.5rem) / 2) + 1rem)" }: DropdownProps) {
+export default function Dropdown({ label, items, icon=null, width="13rem", top="calc(8rem - ((8rem - 4.5rem) / 2) + 1rem)" }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { usuario, logout, loading } = useAuth();
@@ -35,10 +35,17 @@ export default function Dropdown({ label, items, icon, width="13rem", top="calc(
 
   return (
     <div className={styles.dropdown} ref={dropdownRef} style={{minWidth: "24px"}}>
-      <button onClick={() => setIsOpen((prev) => !prev)} className={styles.button}>
-        {label}
-        {icon || <ChevronDown className={styles.icon} />}
-      </button>
+      {(icon === null) ? (
+        <button onClick={() => setIsOpen((prev) => !prev)} className={styles.button}>
+          {label}
+          {icon || <ChevronDown className={styles.icon} />}
+        </button>
+      ) : (
+        <button onClick={() => setIsOpen((prev) => !prev)} className={styles.button} style={{  width: "0", height:"0", backgroundColor: "white" }}>
+          {label}
+          {icon || <ChevronDown className={styles.icon} />}
+        </button>
+      )}
 
       {isOpen && (
         <div className={styles.menu} style={{ width: width, top: top }}>

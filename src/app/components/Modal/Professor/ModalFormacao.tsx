@@ -6,13 +6,13 @@ import InputAuth from "../../InputAuth";
 import ButtonAuth from "@/components/ButtonAuth";
 import { useFormacao } from "@/hooks/useFormacao";
 
-interface ModalFormacoesProps {
+interface ModalFormacaoProps {
   onClose: () => void;
   onSalvar: (formacao: FormacaoDTO) => void;
   onCancelar: () => void;
 }
 
-export default function ModalFormacoes({ onSalvar, onClose, onCancelar }: ModalFormacoesProps) {
+export default function ModalFormacao({ onSalvar, onClose, onCancelar }: ModalFormacaoProps) {
   const formacao = useFormacao();
 
   const handleSubmit = (e: React.FormEvent) => {

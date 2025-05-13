@@ -5,7 +5,6 @@ import ButtonAuth from "@/components/ButtonAuth";
 import { useFormacoes } from "@/hooks/useFormacoes";
 import { useEffect, useState } from "react";
 import styles from "./modalGerenciarFormacoes.module.scss";
-import { useModal } from "@/hooks/useModal";
 import ModalConfirmar from "../ModalConfirmar";
 
 interface ModalGerenciarFormacoesProps {
@@ -43,7 +42,7 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove
   }, [formacoesIniciais]);
 
   const handleChange = (campo: keyof Formacao, valor: string) => {
-    setFormacaoAtual({ ...formacaoAtual, [campo]: campo.includes("ano") ? Number(valor) : valor });
+    setFormacaoAtual({ ...formacaoAtual, [campo]: valor });
   };
 
   const handleCliqueFormacao = (formacao: Formacao) => {

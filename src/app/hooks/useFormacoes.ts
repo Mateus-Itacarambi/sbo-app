@@ -13,37 +13,10 @@ export function useFormacoes() {
   });
   const [editIndex, setEditIndex] = useState<number | null>(null);
 
-  // const resetFormacao = () => {
-  //   setFormacaoAtual({
-  //     curso: "",
-  //     instituicao: "",
-  //     titulo: "",
-  //     anoInicio: new Date().getFullYear(),
-  //     anoFim: new Date().getFullYear()
-  //   });
-  //   setEditIndex(null);
-  // };
-
-  // const handleAddOrUpdate = () => {
-  //   if (editIndex !== null) {
-  //     const novas = [...formacoes];
-  //     novas[editIndex] = formacaoAtual;
-  //     setFormacoes(novas);
-  //   } else {
-  //     setFormacoes([...formacoes, formacaoAtual]);
-  //   }
-  //   resetFormacao();
-  // };
-
   const handleEditar = (index: number) => {
     setFormacaoAtual(formacoes[index]);
     setEditIndex(index);
   };
-
-  // const handleRemove = (index: number) => {
-  //   setFormacoes(formacoes.filter((_, i) => i !== index));
-  //   if (editIndex === index) resetFormacao();
-  // };
 
   return {
     formacoes,
@@ -51,9 +24,6 @@ export function useFormacoes() {
     formacaoAtual,
     setFormacaoAtual,
     editIndex,
-    // handleAddOrUpdate,
     handleEditar,
-    // handleRemove,
-    // resetFormacao
   };
 }

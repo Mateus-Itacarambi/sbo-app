@@ -1,9 +1,10 @@
 import styles from "../perfil.module.scss";
-import { Professor, Tema } from "@/types";
+import { Estudante, Professor, Tema, StatusTipo } from "@/types";
 import ButtonAuth from "@/components/ButtonAuth";
 import Dropdown from "../../Dropdown";
 import Image from "next/image";
 import Icone from "@/assets/tres-pontos.png";
+import StatusBadge from "@/components/StatusBadge";
 
 interface CardTemaProps {
   temas?: Tema[] | null;
@@ -30,7 +31,7 @@ export default function CardTema({ temas, mostrarBotoes, onGerenciar, onAdiciona
   }
 
   return (
-    <div className={styles.card_formacao}>
+    <div className={styles.card_temas}>
       <div className={styles.titulo}>
         <h2>Temas</h2>
         {mostrarBotoes && (
@@ -48,27 +49,34 @@ export default function CardTema({ temas, mostrarBotoes, onGerenciar, onAdiciona
         )}
       </div>
 
-      {/* <ul className={styles.lista_formacoes}>
+      <ul>
         {temas
           ?.slice()
           .sort((a, b) => a.titulo.localeCompare(b.titulo))
-          .map((formacao, idx) => (
-          <li key={idx} className={styles.card_formacao}>
-            <div className={styles.periodo}>
-              <p>
-                <strong>{formacao.anoInicio}</strong>
-                <strong>–</strong>
-                <strong>{formacao.anoFim}</strong>
-              </p>
-            </div>
-            <div className={styles.formacao}>
-              <p><strong>{formacao.curso}</strong></p>
-              <p><strong>{formacao.instituicao}</strong></p>
-              <p><strong>Título: </strong>{formacao.titulo}</p>
+          .map((tema, idx) => (
+          <li key={idx} className={styles.tema}>
+            <div className={styles.tema_content}>
+              <div className={styles.title}>
+                {tema.titulo}
+                  {tema.statusTema === "DISPONIVEL" && !mostrarBotoes && (
+                    <button className={styles.solicitar}>Solicitar</button>
+                  )}
+              </div>
+              <StatusBadge status={tema.statusTema as StatusTipo} />
+              <div className={styles.keywords}>{tema.palavrasChave}</div>
+              {(tema.estudantes ?? []).length > 0 && (
+                <div className={styles.description}>
+                  {(tema.estudantes ?? [])
+                    .map(e => e.nome)
+                    .sort((a, b) => a.localeCompare(b))
+                    .join(', ')}
+                </div>
+              )}
+              <div className={styles.description}>{tema.descricao}</div>
             </div>
           </li>
         ))}
-      </ul> */}
+      </ul>
     </div>
   );
 }

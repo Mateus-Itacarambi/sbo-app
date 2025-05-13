@@ -1,4 +1,4 @@
-import { Estudante, UsuarioCompleto } from "@/types";
+import { Estudante, Professor, TemaDTO, UsuarioCompleto } from "@/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -12,6 +12,17 @@ export const cadastrarTema = async (e: React.FormEvent, usuario: UsuarioCompleto
   if (!usuario || (usuario as Estudante).tema) return;
   e.preventDefault();
   const response = await fetch(`${API_URL}/temas/estudante/${usuario.id}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(dados),
+  });
+  if (!response.ok) throw new Error(await response.text());
+  return response.json();
+};
+
+export const adicionarTema = async (usuario: Professor, dados: TemaDTO) => {
+  const response = await fetch(`${API_URL}/temas/professor/${usuario.id}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",

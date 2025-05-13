@@ -1,10 +1,11 @@
-import { Estudante, Formacao } from '@/types';
+import { Estudante, Formacao, Tema } from '@/types';
 import { useState } from 'react';
 import { useTema } from './useTema';
 import { useFormacao } from './useFormacao';
+import { useTemas } from './useTemas';
 
 export const useModal = (usuario: any) => {
-  const [modalTema, setModalTema] = useState(false);
+  const [modalTemaEstudante, setModalTemaEstudante] = useState(false);
   const [modalEditarPerfil, setModalEditarPerfil] = useState(false);
   const [modalAdicionarEstudanteTema, setModalAdicionarEstudanteTema] = useState(false);
   const [modalRemoverEstudanteTema, setModalRemoverEstudanteTema] = useState(false);
@@ -14,6 +15,8 @@ export const useModal = (usuario: any) => {
   const [modalFormacoes, setModalFormacoes] = useState(false);
   const [modalAdicionarFormacao, setModalAdicionarFormacao] = useState(false);
   const [modalConfirmarRemocaoFormacao, setModalConfirmarRemocaoFormacao] = useState(false);
+  const [modalTemaProfessor, setModalTemaProfessor] = useState(false);
+  const [modalTemas, setModalTemas] = useState(false);
 
   const {
     setTemaTitulo,
@@ -34,7 +37,7 @@ export const useModal = (usuario: any) => {
       setTemaDescricao("");
       setTemaPalavrasChave("");
     }
-    setModalTema(true);
+    setModalTemaEstudante(true);
   };
   
   const handleAbrirModalFormacao = (formacaoSelecionada?: Formacao) => {
@@ -54,9 +57,24 @@ export const useModal = (usuario: any) => {
     setModalFormacoes(true);
   };
   
+  const handleAbrirModalTemas = (temaSelecionada?: Tema) => {
+    if (temaSelecionada) {
+      setTemaTitulo(temaSelecionada.titulo || "");
+      setTemaPalavrasChave(temaSelecionada.palavrasChave || "");
+      setTemaDescricao(temaSelecionada.descricao || "");
+    } else {
+      setTemaTitulo("");
+      setTemaPalavrasChave("");
+      setTemaDescricao("");
+    }
+    setModalTemas(true);
+  };
+  
   return {
-    modalTema,
-    setModalTema,
+    modalTemaEstudante,
+    setModalTemaEstudante,
+    modalTemaProfessor,
+    setModalTemaProfessor,
     modalEditarPerfil,
     setModalEditarPerfil,
     modalAdicionarEstudanteTema,
@@ -75,5 +93,8 @@ export const useModal = (usuario: any) => {
     handleAbrirModalFormacao,
     modalConfirmarRemocaoFormacao,
     setModalConfirmarRemocaoFormacao,
+    modalTemas,
+    setModalTemas,
+    handleAbrirModalTemas,
   };
 };

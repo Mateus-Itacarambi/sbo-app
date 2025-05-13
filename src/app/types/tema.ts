@@ -11,3 +11,8 @@ export interface Tema {
     estudantes?: Estudante[];
 }
   
+export interface TemaDTO {
+    titulo: string;
+    descricao: string;
+    palavrasChave: string;
+}

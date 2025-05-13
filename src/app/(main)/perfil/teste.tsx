@@ -6,7 +6,7 @@ import styles from "./perfil.module.scss";
 import Loading from "@/components/Loading/loading";
 import Alerta from "@/components/Alerta";
 import ModalEditarPerfil from "@/components/Modal/ModalEditarPerfil";
-import ModalTema from "@/components/Modal/ModalTema";
+import ModalTema from "@/components/Modal/Estudante/ModalTemaEstudante";
 import ModalEstudanteTema from "@/components/Modal/ModalEstudanteTema";
 import ModalConfirmarTema from "@/components/Modal/ModalConfirmar";
 

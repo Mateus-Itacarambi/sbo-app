@@ -1,12 +1,10 @@
 import styles from "../perfil.module.scss";
-import { Estudante, Professor, UsuarioCompleto } from "@/types";
+import { Estudante, Professor, UsuarioCompleto, StatusTipo } from "@/types";
 import Image from "next/image";
 import Dropdown from "@/components/Dropdown";
 import Icone from "@/assets/tres-pontos.png";
 import StatusBadge from "@/components/StatusBadge";
 import ButtonAuth from "@/components/ButtonAuth";
-
-type StatusTipo = 'RESERVADO' | 'EM_ANDAMENTO' | 'DISPONIVEL' | 'INDISPONIVEL' | 'CONCLUIDO';
 
 interface CardTemaProps {
   usuario: UsuarioCompleto;

@@ -6,10 +6,11 @@ import styles from "./perfil.module.scss";
 import Loading from "@/components/Loading/loading";
 import Alerta from "@/components/Alerta";
 import ModalEditarPerfil from "@/components/Modal/ModalEditarPerfil";
-import ModalTema from "@/components/Modal/ModalTema";
+import ModalTemaEstudante from "@/components/Modal/Estudante/ModalTemaEstudante";
 import ModalEstudanteTema from "@/components/Modal/Estudante/ModalEstudanteTema";
 import ModalConfirmar from "@/components/Modal/ModalConfirmar";
 import ModalFormacao from "../Modal/Professor/ModalFormacao";
+import ModalTemaProfessor from "@/components/Modal/Professor/ModalTemaProfessor";
 
 import PerfilCabecalho from "@/components/Perfil/PerfilCabecalho";
 import CardInfo from "@/components/Perfil/CardInfo";
@@ -18,9 +19,10 @@ import PerfilProfessor from "./Professor/PerfilProfessor";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
-import { useModal, useFormulario, useCursos, useOrientador, useTemaActions, usePerfilActions, useFormacaoActions, useFormacoes } from "@/hooks";
-import { Estudante, Formacao, FormacaoDTO, Professor } from "@/types";
+import { useModal, useFormulario, useCursos, useOrientador, useTemaActions, usePerfilActions, useFormacaoActions, useFormacoes, useTemas } from "@/hooks";
+import { Estudante, Formacao, FormacaoDTO, Professor, TemaDTO } from "@/types";
 import ModalGerenciarFormacoes from "../Modal/Professor/ModalGerenciarFormacoes";
+import ModalGerenciarTemas from "../Modal/Professor/ModalGerenciarTemas";
 
 interface PerfilProps {
   usuarioVisualizado: Estudante | Professor | null;
@@ -47,12 +49,14 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
   const formacaoActions = useFormacaoActions(usuarioVisualizado);
 
   const { formacoes, setFormacoes } = useFormacoes();
+  const { temas, setTemas } = useTemas();
 
   useEffect(() => {
     resetFormData();
     if (usuarioVisualizado) {
       if (usuarioVisualizado.role === "PROFESSOR") {
         setFormacoes((usuarioVisualizado as Professor).formacoes || []);
+        setTemas((usuarioVisualizado as Professor).temas || []);
       }
     }
   }, [usuarioVisualizado]);
@@ -125,6 +129,10 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
     setFormacoes((prev) => prev.filter((f) => f.id !== formacaoId));
   };
 
+  const adicionarTema = async (tema: TemaDTO) => {
+    await temaActions.handleAdicionarTema(tema);
+  };
+
   if (!usuarioVisualizado) return <Loading />;
 
   return (
@@ -152,7 +160,7 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
                 onAdicionarEstudante={() => modal.setModalAdicionarEstudanteTema(true)}
                 onRemoverEstudante={() => modal.setModalRemoverEstudanteTema(true)}
                 onCancelarOrientacao={() => modal.setModalConfirmarRemocaoTema(true)}
-                onAdicionarTema={() => modal.setModalTema(true)}
+                onAdicionarTema={() => modal.setModalTemaEstudante(true)}
                 isMeuPerfil={isMeuPerfil}
               />
             )}
@@ -160,24 +168,34 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
             {professor && (
               <PerfilProfessor
                 professor={professor}
-                onGerenciar={modal.handleAbrirModalFormacao}
+                onGerenciarFormacao={modal.handleAbrirModalFormacao}
+                onGerenciarTemas={modal.handleAbrirModalTemas}
                 onAdicionarFormacao={() => modal.setModalFormacao(true)}
-                onAdicionarTema={() => modal.setModalTema(true)}
+                onAdicionarTema={() => modal.setModalTemaProfessor(true)}
                 isMeuPerfil={isMeuPerfil}
                 formacoes={formacoes}
+                temas={temas}
               />
             )}
 
         </div>
       </div>
-      {modal.modalTema && (
-        <ModalTema
+      {modal.modalTemaEstudante && (
+        <ModalTemaEstudante
           usuario={usuarioVisualizado}
-          onClose={() => modal.setModalTema(false)}
+          onClose={() => modal.setModalTemaEstudante(false)}
           atualizarTema={atualizarTema}
           cadastrarTema={cadastrarTema}
-          onCancelar={() => modal.setModalTema(false)}
+          onCancelar={() => modal.setModalTemaEstudante(false)}
           isLoading={isLoading}
+        />
+      )}
+      
+      {modal.modalTemaProfessor && (
+        <ModalTemaProfessor
+          onSalvar={adicionarTema}
+          onClose={() => modal.setModalTemaProfessor(false)}
+          onCancelar={() => modal.setModalTemaProfessor(false)}
         />
       )}
       
@@ -188,6 +206,17 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
           onRemove={removerFormacao}
           onRemoverFormacao={() => modal.setModalConfirmarRemocaoFormacao(true)}
           onClose={() => modal.setModalFormacoes(false)}
+          isLoading={isLoading}
+        />
+      )}
+      
+      {modal.modalTemas && (
+        <ModalGerenciarTemas
+          temasIniciais={temas}
+          onAtualizar={atualizarFormacao}
+          onRemove={removerFormacao}
+          onRemoverFormacao={() => modal.setModalConfirmarRemocaoTema(true)}
+          onClose={() => modal.setModalTemas(false)}
           isLoading={isLoading}
         />
       )}

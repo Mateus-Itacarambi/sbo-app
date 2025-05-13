@@ -1,11 +1,11 @@
 import { Estudante, UsuarioCompleto } from "@/types";
 import ButtonAuth from "@/components/ButtonAuth";
-import InputAuth from "../InputAuth";
-import Modal from "./Modal";
+import InputAuth from "../../InputAuth";
+import Modal from "../Modal";
 import { useTema } from "@/hooks";
 import { useEffect } from "react";
 
-interface ModalTemaProps {
+interface ModalTemaEstudanteProps {
   usuario: any;
   onClose: () => void;
   atualizarTema: (e: React.FormEvent, titulo: string, palavrasChave: string, descricao: string) => void;
@@ -14,7 +14,7 @@ interface ModalTemaProps {
   isLoading: boolean;
 }
 
-export default function ModalTema({ usuario, onClose, atualizarTema, cadastrarTema, onCancelar, isLoading }: ModalTemaProps) {
+export default function ModalTemaEstudante({ usuario, onClose, atualizarTema, cadastrarTema, onCancelar, isLoading }: ModalTemaEstudanteProps) {
     const { temaTitulo, setTemaTitulo, temaPalavrasChave, setTemaPalavrasChave, temaDescricao, setTemaDescricao } = useTema();
 
     useEffect(() => {
