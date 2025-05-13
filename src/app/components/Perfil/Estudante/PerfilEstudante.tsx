@@ -9,15 +9,16 @@ interface PerfilEstudanteProps {
   estudante: Estudante;
   orientador: Professor;
   onEditarTema: () => void;
-  onRemoverTema: () => void;
+  onRemoverTema: (temaId: number) => void;
   onAdicionarEstudante: () => void;
   onRemoverEstudante: () => void;
   onCancelarOrientacao: () => void;
   onAdicionarTema: () => void;
   isMeuPerfil: boolean;
+  isLoading: boolean;
 }
 
-const PerfilEstudante: FC<PerfilEstudanteProps> = ({
+export default function PerfilEstudante({
   estudante,
   orientador,
   onEditarTema,
@@ -27,23 +28,33 @@ const PerfilEstudante: FC<PerfilEstudanteProps> = ({
   onCancelarOrientacao,
   onAdicionarTema,
   isMeuPerfil,
-}) => (
-  <>
-    <CardInfo titulo="Matrícula" texto={estudante.matricula} />
+  isLoading,
+}: PerfilEstudanteProps) {
+  const handleRemove = () => {
+    if (estudante.tema?.id === undefined) {
+      console.error("ID do tema não definido.");
+      return;
+    }
 
-    <CardTema
-      usuario={estudante}
-      onEditar={onEditarTema}
-      onRemover={onRemoverTema}
-      onAdicionarEstudante={onAdicionarEstudante}
-      onRemoverEstudante={onRemoverEstudante}
-      onCancelarOrientação={onCancelarOrientacao}
-      onAdicionarTema={onAdicionarTema}
-      mostrarBotoes={isMeuPerfil}
-    />
+    onRemoverTema(estudante.tema?.id);
+  };
+  return (
+    <>
+      <CardInfo titulo="Matrícula" texto={estudante.matricula} />
 
-    <CardOrientador usuario={estudante} orientador={orientador} mostrarBotoes={isMeuPerfil} />
-  </>
-);
+      <CardTema
+        usuario={estudante}
+        onEditar={onEditarTema}
+        onRemover={handleRemove}
+        onAdicionarEstudante={onAdicionarEstudante}
+        onRemoverEstudante={onRemoverEstudante}
+        onCancelarOrientação={onCancelarOrientacao}
+        onAdicionarTema={onAdicionarTema}
+        mostrarBotoes={isMeuPerfil}
+        isLoading={isLoading}
+      />
 
-export default PerfilEstudante;
+      <CardOrientador usuario={estudante} orientador={orientador} mostrarBotoes={isMeuPerfil} />
+    </>
+  );
+}

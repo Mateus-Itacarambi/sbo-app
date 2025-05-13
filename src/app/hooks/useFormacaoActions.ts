@@ -13,8 +13,6 @@ import { useFormacoes } from "@/hooks/useFormacoes";
 export const useFormacaoActions = (usuario: any) => {
   const { setErro, setSucesso, setIsLoading } = useAlertaTemporarioContext();
 
-  const { setFormacoes } = useFormacoes();
-
   const handleAdicionarFormacao = async (dados: FormacaoDTO) => {
     try {
       setIsLoading(true);

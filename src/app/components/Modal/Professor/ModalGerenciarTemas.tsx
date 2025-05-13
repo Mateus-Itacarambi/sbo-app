@@ -11,13 +11,12 @@ import { useTemas } from "@/hooks";
 interface ModalGerenciarFormacoesProps {
   onClose: () => void;
   onAtualizar: (temaId: number, temas: TemaDTO) => void;
-  onRemovertema: () => void;
   onRemove: (temaId: number) => void;
   temasIniciais: Tema[];
   isLoading: boolean;
 }
 
-export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove, onRemovertema, temasIniciais, isLoading }: ModalGerenciarFormacoesProps) {
+export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove, temasIniciais, isLoading }: ModalGerenciarFormacoesProps) {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -108,13 +107,14 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove
       <div className={styles.modal_form} onClick={(e) => e.stopPropagation()}>
         <h2>Gerenciar Temas</h2>
         <form onSubmit={(e) => e.preventDefault()}>
-          <InputAuth label="Título" type="text" value={temaAtual.titulo} onChange={(e) => handleChange("titulo", e.target.value)} />
-          <InputAuth label="Palavras-Chave" type="text" value={temaAtual.palavrasChave} onChange={(e) => handleChange("palavrasChave", e.target.value)} />
-          <InputAuth label="Descrição" type="text" value={temaAtual.descricao} onChange={(e) => handleChange("descricao", e.target.value)} />
-
+          <div>
+            <InputAuth label="Título" type="text" value={temaAtual.titulo} onChange={(e) => handleChange("titulo", e.target.value)} />
+            <InputAuth label="Palavras-Chave" type="text" value={temaAtual.palavrasChave} onChange={(e) => handleChange("palavrasChave", e.target.value)} />
+            <InputAuth label="Descrição" type="text" value={temaAtual.descricao} onChange={(e) => handleChange("descricao", e.target.value)} />
+          </div>
           <div className={styles.flex}>
-            <ButtonAuth type="submit" text={isLoading ? <span className="spinner"></span> : "Remover Formação"} theme="secondary" margin="0" disabled={isLoading} onClick={() => setModalConfirmarRemocaoTema(true)} />
-            <ButtonAuth type="submit" text={isLoading ? <span className="spinner"></span> : "Atualizar Formação"} theme="primary" margin="0" disabled={isLoading} onClick={handleSubmit} />
+            <ButtonAuth type="submit" text={isLoading ? <span className="spinner"></span> : "Remover Tema"} theme="secondary" margin="0" disabled={isLoading} onClick={() => setModalConfirmarRemocaoTema(true)} />
+            <ButtonAuth type="submit" text={isLoading ? <span className="spinner"></span> : "Atualizar Tema"} theme="primary" margin="0" disabled={isLoading} onClick={handleSubmit} />
           </div>
         </form>
       </div>

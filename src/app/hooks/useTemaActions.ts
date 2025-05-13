@@ -4,6 +4,7 @@ import {
   cadastrarTema,
   adicionarTema,
   atualizarTema,
+  atualizarTemaProfessor,
   removerTema,
   adicionarEstudanteTema,
   removerEstudanteTema,
@@ -56,14 +57,40 @@ export const useTemaActions = (usuario: any) => {
     }
   };
 
-  const handleRemoverTema = async () => {
+  const handleAtualizarTemaProfessor = async (temaId: number, dados: TemaDTO) => {
     try {
       setIsLoading(true);
-      await removerTema(usuario);
+      await atualizarTemaProfessor(usuario, temaId, dados);
+      setSucesso("Tema atualizado com sucesso!");
+    } catch (error: any) {
+      setErro(handleFetchError(error) || "Erro ao atualizar formação.");
+      setSucesso("");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRemoverTema = async (temaId: number) => {
+    try {
+      setIsLoading(true);
+      await removerTema(usuario, temaId);
       localStorage.setItem("mensagemSucesso", "Tema removido com sucesso!");
       location.reload();
     } catch (error: any) {
       setErro(handleFetchError(error));
+      setSucesso("");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+    
+  const handleRemoverTemaProfessor = async (temaId: number) => {
+    try {
+      setIsLoading(true);
+      await removerTema(usuario, temaId);
+      setSucesso("Tema removido com sucesso!");
+    } catch (error: any) {
+      setErro(handleFetchError(error) || "Erro ao remover formação.");
       setSucesso("");
     } finally {
       setIsLoading(false);
@@ -102,7 +129,9 @@ export const useTemaActions = (usuario: any) => {
     handleCadastrarTema,
     handleAdicionarTema,
     handleAtualizarTema,
+    handleAtualizarTemaProfessor,
     handleRemoverTema,
+    handleRemoverTemaProfessor,
     handleAdicionarEstudanteTema,
     handleRemoverEstudanteTema,
   };

@@ -10,13 +10,12 @@ import ModalConfirmar from "../ModalConfirmar";
 interface ModalGerenciarFormacoesProps {
   onClose: () => void;
   onAtualizar: (formacaoId: number, formacoes: FormacaoDTO) => void;
-  onRemoverFormacao: () => void;
   onRemove: (formacaoId: number) => void;
   formacoesIniciais: Formacao[];
   isLoading: boolean;
 }
 
-export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove, onRemoverFormacao, formacoesIniciais, isLoading }: ModalGerenciarFormacoesProps) {
+export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove, formacoesIniciais, isLoading }: ModalGerenciarFormacoesProps) {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();

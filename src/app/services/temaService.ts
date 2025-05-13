@@ -8,8 +8,7 @@ export interface TemaPayload {
   descricao: string;
 }
 
-export const cadastrarTema = async (e: React.FormEvent, usuario: UsuarioCompleto, dados: TemaPayload) => {
-  if (!usuario || (usuario as Estudante).tema) return;
+export const cadastrarTema = async (e: React.FormEvent, usuario: Estudante, dados: TemaPayload) => {
   e.preventDefault();
   const response = await fetch(`${API_URL}/temas/estudante/${usuario.id}`, {
     method: "POST",
@@ -21,7 +20,7 @@ export const cadastrarTema = async (e: React.FormEvent, usuario: UsuarioCompleto
   return response.json();
 };
 
-export const adicionarTema = async (usuario: Professor, dados: TemaDTO) => {
+export const adicionarTema = async (usuario: Professor, dados: TemaDTO): Promise<TemaDTO>  => {
   const response = await fetch(`${API_URL}/temas/professor/${usuario.id}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -29,11 +28,11 @@ export const adicionarTema = async (usuario: Professor, dados: TemaDTO) => {
     body: JSON.stringify(dados),
   });
   if (!response.ok) throw new Error(await response.text());
-  return response.json();
+  const novoTema = await response.json();
+  return novoTema;
 };
 
-export const atualizarTema = async (e: React.FormEvent, usuario: UsuarioCompleto, dados: TemaPayload) => {
-  if (!usuario || !(usuario as Estudante).tema) return;
+export const atualizarTema = async (e: React.FormEvent, usuario: Estudante, dados: TemaPayload) => {
   e.preventDefault();
   const response = await fetch(`${API_URL}/temas/${(usuario as Estudante).tema?.id}/atualizar/${usuario.id}`, {
     method: "PUT",
@@ -50,8 +49,19 @@ export const atualizarTema = async (e: React.FormEvent, usuario: UsuarioCompleto
   return await response.json();
 };
 
-export const removerTema = async (usuario: UsuarioCompleto) => {
-  const response = await fetch(`${API_URL}/temas/${(usuario as Estudante).tema?.id}/deletar/${usuario.id}`, {
+export const atualizarTemaProfessor = async (usuario: Professor, temaId: number, dados: TemaDTO) => {
+  const response = await fetch(`${API_URL}/temas/${temaId}/atualizar/${usuario.id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(dados),
+  });
+  if (!response.ok) throw new Error(await response.text());
+  return response.json();
+};
+
+export const removerTema = async (usuario: UsuarioCompleto, temaId: number) => {
+  const response = await fetch(`${API_URL}/temas/${temaId}/deletar/${usuario.id}`, {
     method: "DELETE",
     credentials: "include",
   });

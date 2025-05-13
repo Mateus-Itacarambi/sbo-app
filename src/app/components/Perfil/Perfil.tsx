@@ -95,8 +95,8 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
     await temaActions.handleAtualizarTema(e, { titulo: titulo, palavrasChave: palavrasChave, descricao: descricao });
   };
 
-  const removerTema = async () => {
-    await temaActions.handleRemoverTema();
+  const removerTema = async (temaId: number) => {
+    await temaActions.handleRemoverTema(temaId);
   };
 
   const adicionarEstudanteTema = async (e: React.FormEvent, matricula: string) => {
@@ -133,6 +133,20 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
     await temaActions.handleAdicionarTema(tema);
   };
 
+  const atualizarTemaProfessor = async (temaId: number, tema: TemaDTO) => {
+    await temaActions.handleAtualizarTemaProfessor(temaId, tema);
+
+    setTemas((prev) =>
+      prev.map((t) => (t.id === temaId ? { ...t, ...tema } : t))
+    );
+  };
+
+  const removerTemaProfessor = async (temaId: number) => {
+    await temaActions.handleRemoverTemaProfessor(temaId);
+
+    setTemas((prev) => prev.filter((t) => t.id !== temaId));
+  };
+
   if (!usuarioVisualizado) return <Loading />;
 
   return (
@@ -156,12 +170,13 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
                 estudante={estudante}
                 orientador={orientador}
                 onEditarTema={modal.handleAbrirModalTema}
-                onRemoverTema={() => modal.setModalConfirmarRemocaoTema(true)}
+                onRemoverTema={removerTema}
                 onAdicionarEstudante={() => modal.setModalAdicionarEstudanteTema(true)}
                 onRemoverEstudante={() => modal.setModalRemoverEstudanteTema(true)}
                 onCancelarOrientacao={() => modal.setModalConfirmarRemocaoTema(true)}
                 onAdicionarTema={() => modal.setModalTemaEstudante(true)}
                 isMeuPerfil={isMeuPerfil}
+                isLoading={isLoading}
               />
             )}
 
@@ -204,7 +219,6 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
           formacoesIniciais={formacoes}
           onAtualizar={atualizarFormacao}
           onRemove={removerFormacao}
-          onRemoverFormacao={() => modal.setModalConfirmarRemocaoFormacao(true)}
           onClose={() => modal.setModalFormacoes(false)}
           isLoading={isLoading}
         />
@@ -213,9 +227,8 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
       {modal.modalTemas && (
         <ModalGerenciarTemas
           temasIniciais={temas}
-          onAtualizar={atualizarFormacao}
-          onRemove={removerFormacao}
-          onRemoverFormacao={() => modal.setModalConfirmarRemocaoTema(true)}
+          onAtualizar={atualizarTemaProfessor}
+          onRemove={removerTemaProfessor}
           onClose={() => modal.setModalTemas(false)}
           isLoading={isLoading}
         />
@@ -239,16 +252,6 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
           onSubmit={modal.modalAdicionarEstudanteTema ? adicionarEstudanteTema : removerEstudanteTema}
           isLoading={isLoading}
           textoBotao={modal.modalAdicionarEstudanteTema ? "Adicionar" : "Remover"}
-        />
-      )}
-
-      {modal.modalConfirmarRemocaoTema && (
-        <ModalConfirmar 
-          titulo="Remover Tema"
-          descricao="Tem certeza que deseja remover este tema?"
-          onClose={() => modal.setModalConfirmarRemocaoTema(false)}
-          handleRemover={removerTema}
-          isLoading={isLoading}
         />
       )}
 

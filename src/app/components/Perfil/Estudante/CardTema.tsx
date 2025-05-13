@@ -5,6 +5,10 @@ import Dropdown from "@/components/Dropdown";
 import Icone from "@/assets/tres-pontos.png";
 import StatusBadge from "@/components/StatusBadge";
 import ButtonAuth from "@/components/ButtonAuth";
+import ModalEditarPerfil from "@/components/Modal/ModalEditarPerfil";
+import { useState } from "react";
+import ModalConfirmar from "@/components/Modal/ModalConfirmar";
+import { on } from "events";
 
 interface CardTemaProps {
   usuario: UsuarioCompleto;
@@ -15,9 +19,14 @@ interface CardTemaProps {
   onCancelarOrientação: () => void;
   onAdicionarTema: () => void;
   mostrarBotoes: boolean;
+  isLoading: boolean;
 }
 
-export default function CardTema({ usuario, onEditar, onRemover, onAdicionarEstudante, onRemoverEstudante, onCancelarOrientação, onAdicionarTema, mostrarBotoes }: CardTemaProps) {
+export default function CardTema({ usuario, onEditar, onRemover, onAdicionarEstudante, onRemoverEstudante, onCancelarOrientação, onAdicionarTema, mostrarBotoes, isLoading }: CardTemaProps) {
+  const [modalConfirmarRemocaoTema, setModalConfirmarRemocaoTema] = useState(false);
+  
+
+
   return (
     <div className={styles.card_tema}>
       <h2>Tema</h2>
@@ -26,22 +35,24 @@ export default function CardTema({ usuario, onEditar, onRemover, onAdicionarEstu
           <div className={styles.tema_content}>
             <div className={styles.title}>
               {(usuario as Estudante).tema?.titulo}
-                {mostrarBotoes && (
-                  <Dropdown
-                    label=""
-                    width="17rem"
-                    top="2rem"
-                    icon={<div className={styles.icon}><Image src={Icone} alt=""/></div>}
-                    items={[
-                      { type: "link", label: "", href: "" },
-                      { type: "action", label: "Editar", onClick: onEditar },
-                      { type: "action", label: "Remover", onClick: onRemover },
-                      { type: "action", label: "Adicionar Estudante", onClick: onAdicionarEstudante },
-                      { type: "action", label: "Remover Estudante", onClick: onRemoverEstudante },
-                      { type: "action", label: "Cancelar Orientação", onClick: onCancelarOrientação },
-                    ]}
-                  />
-                )}
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                  {mostrarBotoes && (
+                    <Dropdown
+                      label=""
+                      width="17rem"
+                      top="2rem"
+                      icon={<div className={styles.icon}><Image src={Icone} alt=""/></div>}
+                      items={[
+                        { type: "link", label: "", href: "" },
+                        { type: "action", label: "Editar", onClick: onEditar },
+                        { type: "action", label: "Remover", onClick: () => setModalConfirmarRemocaoTema(true) },
+                        { type: "action", label: "Adicionar Estudante", onClick: onAdicionarEstudante },
+                        { type: "action", label: "Remover Estudante", onClick: onRemoverEstudante },
+                        { type: "action", label: "Cancelar Orientação", onClick: onCancelarOrientação },
+                      ]}
+                    />
+                  )}
+                </div>
             </div>
             {(usuario as Estudante).tema?.statusTema && (
                 <StatusBadge status={(usuario as Estudante).tema?.statusTema as StatusTipo} />
@@ -64,6 +75,16 @@ export default function CardTema({ usuario, onEditar, onRemover, onAdicionarEstu
             <ButtonAuth text="Adicionar Tema" type="button" theme="primary" onClick={onAdicionarTema} />
           )}
         </>
+      )}
+
+      {modalConfirmarRemocaoTema && (
+        <ModalConfirmar
+          titulo="Remover Tema"
+          descricao="Tem certeza que deseja remover este tema?"
+          onClose={() => setModalConfirmarRemocaoTema(false)}
+          handleRemover={onRemover}
+          isLoading={isLoading}
+        />
       )}
     </div>
   );

@@ -24,6 +24,13 @@
     animation: slideUp 0.3s ease;
     box-sizing: border-box;
 
+    form {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 477px;
+    }
+
     h2 {
       font-size: 2.5rem;
       font-weight: 600;
