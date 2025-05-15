@@ -1,18 +1,16 @@
 import styles from "../perfil.module.scss";
-import { StatusTipo, AreaInteresse } from "@/types";
+import { AreaInteresse } from "@/types";
 import ButtonAuth from "@/components/ButtonAuth";
-import Dropdown from "../../Dropdown";
-import Image from "next/image";
-import Icone from "@/assets/tres-pontos.png";
 import AreaInteresseBadge from "@/components/AreaInteresseBadge";
 
 interface CardTemaProps {
   areasInteresse?: AreaInteresse[] | null;
   onAdicionarArea: () => void;
   mostrarBotoes: boolean;
+  onRemoverAreaInteresse: (areaInteresseId: number) => void;
 }
 
-export default function CardTema({ areasInteresse, mostrarBotoes, onAdicionarArea }: CardTemaProps) {
+export default function CardTema({ areasInteresse, mostrarBotoes, onAdicionarArea, onRemoverAreaInteresse }: CardTemaProps) {
   if (!areasInteresse || areasInteresse.length === 0) {
     return (
       <>
@@ -34,7 +32,7 @@ export default function CardTema({ areasInteresse, mostrarBotoes, onAdicionarAre
       <div className={styles.titulo}>
         <h2>Áreas de Interesse</h2>
       </div>
-
+      
       <ul className={styles.lista_areasInteresse}>
         {areasInteresse
           ?.slice()
@@ -42,9 +40,10 @@ export default function CardTema({ areasInteresse, mostrarBotoes, onAdicionarAre
           .map((areaInteresse, idx) => (
           <li key={idx} className={styles.tema}>
             <AreaInteresseBadge 
-              nome={areaInteresse.nome} 
+              areaInteresse={areaInteresse}
               style={mostrarBotoes ? "myBadge" : "badge"} 
               mostrarBotao={mostrarBotoes}
+              onRemover={onRemoverAreaInteresse}
               />
           </li>
         ))

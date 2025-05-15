@@ -3,57 +3,81 @@
 import { useEffect, useState } from "react";
 import styles from "./modalAreaInteresse.module.scss";
 import BadgeAreaInteresse from "./BadgeAreaInteresse";
+import { AreaInteresse } from "@/types";
+import ReactDOM from "react-dom";
+import ButtonAuth from "@/components/ButtonAuth";
+import { on } from "events";
 
 interface ModalProps {
-  todasAreas: string[];
-  areasSelecionadas: string[];
+  todasAreas: AreaInteresse[];
+  areasSelecionadas: AreaInteresse[];
   onCancelar: () => void;
-  onAdicionar: (selecionadas: string[]) => void;
+  onAdicionar: (selecionadas: AreaInteresse[]) => void;
+  isLoading?: boolean;
 }
 
-export default function ModalAreaInteresse({ todasAreas, areasSelecionadas, onCancelar, onAdicionar }: ModalProps) {
+export default function ModalAreaInteresse({ todasAreas, areasSelecionadas, onCancelar, onAdicionar, isLoading }: ModalProps) {
   const [busca, setBusca] = useState("");
-  const [selecionadas, setSelecionadas] = useState<string[]>([]);
+  const [selecionadas, setSelecionadas] = useState<AreaInteresse[]>([]);
 
   useEffect(() => {
     setSelecionadas(areasSelecionadas);
   }, [areasSelecionadas]);
 
-  const filtrarAreas = todasAreas.filter(area =>
-    area.toLowerCase().includes(busca.toLowerCase())
-  );
+  const filtrarAreas = todasAreas
+  .filter((area) => area.nome.toLowerCase().includes(busca.toLowerCase()))
+  .sort((a, b) => a.nome.localeCompare(b.nome));
 
-  const toggleSelecao = (area: string) => {
-    setSelecionadas(prev =>
-      prev.includes(area) ? prev.filter(a => a !== area) : [...prev, area]
+  const toggleSelecao = (area: AreaInteresse) => {
+    setSelecionadas((prev) =>
+      prev.some((a) => a.id === area.id)
+        ? prev.filter((a) => a.id !== area.id)
+        : [...prev, area]
     );
   };
 
-  return (
-    <div className={styles.modal}>
-      <input
-        type="text"
-        placeholder="Área de Interesse"
-        value={busca}
-        onChange={(e) => setBusca(e.target.value)}
-        className={styles.inputBusca}
-      />
+  return ReactDOM.createPortal (
+    <div className={styles.overlay} onClick={onCancelar}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <h2>Adicionar Áreas de Interesse</h2>
+        <input
+          type="text"
+          placeholder="Área de Interesse"
+          value={busca}
+          onChange={(e) => setBusca(e.target.value)}
+          className={styles.inputBusca}
+        />
 
-      <div className={styles.listaBadges}>
-        {filtrarAreas.map((area, i) => (
-          <BadgeAreaInteresse
-            key={i}
-            texto={area}
-            ativo={selecionadas.includes(area)}
-            onClick={() => toggleSelecao(area)}
+        <div className={styles.listaBadges}>
+          {filtrarAreas.map((area) => (
+            <BadgeAreaInteresse
+              key={area.id}
+              texto={area.nome}
+              ativo={selecionadas.some((a) => a.id === area.id)}
+              onClick={() => toggleSelecao(area)}
+            />
+          ))}
+        </div>
+
+        <div className={styles.botoes}>
+          <ButtonAuth 
+            type="button" 
+            text={isLoading ? <span className="spinner"></span> : "Cancelar"} 
+            theme="secondary" 
+            margin="0" 
+            disabled={isLoading} 
+            onClick={onCancelar} 
           />
-        ))}
+          <ButtonAuth 
+            type="button" 
+            text={isLoading ? <span className="spinner"></span> : "Adicionar"} 
+            theme="primary" margin="0" 
+            disabled={isLoading} 
+            onClick={() => onAdicionar(selecionadas)} 
+          />
+        </div>
       </div>
-
-      <div className={styles.botoes}>
-        <button onClick={onCancelar} className={styles.btnCancelar}>Cancelar</button>
-        <button onClick={() => onAdicionar(selecionadas)} className={styles.btnAdicionar}>Adicionar</button>
-      </div>
-    </div>
+    </div>,
+    document.body
   );
 }

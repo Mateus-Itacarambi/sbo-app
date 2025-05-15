@@ -104,12 +104,13 @@ const NavBar = () => {
                 />
               ) : usuario.role === "ADMINISTRADOR" ? (
                 <Dropdown
-                  width="195px"
+                  width="220px"
                   label=""
                   items={[
                     { type: "link", label: "Perfil", href: `${endpoint}` },
                     { type: "link", label: "Configurações", href: "/configuracoes" },
                     { type: "link", label: "Importar Professores", href: "/professor-cadastro" },
+                    { type: "link", label: "Importar Áreas de Interesse", href: "/area-interesse-cadastro" },
                     { type: "action", label: "Sair", onClick: logout },
                   ]}
                 />

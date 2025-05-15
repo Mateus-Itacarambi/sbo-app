@@ -17,6 +17,7 @@ export const useModal = (usuario: any) => {
   const [modalConfirmarRemocaoFormacao, setModalConfirmarRemocaoFormacao] = useState(false);
   const [modalTemaProfessor, setModalTemaProfessor] = useState(false);
   const [modalTemas, setModalTemas] = useState(false);
+  const [modalAreaInteresse, setModalAreaInteresse] = useState(false);
 
   const {
     setTemaTitulo,
@@ -96,5 +97,7 @@ export const useModal = (usuario: any) => {
     modalTemas,
     setModalTemas,
     handleAbrirModalTemas,
+    modalAreaInteresse, 
+    setModalAreaInteresse,
   };
 };

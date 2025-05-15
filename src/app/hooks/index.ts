@@ -9,3 +9,4 @@ export * from "./usePerfilActions";
 export * from "./useFormacaoActions";
 export * from "./useFormacoes";
 export * from "./useTemas";
+export * from "./useAreaInteresseActions";

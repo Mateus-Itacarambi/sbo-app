@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./perfil.module.scss";
 
 import Loading from "@/components/Loading/loading";
@@ -19,8 +19,8 @@ import PerfilProfessor from "./Professor/PerfilProfessor";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
-import { useModal, useFormulario, useCursos, useOrientador, useTemaActions, usePerfilActions, useFormacaoActions, useFormacoes, useTemas } from "@/hooks";
-import { Estudante, Formacao, FormacaoDTO, Professor, TemaDTO } from "@/types";
+import { useModal, useFormulario, useCursos, useOrientador, useTemaActions, usePerfilActions, useFormacaoActions, useFormacoes, useTemas, useAreaInteresseActions } from "@/hooks";
+import { AreaInteresse, Estudante, Formacao, FormacaoDTO, Professor, TemaDTO } from "@/types";
 import ModalGerenciarFormacoes from "../Modal/Professor/ModalGerenciarFormacoes";
 import ModalGerenciarTemas from "../Modal/Professor/ModalGerenciarTemas";
 import { useAreasInteresse } from "@/hooks/useAreasInteresse";
@@ -49,10 +49,20 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
   const perfilActions = usePerfilActions(usuarioVisualizado, form.formData);
   const temaActions = useTemaActions(usuarioVisualizado);
   const formacaoActions = useFormacaoActions(usuarioVisualizado);
+  const areaInteresseActions = useAreaInteresseActions(usuarioVisualizado);
 
   const { formacoes, setFormacoes } = useFormacoes();
   const { temas, setTemas } = useTemas();
   const { areasInteresse, setAreasInteresse } = useAreasInteresse();
+
+  const [areasDisponiveis, setAreasDisponiveis] = useState<AreaInteresse[]>([]);
+
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/areasInteresse/lista`)
+      .then(res => res.json())
+      .then((data: AreaInteresse[]) => setAreasDisponiveis(data));
+  }, []);
+
 
   useEffect(() => {
     resetFormData();
@@ -153,6 +163,16 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
     setTemas((prev) => prev.filter((t) => t.id !== temaId));
   };
 
+  const adicionarAreaInteresse = async (areasInteresse: AreaInteresse[]) => {
+    await areaInteresseActions.handleAdicionarAreasInteresse(areasInteresse);
+  };
+
+  const removerAreaInteresse = async (areaInteresseId: number) => {
+    await areaInteresseActions.handleRemoverAreaInteresse(areaInteresseId);
+
+    setAreasInteresse((prev) => prev.filter((a) => a.id !== areaInteresseId));
+  };
+
   if (!usuarioVisualizado) return <Loading />;
 
   return (
@@ -192,11 +212,13 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
                 onGerenciarFormacao={modal.handleAbrirModalFormacao}
                 onGerenciarTemas={modal.handleAbrirModalTemas}
                 onAdicionarFormacao={() => modal.setModalFormacao(true)}
+                onAdicionarAreaInteresse={() => modal.setModalAreaInteresse(true)}
                 onAdicionarTema={() => modal.setModalTemaProfessor(true)}
                 isMeuPerfil={isMeuPerfil}
                 formacoes={formacoes}
                 temas={temas}
                 areasInteresse={areasInteresse}
+                onRemoverAreaInteresse={removerAreaInteresse}
               />
             )}
 
@@ -249,19 +271,15 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
         />
       )}
 
-      <ModalAreaInteresse
-        todasAreas={areasDisponiveis}
-        areasSelecionadas={(usuarioVisualizado as Professor).areasDeInteresse}
-        onCancelar={() => setModalAberto(false)}
-        onAdicionar={(novasAreas) => {
-          setUsuario((prev) => ({
-            ...prev,
-            areasDeInteresse: novasAreas,
-          }));
-          setModalAberto(false);
-        }}
-      />
-
+      {modal.modalAreaInteresse && (
+        <ModalAreaInteresse
+          todasAreas={areasDisponiveis}
+          areasSelecionadas={areasInteresse}
+          onCancelar={() => modal.setModalAreaInteresse(false)}
+          onAdicionar={adicionarAreaInteresse}
+          isLoading={isLoading}
+        />
+      )}
       
       {(modal.modalAdicionarEstudanteTema || modal.modalRemoverEstudanteTema) && (
         <ModalEstudanteTema

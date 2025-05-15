@@ -1,6 +1,6 @@
 import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
 import { handleFetchError } from "@/utils/handleFetchError";
-import { Formacao, FormacaoDTO, Professor } from "@/types";
+import { FormacaoDTO } from "@/types";
 
 import {
   adicionarFormacao,
@@ -8,7 +8,6 @@ import {
   removerFormacao,
 } from "@/services/formacaoService";
 
-import { useFormacoes } from "@/hooks/useFormacoes";
 
 export const useFormacaoActions = (usuario: any) => {
   const { setErro, setSucesso, setIsLoading } = useAlertaTemporarioContext();

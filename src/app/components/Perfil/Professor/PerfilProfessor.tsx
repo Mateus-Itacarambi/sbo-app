@@ -7,17 +7,20 @@ import { FC } from "react";
 import CardFormacao from "./CardFormacao";
 import Link from "next/link";
 import { SquareArrowOutUpRight } from "lucide-react";
+import { on } from "events";
 
 interface PerfilProfessorProps {
   professor: Professor;
   onGerenciarFormacao: () => void;
   onGerenciarTemas: () => void;
   onAdicionarFormacao: () => void;
+  onAdicionarAreaInteresse: () => void;
   onAdicionarTema: () => void;
   isMeuPerfil: boolean;
   formacoes?: Formacao[];
   temas?: Tema[];
   areasInteresse?: AreaInteresse[];
+  onRemoverAreaInteresse: (areaInteresseId: number) => void;
 }
 
 const PerfilProfessor: FC<PerfilProfessorProps> = ({
@@ -25,11 +28,13 @@ const PerfilProfessor: FC<PerfilProfessorProps> = ({
   onGerenciarFormacao,
   onGerenciarTemas,
   onAdicionarFormacao,
+  onAdicionarAreaInteresse,
   onAdicionarTema,
   isMeuPerfil,
   formacoes,
   temas,
-  areasInteresse
+  areasInteresse,
+  onRemoverAreaInteresse
 }) => (
   <>
     <CardInfo titulo="ID Lattes" texto={professor.idLattes} link={<Link href={`https://lattes.cnpq.br/${professor.idLattes}`} target="_blank"><SquareArrowOutUpRight color="#669966" /></Link>} />
@@ -43,8 +48,9 @@ const PerfilProfessor: FC<PerfilProfessorProps> = ({
 
     <CardAreaInteresse
       areasInteresse={areasInteresse}
-      onAdicionarArea={onAdicionarTema}
+      onAdicionarArea={onAdicionarAreaInteresse}
       mostrarBotoes={isMeuPerfil}
+      onRemoverAreaInteresse={onRemoverAreaInteresse}
     />
 
     <CardTema
@@ -53,8 +59,6 @@ const PerfilProfessor: FC<PerfilProfessorProps> = ({
       onAdicionarTema={onAdicionarTema}
       mostrarBotoes={isMeuPerfil} 
     />
-
-    {/* <CardOrientador usuario={estudante} orientador={orientador} mostrarBotoes={isMeuPerfil} /> */}
   </>
 );
 
