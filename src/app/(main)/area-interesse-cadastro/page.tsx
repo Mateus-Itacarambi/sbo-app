@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import styles from './professor-cadastro.module.scss';
+import { useEffect, useState } from 'react';
+import styles from './area-interesse-cadastro.module.scss';
 import ButtonAuth from '@/components/ButtonAuth';
 import Alerta from '@/components/Alerta';
 import { useAlertaTemporarioContext } from '@/contexts/AlertaContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from "next/navigation";
 
-export default function UploadProfessores() {
+export default function UploadAreaInteresse() {
   const [formData, setFormData] = useState<any>({});
   const { usuario } = useAuth();
   const router = useRouter();
@@ -37,7 +37,7 @@ export default function UploadProfessores() {
     formData.append("file", file);
   
     try {
-      const response = await fetch('http://localhost:8080/professores/importar-relatorio-csv', {
+      const response = await fetch('http://localhost:8080/areasInteresse/importar-relatorio-csv', {
         method: 'POST',
         body: formData,
         credentials: "include",
@@ -48,7 +48,7 @@ export default function UploadProfessores() {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "relatorio_importacao_professores.csv";
+        a.download = "relatorio_importacao_area_interesse.csv";
         document.body.appendChild(a);
         a.click();
         a.remove();
@@ -74,16 +74,14 @@ export default function UploadProfessores() {
       )}
       <div className={styles.container}>
         <div className={styles.card_container}>
-          <h2>Importar Professores</h2>
+          <h2>Importar Áreas de Interesse</h2>
           <p>Arquivo</p>
           <input type="file" accept=".csv" onChange={handleSelectFile} />
           <p>Apenas arquivos .csv serão aceitos</p>
           <h3>Exemplo de arquivo .csv</h3>
           <div className={styles.exemplo}>
             <p>NOME</p>
-            <p>EMAIL</p>
-            <p>Luiz Márcio Severino Dias</p>
-            <p>luiz.dias@ifb.edu.br</p>
+            <p>Desenvolvimento Web</p>
           </div>
           <div className={styles.obs}><strong>Observação: </strong>os valores contidos no arquivo .csv devem estar separados por vírgula.</div>
           <ButtonAuth text={isLoading ? <span className="spinner"></span> : "Processar Arquivo"} type="button" onClick={handleFileUpload} disabled={isLoading || !file} theme="primary" margin="2rem 0 0 0"/>

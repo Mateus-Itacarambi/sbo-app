@@ -49,7 +49,7 @@ export default function CardTema({ temas, mostrarBotoes, onGerenciar, onAdiciona
         )}
       </div>
 
-      <ul>
+      <ul className={styles.lista_temas}>
         {temas
           ?.slice()
           .sort((a, b) => a.titulo.localeCompare(b.titulo))

@@ -23,6 +23,8 @@ import { useModal, useFormulario, useCursos, useOrientador, useTemaActions, useP
 import { Estudante, Formacao, FormacaoDTO, Professor, TemaDTO } from "@/types";
 import ModalGerenciarFormacoes from "../Modal/Professor/ModalGerenciarFormacoes";
 import ModalGerenciarTemas from "../Modal/Professor/ModalGerenciarTemas";
+import { useAreasInteresse } from "@/hooks/useAreasInteresse";
+import ModalAreaInteresse from "../Modal/Professor/ModalAreaInteresse";
 
 interface PerfilProps {
   usuarioVisualizado: Estudante | Professor | null;
@@ -50,13 +52,17 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
 
   const { formacoes, setFormacoes } = useFormacoes();
   const { temas, setTemas } = useTemas();
+  const { areasInteresse, setAreasInteresse } = useAreasInteresse();
 
   useEffect(() => {
     resetFormData();
     if (usuarioVisualizado) {
       if (usuarioVisualizado.role === "PROFESSOR") {
-        setFormacoes((usuarioVisualizado as Professor).formacoes || []);
-        setTemas((usuarioVisualizado as Professor).temas || []);
+        const professor = usuarioVisualizado as Professor;
+        setFormacoes(professor.formacoes || []);
+        setTemas(professor.temas || []);
+        setAreasInteresse(professor.areasDeInteresse || []);
+        console.log(areasInteresse)
       }
     }
   }, [usuarioVisualizado]);
@@ -190,6 +196,7 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
                 isMeuPerfil={isMeuPerfil}
                 formacoes={formacoes}
                 temas={temas}
+                areasInteresse={areasInteresse}
               />
             )}
 
@@ -242,6 +249,20 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
         />
       )}
 
+      <ModalAreaInteresse
+        todasAreas={areasDisponiveis}
+        areasSelecionadas={(usuarioVisualizado as Professor).areasDeInteresse}
+        onCancelar={() => setModalAberto(false)}
+        onAdicionar={(novasAreas) => {
+          setUsuario((prev) => ({
+            ...prev,
+            areasDeInteresse: novasAreas,
+          }));
+          setModalAberto(false);
+        }}
+      />
+
+      
       {(modal.modalAdicionarEstudanteTema || modal.modalRemoverEstudanteTema) && (
         <ModalEstudanteTema
           titulo={modal.modalAdicionarEstudanteTema ? "Adicionar Estudante ao Tema" : "Remover Estudante do Tema"}

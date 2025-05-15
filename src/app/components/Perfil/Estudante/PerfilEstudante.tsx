@@ -3,7 +3,6 @@ import CardTema from "./CardTema";
 import CardOrientador from "./CardOrientador";
 
 import { Estudante, Professor } from "@/types";
-import { FC } from "react";
 
 interface PerfilEstudanteProps {
   estudante: Estudante;

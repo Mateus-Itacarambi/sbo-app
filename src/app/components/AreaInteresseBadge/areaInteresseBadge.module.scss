@@ -1,0 +1,40 @@
+@import "../../styles/variaveis";
+
+.badge {
+    font-size: 1.4rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 12px;
+    width: fit-content;
+    color: $verde9;
+  }
+  
+.myBadge {
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 12px;
+    width: fit-content;
+    color: $verde9;
+    transition: .3s;
+    gap: .5rem;
+
+    &:hover {
+      background-color: $verde4;
+    }
+
+    button {
+      width: 19px;
+      height: auto;
+      border-radius: 50%;
+      padding: 0;
+      background-color: $verde9;
+      color: white;
+
+    &:hover {
+      background-color: $verde10;
+    }
+    }
+  }

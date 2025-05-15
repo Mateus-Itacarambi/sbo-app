@@ -1,7 +1,8 @@
 import CardInfo from "../CardInfo";
 import CardTema from "../Professor/CardTema";
+import CardAreaInteresse from "../Professor/CardAreaInteresse";
 
-import { Professor, Formacao, Tema } from "@/types";
+import { Professor, Formacao, Tema, AreaInteresse } from "@/types";
 import { FC } from "react";
 import CardFormacao from "./CardFormacao";
 import Link from "next/link";
@@ -16,6 +17,7 @@ interface PerfilProfessorProps {
   isMeuPerfil: boolean;
   formacoes?: Formacao[];
   temas?: Tema[];
+  areasInteresse?: AreaInteresse[];
 }
 
 const PerfilProfessor: FC<PerfilProfessorProps> = ({
@@ -27,6 +29,7 @@ const PerfilProfessor: FC<PerfilProfessorProps> = ({
   isMeuPerfil,
   formacoes,
   temas,
+  areasInteresse
 }) => (
   <>
     <CardInfo titulo="ID Lattes" texto={professor.idLattes} link={<Link href={`https://lattes.cnpq.br/${professor.idLattes}`} target="_blank"><SquareArrowOutUpRight color="#669966" /></Link>} />
@@ -36,6 +39,12 @@ const PerfilProfessor: FC<PerfilProfessorProps> = ({
       onGerenciar={onGerenciarFormacao}
       onAdicionarFormacao={onAdicionarFormacao}
       mostrarBotoes={isMeuPerfil} 
+    />
+
+    <CardAreaInteresse
+      areasInteresse={areasInteresse}
+      onAdicionarArea={onAdicionarTema}
+      mostrarBotoes={isMeuPerfil}
     />
 
     <CardTema

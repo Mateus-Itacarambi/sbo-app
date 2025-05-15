@@ -1,14 +1,12 @@
 import styles from "../perfil.module.scss";
-import { Estudante, Professor, UsuarioCompleto, StatusTipo } from "@/types";
+import { Estudante, UsuarioCompleto, StatusTipo } from "@/types";
 import Image from "next/image";
 import Dropdown from "@/components/Dropdown";
 import Icone from "@/assets/tres-pontos.png";
 import StatusBadge from "@/components/StatusBadge";
 import ButtonAuth from "@/components/ButtonAuth";
-import ModalEditarPerfil from "@/components/Modal/ModalEditarPerfil";
 import { useState } from "react";
 import ModalConfirmar from "@/components/Modal/ModalConfirmar";
-import { on } from "events";
 
 interface CardTemaProps {
   usuario: UsuarioCompleto;
