@@ -3,57 +3,57 @@
 import { useEffect, useState } from "react";
 import styles from "./modalAreaInteresse.module.scss";
 import BadgeAreaInteresse from "./BadgeAreaInteresse";
-import { AreaInteresse } from "@/types";
+import { Curso, CursoProfessor } from "@/types";
 import ReactDOM from "react-dom";
 import ButtonAuth from "@/components/ButtonAuth";
 
 interface ModalProps {
-  todasAreas: AreaInteresse[];
-  areasSelecionadas: AreaInteresse[];
+  todosCursos: CursoProfessor[];
+  cursosSelecionados: CursoProfessor[];
   onCancelar: () => void;
-  onAdicionar: (selecionadas: AreaInteresse[]) => void;
+  onAdicionar: (selecionadas: CursoProfessor[]) => void;
   isLoading?: boolean;
 }
 
-export default function ModalAreaInteresse({ todasAreas, areasSelecionadas, onCancelar, onAdicionar, isLoading }: ModalProps) {
+export default function ModalAreaInteresse({ todosCursos, cursosSelecionados, onCancelar, onAdicionar, isLoading }: ModalProps) {
   const [busca, setBusca] = useState("");
-  const [selecionadas, setSelecionadas] = useState<AreaInteresse[]>([]);
+  const [selecionadas, setSelecionadas] = useState<CursoProfessor[]>([]);
 
   useEffect(() => {
-    setSelecionadas(areasSelecionadas);
-  }, [areasSelecionadas]);
+    setSelecionadas(cursosSelecionados);
+  }, [cursosSelecionados]);
 
-  const filtrarAreas = todasAreas
-  .filter((area) => area.nome.toLowerCase().includes(busca.toLowerCase()))
+  const filtrarAreas = todosCursos
+  .filter((curso) => curso.nome.toLowerCase().includes(busca.toLowerCase()))
   .sort((a, b) => a.nome.localeCompare(b.nome));
 
-  const toggleSelecao = (area: AreaInteresse) => {
+  const toggleSelecao = (curso: Curso) => {
     setSelecionadas((prev) =>
-      prev.some((a) => a.id === area.id)
-        ? prev.filter((a) => a.id !== area.id)
-        : [...prev, area]
+      prev.some((a) => a.id === curso.id)
+        ? prev.filter((a) => a.id !== curso.id)
+        : [...prev, curso]
     );
   };
 
   return ReactDOM.createPortal (
     <div className={styles.overlay} onClick={onCancelar}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <h2>Adicionar Áreas de Interesse</h2>
+        <h2>Adicionar Cursos</h2>
         <input
           type="text"
-          placeholder="Área de Interesse"
+          placeholder="Curso"
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
           className={styles.inputBusca}
         />
 
         <div className={styles.listaBadges}>
-          {filtrarAreas.map((area) => (
+          {filtrarAreas.map((curso) => (
             <BadgeAreaInteresse
-              key={area.id}
-              texto={area.nome}
-              ativo={selecionadas.some((a) => a.id === area.id)}
-              onClick={() => toggleSelecao(area)}
+              key={curso.id}
+              texto={curso.nome}
+              ativo={selecionadas.some((a) => a.id === curso.id)}
+              onClick={() => toggleSelecao(curso)}
             />
           ))}
         </div>

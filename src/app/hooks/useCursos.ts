@@ -1,8 +1,22 @@
+import { Curso, CursoProfessor } from '@/types';
 import { useState, useEffect } from 'react';
 
 export const useCursos = (usuario: any, formData: any) => {
-  const [cursos, setCursos] = useState<any[]>([]);
+  const [cursos, setCursos] = useState<Curso[]>([]);
   const [semestresDisponiveis, setSemestresDisponiveis] = useState<{ value: number, label: string }[]>([]);
+
+  const [cursosProfessor, setCursosProfessor] = useState<CursoProfessor[]>([]);
+  const [cursosProfessorAtual, setCursosProfessorAtual] = useState<CursoProfessor>({
+    id: 0,
+    nome: ""
+  });
+
+  const [editIndex, setEditIndex] = useState<number | null>(null);
+
+  const handleEditar = (index: number) => {
+    setCursosProfessorAtual(cursosProfessor[index]);
+    setEditIndex(index);
+  };
   
   useEffect(() => {
     const fetchCursos = async () => {
@@ -37,7 +51,7 @@ export const useCursos = (usuario: any, formData: any) => {
 
   const handleCursoChange = (cursoId: string) => {
     const id = Number(cursoId);
-    const cursoSelecionado = cursos.find(curso => curso.value === id);
+    const cursoSelecionado = cursos.find(curso => curso.id === id);
     if (cursoSelecionado) {
       const semestres = Array.from({ length: cursoSelecionado.semestres }, (_, i) => ({
         value: i + 1,
@@ -53,6 +67,12 @@ export const useCursos = (usuario: any, formData: any) => {
     setSemestresDisponiveis,
     cursos,
     semestresDisponiveis,
-    handleCursoChange
+    handleCursoChange,
+    cursosProfessor, 
+    setCursosProfessor,
+    cursosProfessorAtual, 
+    setCursosProfessorAtual,
+    editIndex,
+    handleEditar,
   };
 };

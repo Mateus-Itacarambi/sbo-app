@@ -9,4 +9,4 @@ export * from "./cursoSelect";
 export * from "./statusTipo";
 export * from "./usuarioCompleto";
 export * from "./usuarioNaoEncontrado";
-export * from "./formacao"
+export * from "./formacao";

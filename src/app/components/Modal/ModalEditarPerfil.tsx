@@ -4,7 +4,7 @@ import styles from "./modalEditarPerfil.module.scss";
 import InputAuth from "@/components/InputAuth";
 import SelectAuth from "@/components/SelectAuth";
 import ButtonAuth from "@/components/ButtonAuth";
-import { generos, UsuarioCompleto } from "@/types";
+import { Estudante, generos, Professor, UsuarioCompleto } from "@/types";
 import { useFormulario } from "@/hooks";
 
 
@@ -23,7 +23,10 @@ interface ModalEditarPerfilProps {
   isLoading: boolean;
 }
 
-export default function ModalEditarPerfil({ formData, cursos, semestresDisponiveis, onClose, onSalvarPerfil, handleChange, handleGeneroChange, handleCursoChange, handleSemestreChange, handleCancelar, isLoading }: ModalEditarPerfilProps) {
+export default function ModalEditarPerfil({ usuario, formData, cursos, semestresDisponiveis, onClose, onSalvarPerfil, handleChange, handleGeneroChange, handleCursoChange, handleSemestreChange, handleCancelar, isLoading }: ModalEditarPerfilProps) {
+  const professor = usuario?.role === "PROFESSOR" ? (usuario as Professor) : null;
+  const estudante = usuario?.role === "ESTUDANTE" ? (usuario as Estudante) : null;
+  
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -45,14 +48,20 @@ export default function ModalEditarPerfil({ formData, cursos, semestresDisponive
           <InputAuth label="Data de Nascimento" name="dataNascimento" type="date" value={formData.dataNascimento} onChange={handleChange}/>
           <SelectAuth text="Gênero" options={generos} onChange={handleGeneroChange} selected={formData.genero} />
 
-          {"matricula" in formData && (
-            <InputAuth label="Matrícula" name="matricula" type="number" value={formData.matricula} onChange={handleChange}/>
+          {estudante && (
+            <>
+              <InputAuth label="Matrícula" name="matricula" type="number" value={formData.matricula} onChange={handleChange}/>
+              <SelectAuth text="Curso" options={cursos} onChange={handleCursoChange} selected={formData.curso} />
+              <SelectAuth text="Semestre" options={semestresDisponiveis} onChange={handleSemestreChange} selected={formData.semestre} />
+            </>
           )}
-          {"curso" in formData && (
-            <SelectAuth text="Curso" options={cursos} onChange={handleCursoChange} selected={formData.curso} />
-          )}
-          {"semestre" in formData && (
-            <SelectAuth text="Semestre" options={semestresDisponiveis} onChange={handleSemestreChange} selected={formData.semestre} />
+
+          {professor && (
+            <>
+              <InputAuth label="ID Lattes" name="idLattes" type="number" value={formData.idLattes} onChange={handleChange}/>
+              {/* <SelectAuth text="Curso" options={cursos} onChange={handleCursoChange} selected={formData.curso} />
+              <SelectAuth text="Semestre" options={semestresDisponiveis} onChange={handleSemestreChange} selected={formData.semestre} /> */}
+            </>
           )}
 
           <ButtonAuth type="button" text="Cancelar" theme="secondary" onClick={handleCancelar} />

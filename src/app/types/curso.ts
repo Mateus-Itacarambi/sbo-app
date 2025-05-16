@@ -5,4 +5,8 @@ export interface Curso {
     descricao: string;
     semestres: number;
 }
-  
+
+export interface CursoProfessor {
+    id: number;
+    nome: string;
+}

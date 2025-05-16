@@ -1,7 +1,7 @@
 import styles from "../perfil.module.scss";
 import { AreaInteresse } from "@/types";
 import ButtonAuth from "@/components/ButtonAuth";
-import AreaInteresseBadge from "@/components/AreaInteresseBadge";
+import AreaInteresseBadge from "@/components/CustomBadge";
 
 interface CardTemaProps {
   areasInteresse?: AreaInteresse[] | null;
@@ -14,7 +14,7 @@ export default function CardTema({ areasInteresse, mostrarBotoes, onAdicionarAre
   if (!areasInteresse || areasInteresse.length === 0) {
     return (
       <>
-        <div className={styles.card_formacao}>
+        <div className={styles.card_areasInteresse}>
           <div className={styles.titulo}>
             <h2>Áreas de Interesse</h2>
           </div>
@@ -38,7 +38,7 @@ export default function CardTema({ areasInteresse, mostrarBotoes, onAdicionarAre
           ?.slice()
           .sort((a, b) => a.nome.localeCompare(b.nome))
           .map((areaInteresse, idx) => (
-          <li key={idx} className={styles.tema}>
+          <li key={idx} className={styles.areaInteresse}>
             <AreaInteresseBadge 
               areaInteresse={areaInteresse}
               style={mostrarBotoes ? "myBadge" : "badge"} 

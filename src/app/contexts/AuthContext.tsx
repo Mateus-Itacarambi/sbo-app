@@ -1,8 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Estudante, Professor } from "@/types";
-
-type UsuarioCompleto = Estudante | Professor;
+import { Estudante, Professor, Usuario, UsuarioCompleto } from "@/types";
 
 interface AuthContextType {
   usuario: Estudante | Professor | null;
@@ -27,7 +25,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const fetchUsuario = async () => {
       try {
         setLoading(true);
-        const res = await fetch("http://localhost:8080/auth/me", {
+        const res = await fetch("http://localhost:8080/auth/resumo", {
           credentials: "include",
         });
         if (res.ok) {

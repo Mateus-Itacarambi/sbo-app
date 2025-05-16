@@ -8,7 +8,6 @@ import Alerta from "@/components/Alerta";
 import ModalEditarPerfil from "@/components/Modal/ModalEditarPerfil";
 import ModalTemaEstudante from "@/components/Modal/Estudante/ModalTemaEstudante";
 import ModalEstudanteTema from "@/components/Modal/Estudante/ModalEstudanteTema";
-import ModalConfirmar from "@/components/Modal/ModalConfirmar";
 import ModalFormacao from "../Modal/Professor/ModalFormacao";
 import ModalTemaProfessor from "@/components/Modal/Professor/ModalTemaProfessor";
 
@@ -17,25 +16,39 @@ import CardInfo from "@/components/Perfil/CardInfo";
 import PerfilEstudante from "@/components/Perfil/Estudante/PerfilEstudante";
 import PerfilProfessor from "./Professor/PerfilProfessor";
 
-import { useAuth } from "@/contexts/AuthContext";
 import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
 import { useModal, useFormulario, useCursos, useOrientador, useTemaActions, usePerfilActions, useFormacaoActions, useFormacoes, useTemas, useAreaInteresseActions } from "@/hooks";
-import { AreaInteresse, Estudante, Formacao, FormacaoDTO, Professor, TemaDTO } from "@/types";
+import { AreaInteresse, Curso, CursoProfessor, Estudante, Formacao, FormacaoDTO, Professor, TemaDTO, UsuarioCompleto } from "@/types";
 import ModalGerenciarFormacoes from "../Modal/Professor/ModalGerenciarFormacoes";
 import ModalGerenciarTemas from "../Modal/Professor/ModalGerenciarTemas";
 import { useAreasInteresse } from "@/hooks/useAreasInteresse";
 import ModalAreaInteresse from "../Modal/Professor/ModalAreaInteresse";
+import ModalCurso from "../Modal/Professor/ModalCurso";
+import { useCursosActions } from "@/hooks/useCursosActions";
 
 interface PerfilProps {
   usuarioVisualizado: Estudante | Professor | null;
 }
 
 export default function Perfil({ usuarioVisualizado }: PerfilProps) {
-  const { usuario: usuarioLogado } = useAuth();
+  const [UsuarioCompleto, setUsuarioCompleto] = useState<UsuarioCompleto | null>(null);
+
+  useEffect(() => {
+  const buscarDadosCompletos = async () => {
+    const res = await fetch("http://localhost:8080/auth/me", {
+      credentials: "include",
+    });
+    const data = await res.json();
+    setUsuarioCompleto(data);
+  };
+
+  buscarDadosCompletos();
+}, []);
+
 
   if (!usuarioVisualizado) return <p>Usuário não encontrado.</p>;
 
-  const isMeuPerfil = usuarioLogado?.id === usuarioVisualizado.id;
+  const isMeuPerfil = UsuarioCompleto?.id === usuarioVisualizado.id;
 
   const professor = usuarioVisualizado?.role === "PROFESSOR" ? (usuarioVisualizado as Professor) : null;
   const estudante = usuarioVisualizado?.role === "ESTUDANTE" ? (usuarioVisualizado as Estudante) : null;
@@ -44,18 +57,19 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
 
   const modal = useModal(usuarioVisualizado);
   const form = useFormulario({});
-  const cursosHook = useCursos(usuarioVisualizado, form.formData);
+  const cursos = useCursos(usuarioVisualizado, form.formData);
   const { orientador } = useOrientador(usuarioVisualizado);
   const perfilActions = usePerfilActions(usuarioVisualizado, form.formData);
   const temaActions = useTemaActions(usuarioVisualizado);
   const formacaoActions = useFormacaoActions(usuarioVisualizado);
   const areaInteresseActions = useAreaInteresseActions(usuarioVisualizado);
+  const cursoActions = useCursosActions(usuarioVisualizado);
 
   const { formacoes, setFormacoes } = useFormacoes();
   const { temas, setTemas } = useTemas();
   const { areasInteresse, setAreasInteresse } = useAreasInteresse();
-
-  const [areasDisponiveis, setAreasDisponiveis] = useState<AreaInteresse[]>([]);
+  const [ areasDisponiveis, setAreasDisponiveis ] = useState<AreaInteresse[]>([]);
+  const [ cursosDisponiveis, setCursosDisponiveis ] = useState<CursoProfessor[]>([]);
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/areasInteresse/lista`)
@@ -63,6 +77,11 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
       .then((data: AreaInteresse[]) => setAreasDisponiveis(data));
   }, []);
 
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/cursos/lista`)
+      .then(res => res.json())
+      .then((data: Curso[]) => setCursosDisponiveis(data));
+  }, []);
 
   useEffect(() => {
     resetFormData();
@@ -72,7 +91,7 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
         setFormacoes(professor.formacoes || []);
         setTemas(professor.temas || []);
         setAreasInteresse(professor.areasDeInteresse || []);
-        console.log(areasInteresse)
+        cursos.setCursosProfessor(professor.cursos || []);
       }
     }
   }, [usuarioVisualizado]);
@@ -84,15 +103,15 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
         curso: estudante?.curso?.id || "",
       });
 
-      const cursoOriginal = cursosHook.cursos.find(c => c.value === estudante?.curso?.id);
+      const cursoOriginal = cursos.cursos.find(c => c.id === estudante?.curso?.id);
       if (cursoOriginal) {
         const semestres = Array.from({ length: cursoOriginal.semestres }, (_, i) => ({
           value: i + 1,
           label: `${i + 1}º Semestre`,
         }));
-        cursosHook.setSemestresDisponiveis(semestres);
+        cursos.setSemestresDisponiveis(semestres);
       } else {
-        cursosHook.setSemestresDisponiveis([]);
+        cursos.setSemestresDisponiveis([]);
       }
     }
   };
@@ -173,6 +192,16 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
     setAreasInteresse((prev) => prev.filter((a) => a.id !== areaInteresseId));
   };
 
+  const adicionarCurso = async (cursos: CursoProfessor[]) => {
+    await cursoActions.handleAdicionarCurso(cursos);
+  };
+
+  const removerCurso = async (cursoId: number) => {
+    await cursoActions.handleRemoverCurso(cursoId);
+
+    cursos.setCursosProfessor((prev) => prev.filter((c) => c.id !== cursoId));
+  };
+
   if (!usuarioVisualizado) return <Loading />;
 
   return (
@@ -214,11 +243,14 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
                 onAdicionarFormacao={() => modal.setModalFormacao(true)}
                 onAdicionarAreaInteresse={() => modal.setModalAreaInteresse(true)}
                 onAdicionarTema={() => modal.setModalTemaProfessor(true)}
+                onAdicionarCurso={() => modal.setModalCurso(true)}
                 isMeuPerfil={isMeuPerfil}
                 formacoes={formacoes}
                 temas={temas}
                 areasInteresse={areasInteresse}
                 onRemoverAreaInteresse={removerAreaInteresse}
+                onRemoverCurso={removerCurso}
+                cursos={cursos.cursosProfessor}
               />
             )}
 
@@ -280,7 +312,16 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
           isLoading={isLoading}
         />
       )}
-      
+      {modal.modalCurso && (
+        <ModalCurso
+          todosCursos={cursosDisponiveis}
+          cursosSelecionados={cursos.cursosProfessor}
+          onCancelar={() => modal.setModalCurso(false)}
+          onAdicionar={adicionarCurso}
+          isLoading={isLoading}
+        />
+      )}
+
       {(modal.modalAdicionarEstudanteTema || modal.modalRemoverEstudanteTema) && (
         <ModalEstudanteTema
           titulo={modal.modalAdicionarEstudanteTema ? "Adicionar Estudante ao Tema" : "Remover Estudante do Tema"}
@@ -298,13 +339,13 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
         <ModalEditarPerfil 
           usuario={usuarioVisualizado}
           formData={form.formData}
-          cursos={cursosHook.cursos}
-          semestresDisponiveis={cursosHook.semestresDisponiveis}
+          cursos={cursos.cursos}
+          semestresDisponiveis={cursos.semestresDisponiveis}
           onClose={() => modal.setModalEditarPerfil(false)}
           onSalvarPerfil={atualizarPerfil}
           handleChange={form.handleChange}
           handleGeneroChange={form.handleGeneroChange}
-          handleCursoChange={cursosHook.handleCursoChange}
+          handleCursoChange={cursos.handleCursoChange}
           handleSemestreChange={form.handleSemestreChange}
           handleCancelar={handleCancelar}
           isLoading={isLoading}
