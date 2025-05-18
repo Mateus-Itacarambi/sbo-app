@@ -1,6 +1,7 @@
 import { X, Search } from "lucide-react"; // ícones de lupa e "x"
 import ButtonAuth from "../ButtonAuth";
 import styles from "./professoresPage.module.scss";
+import DropdownCheck from "../DropdownCheck";
 
 interface Props {
   filtros: any;
@@ -34,7 +35,13 @@ export default function FiltroProfessor({ filtros, setFiltros }: Props) {
             <Search className={styles.icone} />
           )}
         </div>
-
+        
+        <DropdownCheck
+          label="Área de interesse"
+          options={[{ label: "Área 1", value: "area1" }, { label: "Área 2", value: "area2" }]}
+          selectedValues={[]}
+          onChange={(values) => setFiltros({ ...filtros, areaInteresse: values })}
+        />
         <select name="curso" onChange={handleChange}><option value="">Curso</option></select>
         <select name="disponibilidade" onChange={handleChange}><option value="">Disponibilidade</option></select>
         <select name="areaInteresse" onChange={handleChange}><option value="">Área de interesse</option></select>

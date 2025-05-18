@@ -1,0 +1,18 @@
+.dropdownContainer {
+    // background-color: aqua;
+
+    .labelRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        background-color: red;
+
+        span {}
+
+        button {
+            background-color: red;
+            border: none;
+        }
+    }
+}
