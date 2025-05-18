@@ -29,6 +29,10 @@
       flex-direction: column;
       justify-content: space-between;
       min-height: 477px;
+
+      textarea {
+          text-align: justify;
+      }
     }
 
     h2 {

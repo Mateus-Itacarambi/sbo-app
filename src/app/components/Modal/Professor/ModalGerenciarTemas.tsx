@@ -110,7 +110,7 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove
           <div>
             <InputAuth label="Título" type="text" value={temaAtual.titulo} onChange={(e) => handleChange("titulo", e.target.value)} />
             <InputAuth label="Palavras-Chave" type="text" value={temaAtual.palavrasChave} onChange={(e) => handleChange("palavrasChave", e.target.value)} />
-            <InputAuth label="Descrição" type="text" value={temaAtual.descricao} onChange={(e) => handleChange("descricao", e.target.value)} />
+            <InputAuth label="Descrição" type="textarea" value={temaAtual.descricao} onChange={(e) => handleChange("descricao", e.target.value)} />
           </div>
           <div className={styles.flex}>
             <ButtonAuth type="submit" text={isLoading ? <span className="spinner"></span> : "Remover Tema"} theme="secondary" margin="0" disabled={isLoading} onClick={() => setModalConfirmarRemocaoTema(true)} />

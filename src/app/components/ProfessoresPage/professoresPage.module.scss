@@ -1,0 +1,66 @@
+@import '../../styles/variaveis';
+
+.card_filtro {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 2rem;
+    box-shadow: rgba(72, 121, 72, 0.245) 0px 3px 6px, rgba(72, 121, 72, 0.048) 0px 3px 6px;
+
+    h2 {
+        font-size: 2.8rem;
+        color: $verde9;
+        font-weight: 600;
+        margin-bottom: 2rem;
+    }
+
+    .filtros {
+        display: flex;
+        flex-direction: column;
+
+        .inputComIcone {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+
+            input {
+                width: 100%;
+                font-size: 1.6rem;
+                padding: 1rem;
+                border-radius: 2rem;
+                border: 3px solid $cinza6;
+                transition: .3s;
+                color: $cinza11;
+                padding-right: 3.5rem;
+
+                &:focus {
+                    outline: none;
+                    border: 3px solid $verde9;
+                }
+
+                &::placeholder {
+                    color: $cinza8;
+                }
+            }
+
+            .icone {
+                position: absolute;
+                right: 1rem;
+                cursor: pointer;
+                color: $cinza7;
+            }
+
+            &:focus-within .icone {
+                color: $verde10;
+            }
+        }
+
+    }
+
+    button {
+        border-radius: 4rem;
+    }
+}
