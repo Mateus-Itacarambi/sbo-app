@@ -78,14 +78,14 @@ export default function FiltroProfessor({ filtros, setFiltros }: Props) {
         </div>
         
         <DropdownCheck
-          label="Área de interesse"
+          label="Áreas de interesse"
           options={areasOptions}
           selectedValues={filtros.areaInteresse}
           onChange={handleChangeAreas}
         />
         
         <DropdownCheck
-          label="Curso"
+          label="Cursos"
           options={cursosOptions}
           selectedValues={filtros.curso}
           onChange={handleChangeCursos}

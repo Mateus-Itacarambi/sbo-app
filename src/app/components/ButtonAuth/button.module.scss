@@ -22,6 +22,16 @@
         &:disabled{
             background-color: $verde11;
         }
+
+        &_2 {
+            background-color: white;
+            color: $verde9;
+            border: 2px solid $verde9;
+
+            &:hover {
+                background-color: $cinza3;
+            }
+        }
     }
 
     &.secondary {

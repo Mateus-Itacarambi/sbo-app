@@ -5,8 +5,8 @@ import Image from "next/image";
 
 interface PerfilCabecalhoProps {
   usuario: UsuarioCompleto | UsuarioNaoEncontrado;
-  onEditar: () => void;
-  mostrarBotoes: boolean;
+  onEditar?: () => void;
+  mostrarBotoes?: boolean;
 }
 
 

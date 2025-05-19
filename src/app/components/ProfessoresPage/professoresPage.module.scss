@@ -107,7 +107,6 @@
     .card_professor {
         display: flex;
         background-color: white;
-        height: 300px;
         max-height: 300px;
         border-radius: 2rem;
         box-shadow: rgba(72, 121, 72, 0.245) 0px 3px 6px, rgba(72, 121, 72, 0.048) 0px 3px 6px;
@@ -167,8 +166,9 @@
         .info {
             display: flex;
             flex-direction: column;
+            width: 100%;
             gap: .8rem;
-            padding: 1rem 0;
+            padding-top: 1rem;
 
             h3 {
                 font-size: 2.6rem;
@@ -177,14 +177,14 @@
                 line-height: 1.9rem;
             }
 
-            .email {
+            .email, .status_info {
                 font-size: 1.6rem;
                 font-weight: 300;
                 color: $cinza12;
                 margin-bottom: .5rem;
             }
 
-            .areas, .cursos {
+            .areas, .cursos, .lattes {
                 display: flex;
                 flex-direction: column;
 
@@ -198,6 +198,19 @@
                 font-weight: 300;
                 color: $cinza12;
                 line-height: 1.8rem;
+            }
+
+            .lattes {
+                a {
+                    color: $cinza12;
+                    display: flex;
+                    align-items: center;
+                    gap: .3rem;
+
+                    .icone {
+                        color: $cinza11;
+                    }
+                }
             }
         }
 
