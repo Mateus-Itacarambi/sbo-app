@@ -2,6 +2,9 @@ import { X, Search } from "lucide-react"; // ícones de lupa e "x"
 import ButtonAuth from "../ButtonAuth";
 import styles from "./professoresPage.module.scss";
 import DropdownCheck from "../DropdownCheck";
+import { AreaInteresse } from "@/types";
+import { useEffect, useState } from "react";
+import { buscarAreasInteresse, buscarCursos } from "@/services";
 
 interface Props {
   filtros: any;
@@ -9,12 +12,50 @@ interface Props {
 }
 
 export default function FiltroProfessor({ filtros, setFiltros }: Props) {
+  const [areasOptions, setAreasOptions] = useState<{ value: string; label: string }[]>([]);
+  const [cursosOptions, setCursosOptions] = useState<{ value: string; label: string }[]>([]);
+
+  useEffect(() => {
+    const carregarAreas = async () => {
+      const areas = await buscarAreasInteresse();
+      const opcoes = areas.map((a) => ({ value: a.nome, label: a.nome }));
+      setAreasOptions(opcoes);
+    };
+    carregarAreas();
+
+    
+    const carregarCursos = async () => {
+      const cursos = await buscarCursos();
+      const opcoes = cursos.map((c) => ({ value: c.nome, label: c.nome }));
+      setCursosOptions(opcoes);
+    };
+    carregarCursos();
+  }, []);
+
+  const disponibilidadeOptions = [
+  { value: "DISPONIVEL", label: "Disponível" },
+  { value: "INDISPONIVEL", label: "Indisponível" }
+];
+
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFiltros({ ...filtros, [e.target.name]: e.target.value });
   };
 
   const limparCampoNome = () => {
     setFiltros({ ...filtros, nome: "" });
+  };
+
+  const handleChangeAreas = (valores: string[]) => {
+    setFiltros({ ...filtros, areaInteresse: valores });
+  };
+
+  const handleChangeCursos = (valores: string[]) => {
+    setFiltros({ ...filtros, curso: valores });
+  };
+
+  const handleChangeDisponibilidade = (valores: string[]) => {
+    setFiltros({ ...filtros, disponibilidade: valores });
   };
 
   return (
@@ -38,13 +79,25 @@ export default function FiltroProfessor({ filtros, setFiltros }: Props) {
         
         <DropdownCheck
           label="Área de interesse"
-          options={[{ label: "Área 1", value: "area1" }, { label: "Área 2", value: "area2" }]}
-          selectedValues={[]}
-          onChange={(values) => setFiltros({ ...filtros, areaInteresse: values })}
+          options={areasOptions}
+          selectedValues={filtros.areaInteresse}
+          onChange={handleChangeAreas}
         />
-        <select name="curso" onChange={handleChange}><option value="">Curso</option></select>
-        <select name="disponibilidade" onChange={handleChange}><option value="">Disponibilidade</option></select>
-        <select name="areaInteresse" onChange={handleChange}><option value="">Área de interesse</option></select>
+        
+        <DropdownCheck
+          label="Curso"
+          options={cursosOptions}
+          selectedValues={filtros.curso}
+          onChange={handleChangeCursos}
+        />
+        
+        <DropdownCheck
+          label="Disponibilidade"
+          options={disponibilidadeOptions}
+          selectedValues={filtros.disponibilidade}
+          onChange={handleChangeDisponibilidade}
+          search={false}
+        />
       </div>
 
       <ButtonAuth

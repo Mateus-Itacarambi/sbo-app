@@ -21,23 +21,31 @@ export default function ProfessoresPage() {
   const [totalPaginas, setTotalPaginas] = useState(0);
   const [filtros, setFiltros] = useState({
     nome: "",
-    curso: "",
-    disponibilidade: "",
-    areaInteresse: ""
+    curso:  [] as string[],
+    disponibilidade: [] as string[],
+    areaInteresse: [] as string[]
   });
+
 
   useEffect(() => {
     buscarProfessores();
   }, [paginaAtual, filtros]);
 
   const buscarProfessores = async () => {
-    const params = new URLSearchParams({
-      page: paginaAtual.toString(),
-      size: "10",
-      sort: "nome",
-      ...Object.fromEntries(
-        Object.entries(filtros).filter(([, valor]) => valor.trim() !== "")
-      )
+    const params = new URLSearchParams();
+
+    params.append("page", paginaAtual.toString());
+    params.append("size", "10");
+    params.append("sort", "nome");
+
+    Object.entries(filtros).forEach(([chave, valor]) => {
+      if (typeof valor === "string" && valor.trim() !== "") {
+        params.append(chave, valor);
+      }
+
+      if (Array.isArray(valor) && valor.length > 0) {
+        valor.forEach((v) => params.append(chave, v));
+      }
     });
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/professores?${params}`);
@@ -46,6 +54,7 @@ export default function ProfessoresPage() {
     setProfessores(data.content);
     setTotalPaginas(data.totalPages);
   };
+
 
   return (
     <div className={styles.main}>

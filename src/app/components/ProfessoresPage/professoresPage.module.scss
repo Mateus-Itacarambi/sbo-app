@@ -13,7 +13,7 @@
         font-size: 2.8rem;
         color: $verde9;
         font-weight: 600;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
     }
 
     .filtros {
@@ -24,21 +24,21 @@
             position: relative;
             display: flex;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
 
             input {
                 width: 100%;
                 font-size: 1.6rem;
-                padding: 1rem;
-                border-radius: 2rem;
-                border: 3px solid $cinza6;
+                padding: 1.3rem 1rem;
+                border-radius: 1rem;
+                border: 2px solid $cinza6;
                 transition: .3s;
                 color: $cinza11;
                 padding-right: 3.5rem;
 
                 &:focus {
                     outline: none;
-                    border: 3px solid $verde9;
+                    border: 2px solid $verde9;
                 }
 
                 &::placeholder {
@@ -62,5 +62,144 @@
 
     button {
         border-radius: 4rem;
+    }
+}
+
+.lista_professores {
+    h2 {
+        background-color: $verde9;
+        font-size: 3rem;
+        color: white;
+        padding: 2rem;
+        border-radius: 2rem;
+        box-shadow: rgba(72, 121, 72, 0.245) 0px 3px 6px, rgba(72, 121, 72, 0.048) 0px 3px 6px;
+        margin-bottom: 1rem;
+        margin-right: 1rem;
+    }
+
+    .professores_container {
+        display: grid;
+        grid-template-rows: 1fr;
+        gap: 1rem;
+        max-height: 710px;
+        min-height: 710px;
+        overflow-x: auto;
+        padding-right: 1rem;
+
+        &::-webkit-scrollbar
+        {
+            width: 8px;
+            border-radius: 8px;
+        }
+
+        &::-webkit-scrollbar-thumb
+        {
+            border-radius: 15px;
+            background-color: $verde9;
+            cursor: pointer;
+
+            &:hover {
+            background-color: $verde10;
+            }
+        }
+    }
+
+    .card_professor {
+        display: flex;
+        background-color: white;
+        height: 300px;
+        max-height: 300px;
+        border-radius: 2rem;
+        box-shadow: rgba(72, 121, 72, 0.245) 0px 3px 6px, rgba(72, 121, 72, 0.048) 0px 3px 6px;
+        padding: 2rem;
+        gap: 2rem;
+
+        .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        
+            .profileImage {
+                border-radius: 50%;
+                object-fit: cover;
+                background-color: $verde9;
+                border: 10px solid $verde9;
+                box-sizing: border-box;
+            }
+        
+            .initials {
+                position: relative;
+                width: 9rem;
+                height: 9rem;
+                border-radius: 50%;
+                background-color: $verde9;
+                color: white;
+                font-size: 4.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 5px 5px 10px $cinza6;
+
+                .status {
+                    position: absolute;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    bottom: 0;
+                    right: 0;
+                    width: 2.5rem;
+                    height: 2.5rem;
+                    border-radius: 50%;
+                    border: 3px solid white;
+                    box-shadow: 3px 3px 6px $cinza6;
+
+                    &.disponivel {
+                        background-color: $verde9;
+                    }
+
+                    &.indisponivel {
+                        background-color: $vermelho9;
+                    }
+                }
+            }
+        }
+
+        .info {
+            display: flex;
+            flex-direction: column;
+            gap: .8rem;
+            padding: 1rem 0;
+
+            h3 {
+                font-size: 2.6rem;
+                font-weight: 600;
+                color: $verde10;
+                line-height: 1.9rem;
+            }
+
+            .email {
+                font-size: 1.6rem;
+                font-weight: 300;
+                color: $cinza12;
+                margin-bottom: .5rem;
+            }
+
+            .areas, .cursos {
+                display: flex;
+                flex-direction: column;
+
+                strong {
+                    font-size: 1.8rem;
+                    font-weight: 600;
+                    color: $verde10;
+                }
+
+                font-size: 1.4rem;
+                font-weight: 300;
+                color: $cinza12;
+                line-height: 1.8rem;
+            }
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-import { Professor, CursoProfessor } from "@/types";
+import { Professor, CursoProfessor, Curso } from "@/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -19,4 +19,11 @@ export const removerCurso = async (usuario: Professor, cursoId: number) => {
     credentials: "include",
   });
   if (!response.ok) throw new Error(await response.text());
+};
+
+export const buscarCursos = async (): Promise<CursoProfessor[]> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cursos/lista`, {
+    credentials: "include",
+  });
+  return await res.json();
 };

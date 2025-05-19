@@ -20,3 +20,10 @@ export const removerAreaInteresse = async (usuario: Professor, areaInteresseId: 
   });
   if (!response.ok) throw new Error(await response.text());
 };
+
+export const buscarAreasInteresse = async (): Promise<AreaInteresse[]> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/areasInteresse/lista`, {
+    credentials: "include",
+  });
+  return await res.json();
+};

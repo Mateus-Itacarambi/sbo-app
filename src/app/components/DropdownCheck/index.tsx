@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import styles from "./DropdownCheck.module.scss";
-import { Plus, Minus } from "lucide-react";
+import styles from "./dropdownCheck.module.scss";
+import { Plus, Minus, X, Search } from "lucide-react";
 
 interface Option {
   label: string;
@@ -12,11 +12,12 @@ interface Props {
   options: Option[];
   selectedValues: string[];
   onChange: (values: string[]) => void;
+  search?: boolean;
 }
 
-export default function DropdownCheck({ label, options, selectedValues, onChange }: Props) {
-  const [isOpen, setIsOpen] = useState(true); // começa aberto, como na imagem
-  const [searchTerm, setSearchTerm] = useState("");
+export default function DropdownCheck({ label, options, selectedValues, onChange, search=true }: Props) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [buscaArea, setBuscaArea] = useState("");
   const ref = useRef<HTMLDivElement>(null);
 
   const toggleOption = (value: string) => {
@@ -28,36 +29,42 @@ export default function DropdownCheck({ label, options, selectedValues, onChange
   };
 
   const filteredOptions = options.filter((opt) =>
-    opt.label.toLowerCase().includes(searchTerm.toLowerCase())
+    opt.label.toLowerCase().includes(buscaArea.toLowerCase())
   );
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     if (ref.current && !ref.current.contains(event.target as Node)) {
+  //       setIsOpen(false);
+  //     }
+  //   };
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => document.removeEventListener("mousedown", handleClickOutside);
+  // }, []);
+  
   return (
-    <div className={styles.dropdownContainer} ref={ref}>
+    <div className={`${styles.dropdownContainer} ${isOpen ? styles.aberto : ""}`} ref={ref}>
       <div className={styles.labelRow} onClick={() => setIsOpen(!isOpen)}>
         <span>{label}</span>
-        <button className={styles.toggleBtn}>{isOpen ? <Minus /> : <Plus />}</button>
+        <button>{isOpen ? <Minus className={styles.icone} /> : <Plus className={styles.icone} />}</button>
       </div>
       {isOpen && (
         <div className={styles.dropdownMenu}>
-          <div className={styles.searchBox}>
-            <input
-              type="text"
-              placeholder="Buscar..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <span className={styles.searchIcon}>🔍</span>
-          </div>
+          {search && (
+            <div className={styles.inputComIcone}>
+              <input
+                type="text"
+                placeholder="Buscar..."
+                value={buscaArea}
+                onChange={(e) => setBuscaArea(e.target.value)}
+              />
+              {buscaArea ? (
+                <X className={styles.icone} onClick={() => setBuscaArea("")} />
+              ) : (
+                <Search className={styles.icone} />
+              )}
+            </div>
+          )}
           <div className={styles.optionsList}>
             {filteredOptions.map((opt) => (
               <label key={opt.value} className={styles.optionItem}>
@@ -66,7 +73,9 @@ export default function DropdownCheck({ label, options, selectedValues, onChange
                   checked={selectedValues.includes(opt.value)}
                   onChange={() => toggleOption(opt.value)}
                 />
-                {opt.label}
+                <span>
+                  {opt.label}
+                </span>
               </label>
             ))}
           </div>
