@@ -4,16 +4,18 @@ import { useEffect, useState } from "react";
 import { Professor } from "@/types";
 import FiltroProfessor from "@/components/ProfessoresPage/FiltroProfessor";
 import ListaProfessores from "@/components/ProfessoresPage/ListaProfessores";
-import Paginacao from "@/components/ProfessoresPage/Paginacao";
-import styles from "./professoes.module.scss";
+import styles from "./professores.module.scss";
 
 interface Page<T> {
   content: T[];
-  totalPages: number;
-  number: number;
-  totalElements: number;
-  size: number;
+  page: {
+    size: number;
+    number: number;
+    totalElements: number;
+    totalPages: number;
+  };
 }
+
 
 export default function ProfessoresPage() {
   const [professores, setProfessores] = useState<Professor[]>([]);
@@ -26,11 +28,10 @@ export default function ProfessoresPage() {
     areaInteresse: [] as string[]
   });
 
-
   useEffect(() => {
     buscarProfessores();
   }, [paginaAtual, filtros]);
-
+  
   const buscarProfessores = async () => {
     const params = new URLSearchParams();
 
@@ -42,18 +43,21 @@ export default function ProfessoresPage() {
       if (typeof valor === "string" && valor.trim() !== "") {
         params.append(chave, valor);
       }
-
       if (Array.isArray(valor) && valor.length > 0) {
         valor.forEach((v) => params.append(chave, v));
       }
     });
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/professores?${params}`);
-    const data: Page<Professor> = await res.json();
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/professores?${params}`);
+  if (!res.ok) throw new Error("Erro ao buscar professores");
 
-    setProfessores(data.content);
-    setTotalPaginas(data.totalPages);
-  };
+  const data: Page<Professor> = await res.json();
+  if (!data.page) throw new Error("Formato inesperado de resposta");
+
+  setProfessores(data.content);
+  setTotalPaginas(data.page.totalPages);
+};
+
 
 
   return (

@@ -48,3 +48,10 @@ export async function atualizarPerfil(
 
   return usuarioAtualizado;
 }
+
+export const buscarProfessores = async (): Promise<Professor[]> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/professores/lista`, {
+    credentials: "include",
+  });
+  return await res.json();
+};

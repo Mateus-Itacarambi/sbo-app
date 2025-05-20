@@ -6,7 +6,6 @@ import { Check, X } from "lucide-react";
 import ButtonAuth from "../ButtonAuth";
 import Link from "next/link";
 import { SquareArrowOutUpRight } from 'lucide-react';
-import { env } from "process";
 
 export default function ProfessorCard({ professor }: { professor: Professor }) {
   return (
@@ -42,6 +41,12 @@ export default function ProfessorCard({ professor }: { professor: Professor }) {
             {professor.areasDeInteresse.map(a => a.nome).join(", ")}
           </p>
         )}
+        {(professor.cursos && professor.cursos.length > 0) && (
+          <p className={styles.cursos}>
+            <strong>Cursos:</strong> 
+            {professor.cursos.map(a => a.nome).join(", ")}
+          </p>
+        )}
         <p className={styles.lattes}>
           <strong>Lattes:</strong> 
           <Link href={`https://lattes.cnpq.br/${professor.idLattes}`} target="_blank" >
@@ -51,10 +56,10 @@ export default function ProfessorCard({ professor }: { professor: Professor }) {
         </p>
       
         <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1rem" }}>
-          <ButtonAuth text={"Solicitar Orientação"} type="button" theme="primary" margin="0" />
           <Link href={`/perfil/${professor.idLattes}`} target="_blank" >
             <ButtonAuth text={"Visualizar Perfil"} type="button" theme="primary_2" margin="0" />
           </Link>
+          <ButtonAuth text={"Solicitar Orientação"} type="button" theme="primary" margin="0" />
         </div>
       </div>
     </div>
