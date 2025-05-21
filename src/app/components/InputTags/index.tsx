@@ -44,7 +44,7 @@ export default function InputPalavrasChaveTags({ label, palavras, setPalavras }:
         <div className={styles.inputComIcone}>
           <input
             type="text"
-            placeholder="Digite e pressione Enter ou vírgula"
+            placeholder="Digite e pressione Enter ou Vírgula"
             value={entrada}
             onChange={(e) => setEntrada(e.target.value)}
             onKeyDown={handleKeyDown}

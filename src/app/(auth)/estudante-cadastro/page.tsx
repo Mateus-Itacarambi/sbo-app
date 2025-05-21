@@ -5,7 +5,7 @@ import styles from "./page.module.scss";
 import InputAuth from "../../components/InputAuth";
 import { useState, useEffect } from "react";
 import ButtonAuth from "@/components/ButtonAuth";
-import SelectAuth from "@/components/SelectAuth";
+import SelectAuth from "@/components/SelectAuth2";
 import Alerta from "@/components/Alerta";
 import { generos } from "@/types";
 
@@ -168,6 +168,8 @@ export default function Cadastro() {
               onChange={(value) => setGenero(value)}
               text="Gênero"
               placeholder="Selecione um gênero"
+              name="genero"
+              required
             />
 
             <SelectAuth
@@ -175,13 +177,17 @@ export default function Cadastro() {
               onChange={handleCursoChange}
               text="Curso"
               placeholder="Selecione um curso"
+              name="curso"
+              required
             />
 
             <SelectAuth 
               options={semestresDisponiveis} 
               onChange={(value) => setSemestre(value)} 
               text="Semestre" 
-              placeholder="Selecione um semestre" 
+              placeholder="Selecione um semestre"
+              name="semestre"
+              required
             />
 
             <InputAuth

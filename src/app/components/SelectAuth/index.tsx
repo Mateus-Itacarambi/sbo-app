@@ -11,8 +11,8 @@ interface SelectAuthProps {
   options: Option[];
   onChange: (value: string) => void;
   placeholder?: string;
-  selected?: string | number; // <- novo
-  disabled?: boolean; // <- novo
+  selected?: string | number;
+  disabled?: boolean;
 }
 
 export default function SelectAuth({
@@ -25,7 +25,6 @@ export default function SelectAuth({
 }: SelectAuthProps) {
   const [selectedValue, setSelectedValue] = useState<string>("");
 
-  // Atualiza o select quando a prop `selected` muda (ex: ao carregar dados do usuário)
   useEffect(() => {
     if (selected !== undefined && selected !== null) {
       setSelectedValue(String(selected));

@@ -65,7 +65,7 @@
     }
 }
 
-.lista_professores {
+.lista_temas {
     h2 {
         background-color: $verde9;
         font-size: 3rem;
@@ -77,7 +77,7 @@
         margin-right: 1rem;
     }
 
-    .professores_container {
+    .temas_container {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -106,7 +106,7 @@
             }
         }
 
-        .professores { 
+        .temas { 
             width: 100%; 
             display: flex;
             flex-direction: column;
@@ -114,115 +114,39 @@
         }
     }
 
-    .card_professor {
+    .card_tema {
         display: flex;
+        flex-direction: column;
         background-color: white;
         width: 100%;
         border-radius: 2rem;
         box-shadow: rgba(103, 117, 103, 0.245) 0px 3px 6px, rgba(72, 121, 72, 0.048) 0px 3px 6px;
         padding: 2rem;
-        gap: 2rem;
+        gap: .5rem;
 
-        .profile {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        
-            .profileImage {
-                border-radius: 50%;
-                object-fit: cover;
-                background-color: $verde9;
-                border: 10px solid $verde9;
-                box-sizing: border-box;
-            }
-        
-            .initials {
-                position: relative;
-                width: 9rem;
-                height: 9rem;
-                border-radius: 50%;
-                background-color: $verde9;
-                color: white;
-                font-size: 4.5rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 5px 5px 10px $cinza6;
-
-                .status {
-                    position: absolute;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    bottom: 0;
-                    right: 0;
-                    width: 2.5rem;
-                    height: 2.5rem;
-                    border-radius: 50%;
-                    border: 3px solid white;
-                    box-shadow: 3px 3px 6px $cinza6;
-
-                    &.disponivel {
-                        background-color: $verde9;
-                    }
-
-                    &.indisponivel {
-                        background-color: $vermelho9;
-                    }
-                }
-            }
+        h3 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: $verde11;
+            line-height: 2.2rem;
+            text-align: justify;
+            margin-bottom: 1rem;
         }
 
         .info {
             display: flex;
             flex-direction: column;
-            width: 100%;
-            gap: .8rem;
-            padding-top: 1rem;
 
-            h3 {
-                font-size: 2.6rem;
+            strong {
+                font-size: 1.8rem;
                 font-weight: 600;
-                color: $verde10;
-                line-height: 1.9rem;
+                color: $verde11;
             }
 
-            .email, .status_info {
-                font-size: 1.6rem;
-                font-weight: 300;
-                color: $cinza12;
-                margin-bottom: .5rem;
-            }
-
-            .areas, .cursos, .lattes {
-                display: flex;
-                flex-direction: column;
-
-                strong {
-                    font-size: 1.8rem;
-                    font-weight: 600;
-                    color: $verde10;
-                }
-
-                font-size: 1.4rem;
-                font-weight: 300;
-                color: $cinza12;
-                line-height: 1.8rem;
-            }
-
-            .lattes {
-                a {
-                    color: $cinza12;
-                    display: flex;
-                    align-items: center;
-                    gap: .3rem;
-
-                    .icone {
-                        color: $cinza11;
-                    }
-                }
-            }
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: $cinza12;
+            line-height: 1.8rem;
         }
-
     }
 }
