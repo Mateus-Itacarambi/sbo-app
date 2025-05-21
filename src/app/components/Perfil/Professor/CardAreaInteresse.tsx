@@ -38,7 +38,7 @@ export default function CardTema({ areasInteresse, mostrarBotoes, onAdicionarAre
           ?.slice()
           .sort((a, b) => a.nome.localeCompare(b.nome))
           .map((areaInteresse, idx) => (
-          <li key={idx} className={styles.areaInteresse}>
+          <li key={areaInteresse.id} className={styles.areaInteresse}>
             <AreaInteresseBadge 
               areaInteresse={areaInteresse}
               style={mostrarBotoes ? "myBadge" : "badge"} 

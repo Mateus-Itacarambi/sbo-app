@@ -4,6 +4,7 @@ import styles from "./temasPage.module.scss";
 import DropdownCheck from "../DropdownCheck";
 import { useEffect, useState } from "react";
 import { buscarProfessores } from "@/services";
+import InputTags from "../InputTags";
 
 interface Props {
   filtros: any;
@@ -34,6 +35,10 @@ export default function FiltroProfessor({ filtros, setFiltros }: Props) {
     setFiltros({ ...filtros, professor: valores });
   };
 
+  const handleChangePalavrasChave = (valores: string[]) => {
+    setFiltros({ ...filtros, palavrasChave: valores });
+  };
+
   return (
     <aside className={styles.card_filtro}>
       <div className={styles.filtros}>
@@ -52,6 +57,13 @@ export default function FiltroProfessor({ filtros, setFiltros }: Props) {
             <Search className={styles.icone} />
           )}
         </div>
+
+        <InputTags
+          label="Palavras-chave"
+          palavras={filtros.palavrasChave}
+          setPalavras={handleChangePalavrasChave}
+        />
+
         
         <DropdownCheck
           label="Professores"

@@ -31,16 +31,6 @@ export default function DropdownCheck({ label, options, selectedValues, onChange
   const filteredOptions = options.filter((opt) =>
     opt.label.toLowerCase().includes(buscaArea.toLowerCase())
   );
-
-  // useEffect(() => {
-  //   const handleClickOutside = (event: MouseEvent) => {
-  //     if (ref.current && !ref.current.contains(event.target as Node)) {
-  //       setIsOpen(false);
-  //     }
-  //   };
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => document.removeEventListener("mousedown", handleClickOutside);
-  // }, []);
   
   return (
     <div className={`${styles.dropdownContainer} ${isOpen ? styles.aberto : ""}`} ref={ref}>

@@ -22,8 +22,10 @@ export default function TemasPage() {
   const [totalPaginas, setTotalPaginas] = useState(0);
   const [filtros, setFiltros] = useState({
     titulo: "",
-    professor:  [] as string[]
+    palavrasChave: [] as string[],
+    professor: [] as string[]
   });
+
 
 
   useEffect(() => {
@@ -44,6 +46,8 @@ const buscarTemas = async () => {
     if (Array.isArray(valor) && valor.length > 0) {
       valor.forEach((v) => params.append(chave, v));
     }
+
+    filtros.palavrasChave.forEach(palavra => params.append("palavrasChave", palavra));
   });
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/temas?${params}`);
