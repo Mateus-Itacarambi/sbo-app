@@ -1,3 +1,5 @@
+
+
 "use client";
 
 import Link from "next/link";
@@ -5,7 +7,7 @@ import styles from "./page.module.scss";
 import InputAuth from "../../components/InputAuth";
 import { useState, useEffect } from "react";
 import ButtonAuth from "@/components/ButtonAuth";
-import SelectAuth from "@/components/SelectAuth2";
+import SelectAuth from "@/components/SelectAuth";
 import Alerta from "@/components/Alerta";
 import { generos } from "@/types";
 
@@ -46,7 +48,7 @@ export default function Cadastro() {
   useEffect(() => {
     async function fetchCursos() {
       try {
-        const response = await fetch("http://localhost:8080/cursos");
+        const response = await fetch("http://localhost:8080/cursos/lista");
 
          if (!response.ok) {
           const errorData = await response.text();
@@ -56,7 +58,7 @@ export default function Cadastro() {
         const data = await response.json();
 
         setCursos(
-          data.content.map((curso: any) => ({
+          data.map((curso: any) => ({
             value: curso.id,
             label: curso.nome,
             semestres: curso.semestres,
@@ -169,7 +171,6 @@ export default function Cadastro() {
               text="Gênero"
               placeholder="Selecione um gênero"
               name="genero"
-              required
             />
 
             <SelectAuth
@@ -178,21 +179,19 @@ export default function Cadastro() {
               text="Curso"
               placeholder="Selecione um curso"
               name="curso"
-              required
             />
 
-            <SelectAuth 
+            <SelectAuth
               options={semestresDisponiveis} 
               onChange={(value) => setSemestre(value)} 
               text="Semestre" 
               placeholder="Selecione um semestre"
               name="semestre"
-              required
             />
 
             <InputAuth
               label="Matrícula"
-              type="text"
+              type="number"
               placeholder="Digite sua matrícula"
               value={matricula}
               onChange={(e) => setMatricula(e.target.value)}

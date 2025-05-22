@@ -1,29 +1,34 @@
-import { useEffect, useState } from "react";
-import styles from "./select.module.scss";
+import { useEffect, useRef, useState } from "react";
+import styles from "./customSelect.module.scss";
+import { ChevronDown } from 'lucide-react';
 
 interface Option {
-  value: string | number;
   label: string;
+  value: string | number;
 }
 
-interface SelectAuthProps {
+interface CustomSelectProps {
+  name: string;
   text: string;
   options: Option[];
-  onChange: (value: string) => void;
+  disabled?: boolean;
   placeholder?: string;
   selected?: string | number;
-  disabled?: boolean;
+  onChange: (value: string) => void;
 }
 
-export default function SelectAuth({
+export default function CustomSelect({
+  name,
   text,
   options,
-  onChange,
+  disabled = false,
   placeholder = "Selecione uma opção",
   selected,
-  disabled = false,
-}: SelectAuthProps) {
+  onChange,
+}: CustomSelectProps) {
+  const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string>("");
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (selected !== undefined && selected !== null) {
@@ -31,29 +36,68 @@ export default function SelectAuth({
     }
   }, [selected]);
 
-  const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value;
+  const handleSelect = (value: string) => {
     setSelectedValue(value);
     onChange(value);
+    setIsOpen(false);
   };
 
+  const selectedLabel = options.find((opt) => String(opt.value) === selectedValue)?.label;
+  
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
-    <div>
+    <div className={styles.container_select}>
       <label className={styles.label}>{text}</label>
-      <select
-        value={selectedValue}
-        onChange={handleSelect}
-        className={styles.select}
-        required
-        disabled={disabled}
-      >
-        <option value="" disabled>{placeholder}</option>
-        {options.map((option, index) => (
-          <option key={index} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+
+      <div className={`${styles.select_wrapper} ${isOpen ? styles.aberto : ""} ${disabled ? styles.disabled : ""}`}  ref={containerRef}>
+
+        <input
+          type="hidden"
+          name={name}
+          value={selectedValue}
+        />
+
+        <div
+          className={`${styles.select_display} ${disabled ? styles.disabled : ""}`}
+          onClick={() => !disabled && setIsOpen((prev) => !prev)}
+          tabIndex={0}
+        >
+          {selectedLabel || placeholder}
+
+          <ChevronDown className={styles.icone} />
+        </div>
+        
+        {isOpen && (
+          <div className={`${styles.options_list} ${isOpen ? styles.aberto : ""}`}>
+            {options.map((option) => (
+              <div
+                key={option.value}
+                className={styles.option_item}
+                onClick={() => handleSelect(String(option.value))}
+              >
+                {option.label}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -35,7 +35,6 @@ export default function InputAuth({
       <label>{label}</label>
       {type === "textarea" ? (
         <textarea
-          required
           name={name}
           placeholder={placeholder}
           value={value}
@@ -46,7 +45,6 @@ export default function InputAuth({
         />
       ) : type === "number" ? (
         <input
-          required
           name={name}
           type={type}
           placeholder={placeholder}
@@ -57,7 +55,6 @@ export default function InputAuth({
         />
       ) : (
         <input
-          required
           name={name}
           type={type}
           placeholder={placeholder}

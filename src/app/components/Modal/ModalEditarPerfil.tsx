@@ -5,7 +5,6 @@ import InputAuth from "@/components/InputAuth";
 import SelectAuth from "@/components/SelectAuth";
 import ButtonAuth from "@/components/ButtonAuth";
 import { Estudante, generos, Professor, UsuarioCompleto } from "@/types";
-import { useFormulario } from "@/hooks";
 
 
 interface ModalEditarPerfilProps {
@@ -46,21 +45,19 @@ export default function ModalEditarPerfil({ usuario, formData, cursos, semestres
         <form onSubmit={handleSubmit}>          
           <InputAuth label="Nome Completo" name="nome" type="text" value={formData.nome} onChange={handleChange}/>
           <InputAuth label="Data de Nascimento" name="dataNascimento" type="date" value={formData.dataNascimento} onChange={handleChange}/>
-          <SelectAuth text="Gênero" options={generos} onChange={handleGeneroChange} selected={formData.genero} />
-
+          <SelectAuth text="Gênero" options={generos} onChange={handleGeneroChange} selected={formData.genero} name="genero" />
+          
           {estudante && (
             <>
               <InputAuth label="Matrícula" name="matricula" type="number" value={formData.matricula} onChange={handleChange}/>
-              <SelectAuth text="Curso" options={cursos} onChange={handleCursoChange} selected={formData.curso} />
-              <SelectAuth text="Semestre" options={semestresDisponiveis} onChange={handleSemestreChange} selected={formData.semestre} />
+              <SelectAuth options={cursos} onChange={handleCursoChange} text="Curso" selected={formData.curso} name="curso" />
+              <SelectAuth options={semestresDisponiveis} onChange={handleSemestreChange} text="Semestre" selected={formData.semestre} name="semestre" />
             </>
           )}
 
           {professor && (
             <>
               <InputAuth label="ID Lattes" name="idLattes" type="number" value={formData.idLattes} onChange={handleChange}/>
-              {/* <SelectAuth text="Curso" options={cursos} onChange={handleCursoChange} selected={formData.curso} />
-              <SelectAuth text="Semestre" options={semestresDisponiveis} onChange={handleSemestreChange} selected={formData.semestre} /> */}
             </>
           )}
 

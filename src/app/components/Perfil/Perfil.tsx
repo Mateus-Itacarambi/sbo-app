@@ -345,7 +345,7 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
           onSalvarPerfil={atualizarPerfil}
           handleChange={form.handleChange}
           handleGeneroChange={form.handleGeneroChange}
-          handleCursoChange={cursos.handleCursoChange}
+          handleCursoChange={form.handleCursoChange}
           handleSemestreChange={form.handleSemestreChange}
           handleCancelar={handleCancelar}
           isLoading={isLoading}

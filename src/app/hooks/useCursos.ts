@@ -1,9 +1,12 @@
 import { Curso, CursoProfessor } from '@/types';
 import { useState, useEffect } from 'react';
+import { useFormulario } from './useFormulario';
+
 
 export const useCursos = (usuario: any, formData: any) => {
-  const [cursos, setCursos] = useState<Curso[]>([]);
+  const [cursos, setCursos] = useState<any[]>([]);
   const [semestresDisponiveis, setSemestresDisponiveis] = useState<{ value: number, label: string }[]>([]);
+  const form = useFormulario({});
 
   const [cursosProfessor, setCursosProfessor] = useState<CursoProfessor[]>([]);
   const [cursosProfessorAtual, setCursosProfessorAtual] = useState<CursoProfessor>({
@@ -17,41 +20,34 @@ export const useCursos = (usuario: any, formData: any) => {
     setCursosProfessorAtual(cursosProfessor[index]);
     setEditIndex(index);
   };
-  
+
   useEffect(() => {
     const fetchCursos = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cursos`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cursos/lista`);
         if (!res.ok) throw new Error("Erro ao buscar cursos");
 
         const data = await res.json();
-        const cursosMapeados = data.content.map((curso: any) => ({
+        const cursosMapeados = data.map((curso: any) => ({
           value: curso.id,
           label: curso.nome,
           semestres: curso.semestres,
         }));
         setCursos(cursosMapeados);
-
-        const cursoId = formData.curso;
-        const cursoUsuario = cursosMapeados.find((c: { value: number }) => c.value === Number(cursoId));        
-        if (cursoUsuario) {
-          const semestres = Array.from({ length: cursoUsuario.semestres }, (_, i) => ({
-            value: i + 1,
-            label: `${i + 1}º Semestre`,
-          }));
-          setSemestresDisponiveis(semestres);
-        }
       } catch (error) {
         console.error("Erro ao carregar cursos:", error);
       }
     };
 
-    if (usuario && usuario.role === "ESTUDANTE") fetchCursos();
-  }, [usuario, formData.curso]);
+    if (usuario?.role === "ESTUDANTE") {
+      fetchCursos();
+    }
+  }, [usuario]);
 
-  const handleCursoChange = (cursoId: string) => {
-    const id = Number(cursoId);
-    const cursoSelecionado = cursos.find(curso => curso.id === id);
+  useEffect(() => {
+    if (!formData.curso || cursos.length === 0) return;
+
+    const cursoSelecionado = cursos.find(c => c.value === Number(formData.curso));
     if (cursoSelecionado) {
       const semestres = Array.from({ length: cursoSelecionado.semestres }, (_, i) => ({
         value: i + 1,
@@ -61,13 +57,12 @@ export const useCursos = (usuario: any, formData: any) => {
     } else {
       setSemestresDisponiveis([]);
     }
-  };
+  }, [formData.curso, cursos]);
 
   return {
     setSemestresDisponiveis,
     cursos,
     semestresDisponiveis,
-    handleCursoChange,
     cursosProfessor, 
     setCursosProfessor,
     cursosProfessorAtual, 

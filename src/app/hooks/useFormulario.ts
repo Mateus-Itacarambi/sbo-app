@@ -14,12 +14,17 @@ export const useFormulario = (initialState: any) => {
   const handleSemestreChange = (semestre: string) => {
     setFormData({ ...formData, semestre: Number(semestre) });
   };
+
+  const handleCursoChange = (cursoId: string) => {
+    setFormData({ ...formData, curso: Number(cursoId) });
+  };
   
   return {
     formData,
     setFormData,
     handleChange,
     handleGeneroChange,
-    handleSemestreChange
+    handleSemestreChange,
+    handleCursoChange,
   };
 };
