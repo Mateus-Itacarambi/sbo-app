@@ -32,7 +32,7 @@ export default function CardTema({ usuario, onEditar, onRemover, onAdicionarEstu
         <div className={styles.tema}>
           <div className={styles.tema_content}>
             <div className={styles.title}>
-              {(usuario as Estudante).tema?.titulo}
+              <span>{(usuario as Estudante).tema?.titulo}</span>
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                   {mostrarBotoes && (
                     <Dropdown

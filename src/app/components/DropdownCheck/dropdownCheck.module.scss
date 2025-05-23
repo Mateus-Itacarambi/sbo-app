@@ -88,7 +88,7 @@
 
         .optionsList {
             max-height: 130px;
-            overflow-x: auto;
+            overflow-y: auto;
             display: grid;
             grid-template-rows: 1fr;
             gap: .5rem;

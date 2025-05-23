@@ -20,6 +20,7 @@ export const useCursosActions = (usuario: any) => {
     } catch (error: any) {
       setErro(handleFetchError(error));
       setSucesso("");
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -33,6 +34,7 @@ const handleRemoverCurso = async (cursoId: number) => {
     } catch (error: any) {
     setErro(handleFetchError(error) || "Erro ao remover Curso.");
     setSucesso("");
+      throw error;
     } finally {
     setIsLoading(false);
     }

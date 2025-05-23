@@ -24,6 +24,7 @@ export const useTemaActions = (usuario: any) => {
     } catch (error: any) {
       setErro(handleFetchError(error));
       setSucesso("");
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -38,6 +39,7 @@ export const useTemaActions = (usuario: any) => {
     } catch (error: any) {
       setErro(handleFetchError(error));
       setSucesso("");
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -52,6 +54,7 @@ export const useTemaActions = (usuario: any) => {
     } catch (error: any) {
       setErro(handleFetchError(error));
       setSucesso("");
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -65,6 +68,7 @@ export const useTemaActions = (usuario: any) => {
     } catch (error: any) {
       setErro(handleFetchError(error) || "Erro ao atualizar formação.");
       setSucesso("");
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -79,6 +83,7 @@ export const useTemaActions = (usuario: any) => {
     } catch (error: any) {
       setErro(handleFetchError(error));
       setSucesso("");
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -92,6 +97,7 @@ export const useTemaActions = (usuario: any) => {
     } catch (error: any) {
       setErro(handleFetchError(error) || "Erro ao remover formação.");
       setSucesso("");
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -106,6 +112,7 @@ export const useTemaActions = (usuario: any) => {
     } catch (error: any) {
       setErro(handleFetchError(error));
       setSucesso("");
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -120,6 +127,7 @@ export const useTemaActions = (usuario: any) => {
     } catch (error: any) {
       setErro(handleFetchError(error));
       setSucesso("");
+      throw error;
     } finally {
       setIsLoading(false);
     }

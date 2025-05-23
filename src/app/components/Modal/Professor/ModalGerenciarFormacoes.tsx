@@ -33,6 +33,8 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove
     setFormacoes,
     formacaoAtual,
     setFormacaoAtual,
+    formularioEdicao,
+    setFormularioEdicao,
     handleEditar,
   } = useFormacoes();
 
@@ -41,42 +43,41 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove
   }, [formacoesIniciais]);
 
   const handleChange = (campo: keyof Formacao, valor: string) => {
-    setFormacaoAtual({ ...formacaoAtual, [campo]: valor });
+    setFormularioEdicao({ ...formularioEdicao, [campo]: valor })
   };
 
   const handleCliqueFormacao = (formacao: Formacao) => {
-    const indexOriginal = formacoes.findIndex((f) => f === formacao);
-    if (indexOriginal !== -1) {
-      handleEditar(indexOriginal);
-      setIndiceSelecionado(indexOriginal);
-    }
+    const formacaoClicada = formacoes.find((f) => f.id === formacao.id);
+    if (!formacaoClicada) return;
+
+    const indexOriginal = formacoes.findIndex((f) => f.id === formacao.id);
+    setIndiceSelecionado(indexOriginal);
+    setFormacaoAtual({ ...formacaoClicada });
+    setFormularioEdicao({ ...formacaoClicada });
   };
 
-  const handleSubmit = () => {
-    if (formacaoAtual.id === undefined) {
+  const handleSubmit = async () => {
+    if (formacaoAtual?.id === undefined) {
       console.error("ID da formação não definido.");
       return;
     }
 
-    const formacao: FormacaoDTO = {
-      curso: formacaoAtual.curso,
-      instituicao: formacaoAtual.instituicao,
-      titulo: formacaoAtual.titulo,
-      anoInicio: Number(formacaoAtual.anoInicio),
-      anoFim: Number(formacaoAtual.anoFim),
-    };
+    try {
+      await onAtualizar( formacaoAtual.id, formularioEdicao);
 
-    onAtualizar(formacaoAtual.id, formacao);
-
-    setFormacoes((prev) =>
-      prev.map((f) =>
-        f.id === formacaoAtual.id ? { ...f, ...formacao } : f
-      )
-    );
+      setFormacoes((prev) =>
+        prev.map((f) =>
+          f.id === formacaoAtual.id ? { ...f, ...formularioEdicao } : f
+        )
+      );
+    } catch (error) {
+      console.error("Erro ao atualizar formação:", error);
+    }
   };
 
+
   const handleRemove = () => {
-    if (formacaoAtual.id === undefined) {
+    if (formacaoAtual?.id === undefined) {
       console.error("ID da formação não definido.");
       return;
     }
@@ -102,13 +103,13 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove
       <div className={styles.modal_form} onClick={(e) => e.stopPropagation()}>
         <h2>Gerenciar Formações</h2>
         <form onSubmit={(e) => e.preventDefault()}>
-          <InputAuth label="Curso" type="text" value={formacaoAtual.curso} onChange={(e) => handleChange("curso", e.target.value)} />
-          <InputAuth label="Instituição" type="text" value={formacaoAtual.instituicao} onChange={(e) => handleChange("instituicao", e.target.value)} />
-          <InputAuth label="Título do TCC" type="text" value={formacaoAtual.titulo} onChange={(e) => handleChange("titulo", e.target.value)} />
+          <InputAuth label="Curso" type="text" value={formularioEdicao.curso} onChange={(e) => handleChange("curso", e.target.value)} />
+          <InputAuth label="Instituição" type="text" value={formularioEdicao.instituicao} onChange={(e) => handleChange("instituicao", e.target.value)} />
+          <InputAuth label="Título do TCC" type="text" value={formularioEdicao.titulo} onChange={(e) => handleChange("titulo", e.target.value)} />
 
           <div className={styles.flex}>
-            <InputAuth label="Ano de Início" type="number" value={formacaoAtual.anoInicio.toString()} onChange={(e) => handleChange("anoInicio", e.target.value)} />
-            <InputAuth label="Ano de Conclusão" type="number" value={formacaoAtual.anoFim.toString()} onChange={(e) => handleChange("anoFim", e.target.value)} />
+            <InputAuth label="Ano de Início" type="number" value={formularioEdicao.anoInicio.toString()} onChange={(e) => handleChange("anoInicio", e.target.value)} />
+            <InputAuth label="Ano de Conclusão" type="number" value={formularioEdicao.anoFim.toString()} onChange={(e) => handleChange("anoFim", e.target.value)} />
 
             <ButtonAuth type="submit" text={isLoading ? <span className="spinner"></span> : "Remover Formação"} theme="secondary" margin="0" disabled={isLoading} onClick={() => setModalConfirmarRemocaoFormacao(true)} />
             <ButtonAuth type="submit" text={isLoading ? <span className="spinner"></span> : "Atualizar Formação"} theme="primary" margin="0" disabled={isLoading} onClick={handleSubmit} />

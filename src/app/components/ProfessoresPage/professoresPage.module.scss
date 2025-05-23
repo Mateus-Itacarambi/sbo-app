@@ -74,7 +74,7 @@
         border-radius: 2rem;
         box-shadow: rgba(103, 117, 103, 0.245) 0px 3px 6px, rgba(72, 121, 72, 0.048) 0px 3px 6px;
         margin-bottom: 1rem;
-        margin-right: 1rem;
+        margin-right: 1.8rem;
     }
 
     .professores_container {
@@ -85,7 +85,7 @@
         gap: 1rem;
         max-height: 710px;
         min-height: 710px;
-        overflow-x: auto;
+        overflow-y: scroll;
         padding-right: 1rem;
         padding-bottom: .6rem;
 

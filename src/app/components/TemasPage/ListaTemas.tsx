@@ -21,7 +21,7 @@ export default function ListaTemas({ temas, paginaAtual, totalPaginas, onPaginaC
   return (
     <section className={styles.lista_temas}>
       <h2>Consultar Temas</h2>
-
+      
       <div className={styles.temas_container} ref={containerRef}>
         <div className={styles.temas}>
           {temas.map((t) => (

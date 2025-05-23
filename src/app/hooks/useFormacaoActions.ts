@@ -21,6 +21,7 @@ export const useFormacaoActions = (usuario: any) => {
     } catch (error: any) {
       setErro(handleFetchError(error));
       setSucesso("");
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -29,11 +30,12 @@ export const useFormacaoActions = (usuario: any) => {
   const handleAtualizarFormacao = async (formacaoId: number, dados: FormacaoDTO) => {
     try {
       setIsLoading(true);
-      await atualizarFormacao(formacaoId, dados);
+      await atualizarFormacao(usuario, formacaoId, dados);
       setSucesso("Formação atualizada com sucesso!");
     } catch (error: any) {
       setErro(handleFetchError(error) || "Erro ao atualizar formação.");
       setSucesso("");
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -47,6 +49,7 @@ export const useFormacaoActions = (usuario: any) => {
     } catch (error: any) {
       setErro(handleFetchError(error) || "Erro ao remover formação.");
       setSucesso("");
+      throw error;
     } finally {
       setIsLoading(false);
     }

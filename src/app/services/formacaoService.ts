@@ -13,8 +13,8 @@ export const adicionarFormacao = async (usuario: Professor, dados: FormacaoDTO) 
   return response.json();
 };
 
-export const atualizarFormacao = async (formacaoId: number, dados: FormacaoDTO) => {
-  const response = await fetch(`${API_URL}/professores/atualizarFormacoes/${formacaoId}`, {
+export const atualizarFormacao = async (usuario: Professor, formacaoId: number, dados: FormacaoDTO) => {
+  const response = await fetch(`${API_URL}/professores/${usuario.id}/atualizarFormacoes/${formacaoId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     credentials: "include",

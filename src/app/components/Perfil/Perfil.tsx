@@ -153,9 +153,7 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
   const atualizarFormacao = async (formacaoId: number, formacao: FormacaoDTO) => {
     await formacaoActions.handleAtualizarFormacao(formacaoId, formacao);
 
-    setFormacoes((prev) =>
-      prev.map((f) => (f.id === formacaoId ? { ...f, ...formacao } : f))
-    );
+    setFormacoes((prev) => prev.map((f) => (f.id === formacaoId ? { ...f, ...formacao } : f)));
   };
 
   const removerFormacao = async (formacaoId: number) => {

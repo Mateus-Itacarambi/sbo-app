@@ -20,6 +20,7 @@ export const useAreaInteresseActions = (usuario: any) => {
     } catch (error: any) {
       setErro(handleFetchError(error));
       setSucesso("");
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -33,6 +34,7 @@ const handleRemoverAreaInteresse = async (areaInteresseId: number) => {
     } catch (error: any) {
     setErro(handleFetchError(error) || "Erro ao remover Área de Interesse.");
     setSucesso("");
+      throw error;
     } finally {
     setIsLoading(false);
     }

@@ -9,7 +9,9 @@ export function useTemas() {
     nome: "",
   };
 
-  const [temaAtual, setTemaAtual] = useState<Tema>({
+  const [temaAtual, setTemaAtual] = useState<Tema | null>(null);
+  
+  const [formularioEdicao, setFormularioEdicao] = useState<Tema>({
     id: 0,
     titulo: "",
     descricao: "",
@@ -31,6 +33,8 @@ export function useTemas() {
     setTemas,
     temaAtual,
     setTemaAtual,
+    formularioEdicao, 
+    setFormularioEdicao,
     editIndex,
     handleEditar,
   };

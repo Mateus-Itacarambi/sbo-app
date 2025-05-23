@@ -37,31 +37,31 @@ export default function ModalTemaEstudante({ usuario, onClose, atualizarTema, ca
     <Modal onClose={onClose}>
         {(usuario as Estudante).tema ? (<h2>Editar Tema</h2>) : (<h2>Cadastrar Tema</h2>)}
         <form name="cadastro_estudante" onSubmit={handleSubmit}>
-        <InputAuth
-            label="Título"
-            type="text"
-            placeholder="Título do tema"
-            value={temaTitulo}
-            onChange={(e) => setTemaTitulo(e.target.value)}
-        />
-        <InputAuth
-            label="Palavras-chave"
-            type="text"
-            placeholder="Palavras-chave do tema"
-            value={temaPalavrasChave}
-            onChange={(e) => setTemaPalavrasChave(e.target.value)}
-        />
-        <InputAuth
-            label="Descrição"
-            type="textarea"
-            placeholder="Descrição do tema"
-            value={temaDescricao}
-            onChange={(e) => setTemaDescricao(e.target.value)}
-        />
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: "1rem" }}>
-            <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={onCancelar} />
-            <ButtonAuth text={isLoading ? <span className="spinner"></span> : "Salvar"} type="submit" theme="primary"/>
-        </div>
+          <InputAuth
+              label="Título"
+              type="text"
+              placeholder="Título do tema"
+              value={temaTitulo}
+              onChange={(e) => setTemaTitulo(e.target.value)}
+          />
+          <InputAuth
+              label="Palavras-chave"
+              type="text"
+              placeholder="Palavras-chave do tema"
+              value={temaPalavrasChave}
+              onChange={(e) => setTemaPalavrasChave(e.target.value)}
+          />
+          <InputAuth
+              label="Descrição"
+              type="textarea"
+              placeholder="Descrição do tema"
+              value={temaDescricao}
+              onChange={(e) => setTemaDescricao(e.target.value)}
+          />
+          <div style={{ display: "flex", justifyContent: "flex-end", gap: "1rem" }}>
+              <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={onCancelar} />
+              <ButtonAuth text={isLoading ? <span className="spinner"></span> : "Salvar"} type="submit" theme="primary"/>
+          </div>
         </form>
     </Modal>
   );

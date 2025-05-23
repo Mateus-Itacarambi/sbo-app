@@ -47,6 +47,7 @@
 
     .dropdownMenu {
         max-height: 200px;
+        position: relative;
 
         .inputComIcone {
             position: relative;
@@ -86,12 +87,26 @@
             }
         }
 
+        .erro {
+            position: absolute;
+            left: 0;
+            right: 0;
+            background-color: $vermelho4;
+            border: 2px solid $vermelho8;
+            color: $vermelho11;
+            padding: 1rem;
+            border-radius: .5rem;
+            margin-top: 1rem;
+        }
+
         .lista_palavrasChave {
             display: flex;
             flex-wrap: wrap;
             gap: .5rem;
             margin-top: 1rem;
             cursor: default;
+            max-height: 148px;
+            overflow-y: auto;
 
             li {
                 border-radius: 16px;

@@ -16,7 +16,7 @@ export const useFormulario = (initialState: any) => {
   };
 
   const handleCursoChange = (cursoId: string) => {
-    setFormData({ ...formData, curso: Number(cursoId) });
+    setFormData({ ...formData, curso: Number(cursoId), semestre: "" });
   };
   
   return {

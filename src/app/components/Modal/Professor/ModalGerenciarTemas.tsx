@@ -34,6 +34,8 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove
     setTemas,
     temaAtual,
     setTemaAtual,
+    formularioEdicao,
+    setFormularioEdicao,
     handleEditar,
   } = useTemas();
 
@@ -42,40 +44,40 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove
   }, [temasIniciais]);
 
   const handleChange = (campo: keyof Tema, valor: string) => {
-    setTemaAtual({ ...temaAtual, [campo]: valor });
+    setFormularioEdicao({ ...formularioEdicao, [campo]: valor })
   };
 
   const handleCliqueTema = (tema: Tema) => {
-    const indexOriginal = temas.findIndex((t) => t === tema);
-    if (indexOriginal !== -1) {
-      handleEditar(indexOriginal);
-      setIndiceSelecionado(indexOriginal);
-    }
+    const temaClicado = temas.find((t) => t.id === tema.id);
+    if (!temaClicado) return;
+
+    const indexOriginal = temas.findIndex((t) => t.id === tema.id);
+    setIndiceSelecionado(indexOriginal);
+    setTemaAtual({ ...temaClicado });
+    setFormularioEdicao({ ...temaClicado });
   };
 
-  const handleSubmit = () => {
-    if (temaAtual.id === undefined) {
+  const handleSubmit = async () => {
+    if (temaAtual?.id === undefined) {
       console.error("ID do tema não definido.");
       return;
     }
 
-    const tema: TemaDTO = {
-      titulo: temaAtual.titulo,
-      descricao: temaAtual.descricao,
-      palavrasChave: temaAtual.palavrasChave,
-    };
+    try {
+      await onAtualizar(temaAtual.id, formularioEdicao);
 
-    onAtualizar(temaAtual.id, tema);
-
-    setTemas((prev) =>
-      prev.map((t) =>
-        t.id === temaAtual.id ? { ...t, ...tema } : t
-      )
-    );
+      setTemas((prev) =>
+        prev.map((t) =>
+          t.id === temaAtual.id ? { ...t, ...formularioEdicao } : t
+        )
+      );
+    } catch (error) {
+      console.error("Erro ao atualizar tema:", error);
+    }
   };
 
   const handleRemove = () => {
-    if (temaAtual.id === undefined) {
+    if (temaAtual?.id === undefined) {
       console.error("ID do tema não definido.");
       return;
     }
@@ -108,9 +110,9 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove
         <h2>Gerenciar Temas</h2>
         <form onSubmit={(e) => e.preventDefault()}>
           <div>
-            <InputAuth label="Título" type="text" value={temaAtual.titulo} onChange={(e) => handleChange("titulo", e.target.value)} />
-            <InputAuth label="Palavras-Chave" type="text" value={temaAtual.palavrasChave} onChange={(e) => handleChange("palavrasChave", e.target.value)} />
-            <InputAuth label="Descrição" type="textarea" value={temaAtual.descricao} onChange={(e) => handleChange("descricao", e.target.value)} />
+            <InputAuth label="Título" type="text" value={formularioEdicao.titulo} onChange={(e) => handleChange("titulo", e.target.value)} />
+            <InputAuth label="Palavras-Chave" type="text" value={formularioEdicao.palavrasChave} onChange={(e) => handleChange("palavrasChave", e.target.value)} />
+            <InputAuth label="Descrição" type="textarea" value={formularioEdicao.descricao} onChange={(e) => handleChange("descricao", e.target.value)} />
           </div>
           <div className={styles.flex}>
             <ButtonAuth type="submit" text={isLoading ? <span className="spinner"></span> : "Remover Tema"} theme="secondary" margin="0" disabled={isLoading} onClick={() => setModalConfirmarRemocaoTema(true)} />

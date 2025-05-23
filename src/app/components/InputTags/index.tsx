@@ -13,6 +13,23 @@ export default function InputPalavrasChaveTags({ label, palavras, setPalavras }:
   const [entrada, setEntrada] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const [erroEntrada, setErroEntrada] = useState("");
+
+  const MAX_SEM_ESPACO = 24;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const valor = e.target.value;
+    const ultimaPalavra = valor.split(" ").pop() || "";
+
+    if (ultimaPalavra.length > MAX_SEM_ESPACO) {
+      setErroEntrada(`Máximo de ${MAX_SEM_ESPACO} caracteres sem espaço.`);
+      return;
+    }
+
+    setErroEntrada("");
+    setEntrada(valor);
+  };
+
 
   const adicionarPalavra = () => {
     const nova = entrada.trim();
@@ -30,6 +47,7 @@ export default function InputPalavrasChaveTags({ label, palavras, setPalavras }:
     if (e.key === "Enter" || e.key === ",") {
       e.preventDefault();
       adicionarPalavra();
+      setErroEntrada("");
     }
   };
 
@@ -46,15 +64,19 @@ export default function InputPalavrasChaveTags({ label, palavras, setPalavras }:
             type="text"
             placeholder="Digite e pressione Enter ou Vírgula"
             value={entrada}
-            onChange={(e) => setEntrada(e.target.value)}
+            onChange={handleChange}
             onKeyDown={handleKeyDown}
           />
+
           {entrada ? (
             <X className={styles.icone} onClick={() => setEntrada("")} />
           ) : (
             <Search className={styles.icone} />
           )}
         </div>
+        
+        {erroEntrada && <p className={styles.erro}>{erroEntrada}</p>}
+
         <ul className={styles.lista_palavrasChave}>
           {palavras.map((palavra) => (
             <li key={palavra} className={styles.tag}>
