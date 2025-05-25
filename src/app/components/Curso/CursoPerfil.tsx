@@ -1,19 +1,8 @@
+import CardProfessor from "../CardProfessor";
+import CardOrientador from "../Perfil/Estudante/CardOrientador";
+import UsuarioProfile from "../UsuarioProfile";
 import styles from "./curso.module.scss";
-
-interface Professor {
-  id: number;
-  nome: string;
-  email: string;
-}
-
-interface Curso {
-  id: number;
-  nome: string;
-  sigla: string;
-  descricao: string;
-  semestres: number;
-  professores: Professor[];
-}
+import { Curso } from "@/types"
 
 interface CursoPerfilProps {
   curso: Curso;
@@ -21,28 +10,52 @@ interface CursoPerfilProps {
 
 export default function CursoPerfil({ curso }: CursoPerfilProps) {
   return (
-    <section className={styles.curso_perfil}>
-      <h1>{curso.nome} <span className={styles.sigla}>({curso.sigla})</span></h1>
-      <p className={styles.descricao}>{curso.descricao}</p>
+    <div className={styles.main}>
+      <div className={styles.container}>
+        <section className={styles.curso_perfil}>
+          <h1>{curso.nome} - ({curso.sigla})</h1>
 
-      <div className={styles.info}>
-        <strong>Quantidade de semestres:</strong> {curso.semestres}
-      </div>
+          <div className={styles.descricao}>
+            <h2>Sobre o curso:</h2>
+            <p>{curso.descricao}</p>
+          </div>
 
-      <div className={styles.professores}>
-        <h2>Professores Vinculados</h2>
-        {curso.professores.length === 0 ? (
-          <p>Nenhum professor vinculado a este curso.</p>
-        ) : (
-          <ul>
-            {curso.professores.map((prof) => (
-              <li key={prof.id}>
-                <strong>{prof.nome}</strong> — {prof.email}
-              </li>
-            ))}
-          </ul>
-        )}
+          <div className={styles.info}>
+            <h2>Ficha técnica:</h2>
+            <p>
+              <strong>Carga horária: </strong>
+              {curso.cargaHoraria}
+            </p>
+            <p>
+              <strong>Semestres: </strong>
+              {curso.semestres} semestres
+            </p>
+            <p>
+              <strong>Duração máxima: </strong>
+              {curso.duracaoMax}
+            </p>
+            <p>
+              <strong>Modalidade: </strong>
+              {curso.modalidade}
+            </p>
+          </div>
+
+          <div className={styles.professores}>
+            <h2>Professores do curso:</h2>
+            {curso.professores.length === 0 ? (
+              <p>Nenhum professor vinculado a este curso.</p>
+            ) : (
+              <ul>
+                {curso.professores.map((prof) => (
+                  <li key={prof.id}>
+                    <CardProfessor professor={prof} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </section>
       </div>
-    </section>
+    </div>
   );
 }

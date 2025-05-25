@@ -11,7 +11,8 @@ export const useCursos = (usuario: any, formData: any) => {
   const [cursosProfessor, setCursosProfessor] = useState<CursoProfessor[]>([]);
   const [cursosProfessorAtual, setCursosProfessorAtual] = useState<CursoProfessor>({
     id: 0,
-    nome: ""
+    nome: "",
+    slug: "",
   });
 
   const [editIndex, setEditIndex] = useState<number | null>(null);

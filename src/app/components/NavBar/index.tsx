@@ -10,6 +10,8 @@ import Dropdown from "@/components/Dropdown";
 import { getInitials } from "@/utils/getInitials";
 import { useAuth } from "@/contexts/AuthContext";
 import { Professor, Estudante } from "@/types";
+import { useState } from "react";
+import Notificacao from "@/components/Notificacao";
 
 const NavLink = ({
   href,
@@ -34,96 +36,105 @@ const NavLink = ({
 
 const NavBar = () => {
   const { usuario, logout, loading } = useAuth();
+  const [mostrarNotificacao, setMostrarNotificacao] = useState(false);
   
   const professor = usuario?.role === "PROFESSOR" ? (usuario as Professor) : null;
   const estudante = usuario?.role === "ESTUDANTE" ? (usuario as Estudante) : null;
   const endpoint = estudante ? `/perfil/${estudante.matricula}` : professor ? `/perfil/${professor?.idLattes}` : "/perfil";
 
   return (
-    <nav className={styles.nav}>
-      <div className={styles.nav__container}>
-        <Logo />
-        <ul className={styles.nav__ul}>
-          <li tabIndex={0} className={styles.nav__li}>
-            <NavLink href="/">Início</NavLink>
-          </li>
-          <li className={styles.nav__li}>
-            <NavLink href="/professores">Professores</NavLink>
-          </li>
-          <li className={styles.nav__li}>
-            <NavLink href="/temas">Temas</NavLink>
-          </li>
-          <li className={styles.nav__li}>
-            <NavLink href="/cursos">Cursos</NavLink>
-          </li>
-          <li className={styles.nav__li}>
-            <NavLink href="/sobre">Sobre</NavLink>
-          </li>
-        </ul>
-        <div className={styles.actions}>
-        {loading ? null : usuario ? (
-            <div className={styles.userSection}>
-              <Image src={iconBell} width={23} alt="Ícone de sino" />
+    <>
+      <nav className={styles.nav}>
+        <div className={styles.nav__container}>
+          <Logo />
+          <ul className={styles.nav__ul}>
+            <li tabIndex={0} className={styles.nav__li}>
+              <NavLink href="/">Início</NavLink>
+            </li>
+            <li className={styles.nav__li}>
+              <NavLink href="/professores">Professores</NavLink>
+            </li>
+            <li className={styles.nav__li}>
+              <NavLink href="/temas">Temas</NavLink>
+            </li>
+            <li className={styles.nav__li}>
+              <NavLink href="/cursos">Cursos</NavLink>
+            </li>
+            <li className={styles.nav__li}>
+              <NavLink href="/sobre">Sobre</NavLink>
+            </li>
+          </ul>
+          <div className={styles.actions}>
+          {loading ? null : usuario ? (
+              <div className={styles.userSection}>
+                <button className={styles.notificacao} onClick={() => setMostrarNotificacao(true)}>
+                  <Image src={iconBell} width={23} alt="Ícone de sino" />
+                  <span className={styles.sinal}></span>
+                </button>
 
-              <Link href={`${endpoint}`}>
-                <div className={styles.profile}>
-                  {usuario.profileImage ? (
-                    <Image
-                      src={usuario.profileImage}
-                      width={45}
-                      height={45}
-                      alt="Foto de perfil"
-                      className={styles.profileImage}
-                    />
-                  ) : (
-                    <div className={styles.initials}>
-                      {getInitials(usuario.nome)}
-                    </div>
-                  )}
-                </div>
+                <Link href={`${endpoint}`}>
+                  <div className={styles.profile}>
+                    {usuario.profileImage ? (
+                      <Image
+                        src={usuario.profileImage}
+                        width={45}
+                        height={45}
+                        alt="Foto de perfil"
+                        className={styles.profileImage}
+                      />
+                    ) : (
+                      <div className={styles.initials}>
+                        {getInitials(usuario.nome)}
+                      </div>
+                    )}
+                  </div>
+                </Link>
+                
+                {estudante ? (
+                  <Dropdown
+                    label=""
+                    items={[
+                      { type: "link", label: "Perfil", href: `${endpoint}` },
+                      { type: "link", label: "Alterar Senha", href: "/alterar-senha" },
+                      { type: "action", label: "Sair", onClick: logout },
+                    ]}
+                  />
+                ) : professor ? (
+                  <Dropdown
+                    label=""
+                    items={[
+                      { type: "link", label: "Perfil", href: `${endpoint}` },
+                      { type: "link", label: "Configurações", href: "/configuracoes" },
+                      { type: "link", label: "Temas", href: "/temas" },
+                      { type: "action", label: "Sair", onClick: logout },
+                    ]}
+                  />
+                ) : usuario.role === "ADMINISTRADOR" ? (
+                  <Dropdown
+                    width="220px"
+                    label=""
+                    items={[
+                      { type: "link", label: "Perfil", href: `${endpoint}` },
+                      { type: "link", label: "Configurações", href: "/configuracoes" },
+                      { type: "link", label: "Importar Cursos", href: "/cursos-cadastro" },
+                      { type: "link", label: "Importar Professores", href: "/professor-cadastro" },
+                      { type: "link", label: "Importar Áreas de Interesse", href: "/area-interesse-cadastro" },
+                      { type: "action", label: "Sair", onClick: logout },
+                    ]}
+                  />
+                ) : null}
+              </div>
+            ) : (
+              <Link href={"/login"}>
+                <button className={styles.nav__button}>Login</button>
               </Link>
-              
-              {estudante ? (
-                <Dropdown
-                  label=""
-                  items={[
-                    { type: "link", label: "Perfil", href: `${endpoint}` },
-                    { type: "link", label: "Alterar Senha", href: "/alterar-senha" },
-                    { type: "action", label: "Sair", onClick: logout },
-                  ]}
-                />
-              ) : professor ? (
-                <Dropdown
-                  label=""
-                  items={[
-                    { type: "link", label: "Perfil", href: `${endpoint}` },
-                    { type: "link", label: "Configurações", href: "/configuracoes" },
-                    { type: "link", label: "Temas", href: "/temas" },
-                    { type: "action", label: "Sair", onClick: logout },
-                  ]}
-                />
-              ) : usuario.role === "ADMINISTRADOR" ? (
-                <Dropdown
-                  width="220px"
-                  label=""
-                  items={[
-                    { type: "link", label: "Perfil", href: `${endpoint}` },
-                    { type: "link", label: "Configurações", href: "/configuracoes" },
-                    { type: "link", label: "Importar Professores", href: "/professor-cadastro" },
-                    { type: "link", label: "Importar Áreas de Interesse", href: "/area-interesse-cadastro" },
-                    { type: "action", label: "Sair", onClick: logout },
-                  ]}
-                />
-              ) : null}
-            </div>
-          ) : (
-            <Link href={"/login"}>
-              <button className={styles.nav__button}>Login</button>
-            </Link>
-          )}
+            )}
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      <Notificacao visivel={mostrarNotificacao} onClose={() => setMostrarNotificacao(false)} />
+    </>
   );
 };
 

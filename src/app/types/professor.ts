@@ -8,3 +8,11 @@ export interface Professor extends Usuario {
   formacoes?: Formacao[] | null;
   temas?: Tema[] | null;
 }
+
+export interface ProfessorCurso {
+  id: number;
+  nome: string;
+  email: string;
+  disponibilidade: string;
+  idLattes: string;
+}

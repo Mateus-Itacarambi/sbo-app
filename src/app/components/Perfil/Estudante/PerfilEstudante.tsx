@@ -6,7 +6,7 @@ import { Estudante, Professor } from "@/types";
 
 interface PerfilEstudanteProps {
   estudante: Estudante;
-  orientador: Professor;
+  orientador?: Professor | null;
   onEditarTema: () => void;
   onRemoverTema: (temaId: number) => void;
   onAdicionarEstudante: () => void;

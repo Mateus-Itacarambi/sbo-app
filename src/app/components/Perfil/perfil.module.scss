@@ -63,33 +63,6 @@
   border-radius: 20px;
   width: 100%;
   border: 3px solid $verde4;
-
-  .profile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  
-    .profileImage {
-      border-radius: 50%;
-      object-fit: cover;
-      background-color: $verde9;
-      border: 10px solid $verde9;
-      box-sizing: border-box;
-    }
-  
-    .initials {
-      width: 11rem;
-      height: 11rem;
-      border-radius: 50%;
-      background-color: $verde9;
-      color: white;
-      font-size: 5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 5px 5px 10px $cinza6;
-    }
-  }
         
   .detalhes {
     display: flex;
@@ -376,6 +349,10 @@
         }
       }
     }
+
+    .areaInteresse {
+      margin-top: 1rem;
+    }
     
   }
   
@@ -424,7 +401,7 @@
     }
 
     .card_perfil {
-      width: calc(100% - 4rem - 6px);
+      width: 100%;
     }
 
     p {

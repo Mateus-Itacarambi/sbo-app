@@ -23,7 +23,7 @@ export default function StatusBadge({ areaInteresse, curso, palavraChave, style,
           </span>
         ) : curso ? (
           <span className={`${styles[style]}`}>
-            <Link href={`/cursos/${curso.nome}`}>
+            <Link href={`/curso/${curso.slug}`} target="_blank">
               {curso.nome}
               <SquareArrowOutUpRight size={16}/>
             </Link>

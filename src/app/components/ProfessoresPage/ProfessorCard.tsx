@@ -6,31 +6,12 @@ import { Check, X } from "lucide-react";
 import ButtonAuth from "../ButtonAuth";
 import Link from "next/link";
 import { SquareArrowOutUpRight } from 'lucide-react';
+import ProfessorProfile from "../UsuarioProfile";
 
 export default function ProfessorCard({ professor }: { professor: Professor }) {
   return (
     <div className={styles.card_professor}>
-      <div className={styles.profile}>
-          {professor.profileImage ? (
-          <Image src={professor.profileImage} alt="Foto de perfil" width={100} height={100} className={styles.profileImage} />
-          ) : (
-          <div className={styles.initials}>
-            {getInitials(professor.nome)}
-
-            {professor.disponibilidade === "DISPONIVEL" ? (
-              <div className={`${styles.status} ${styles.disponivel}`}>
-                <Check size={"15px"} strokeWidth={"4px"} />
-              </div>
-            ) : professor.disponibilidade === "INDISPONIVEL" ? (
-              <div className={`${styles.status} ${styles.indisponivel}`}>
-                <X size={"15px"} strokeWidth={"4px"} />
-              </div>
-            ) : (
-              ""
-            )}
-          </div>
-          )}
-      </div>
+      <ProfessorProfile usuario={professor} />
 
       <div className={styles.info}>
         <h3>{professor.nome}</h3>

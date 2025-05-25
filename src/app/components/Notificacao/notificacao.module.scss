@@ -1,0 +1,93 @@
+@import "../../styles/variaveis";
+
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: transparent;
+  pointer-events: none;
+  transition: background 0.3s ease;
+  z-index: 1000;
+
+  &.aberto {
+    background: rgba(0, 0, 0, 0.3);
+    pointer-events: all;
+  }
+}
+
+.aside {
+  position: absolute;
+  top: 0;
+  right: -650px;
+  width: 400px;
+  height: 100%;
+  background-color: #fff;
+  color: #333;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+  padding: 1rem 0;
+  transition: right 0.3s ease;
+
+  h1 {
+    display: flex;
+    align-items: center;
+    font-size: 2.3rem;
+    padding-left: 1rem;
+    padding-bottom: 1rem;
+    font-weight: 600;
+    border-bottom: 2px solid $cinza3;
+  }
+
+  .overlay.aberto & {
+    right: 0;
+  }
+
+  ul {
+    list-style: none;
+
+    li {
+      position: relative;
+      padding: 1rem 2rem;
+      border-bottom: 2px solid $cinza3;
+
+      p {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: bold;
+        line-height: 1.3rem;
+
+        a {
+          color: $verde10;
+          text-decoration: none;
+          transition: color 0.3s;
+
+          &:hover {
+            text-decoration: underline;
+          }
+
+        }
+      }
+
+      small {
+        font-size: 0.95rem;
+        color: $cinza10;
+      }
+
+      .lida {
+        position: absolute;
+        top: 50%;
+        left: .7rem;
+        width: .5rem;
+        height: .5rem;
+        background-color: $verde10;
+        border-radius: 50%;
+      }
+
+      &:hover {
+        background-color: $cinza3;
+        cursor: pointer;
+      }
+    }
+  }
+}

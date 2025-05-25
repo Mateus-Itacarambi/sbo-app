@@ -1,7 +1,6 @@
 import styles from "./perfil.module.scss";
-import { getInitials } from "@/utils/getInitials";
 import { Estudante, Professor, UsuarioNaoEncontrado, UsuarioCompleto } from "@/types";
-import Image from "next/image";
+import UsuarioProfile from "../UsuarioProfile";
 
 interface PerfilCabecalhoProps {
   usuario: UsuarioCompleto | UsuarioNaoEncontrado;
@@ -18,13 +17,8 @@ const statusMap: Record<string, string> = {
 export default function PerfilCabecalho({ usuario, onEditar, mostrarBotoes }: PerfilCabecalhoProps) {
   return (
     <div className={styles.card_perfil}>
-        <div className={styles.profile}>
-            {usuario.profileImage ? (
-            <Image src={usuario.profileImage} alt="Foto de perfil" width={100} height={100} className={styles.profileImage} />
-            ) : (
-            <div className={styles.initials}>{getInitials(usuario.nome)}</div>
-            )}
-        </div>
+        <UsuarioProfile usuario={usuario} />
+
         <div className={styles.detalhes}>
             <h1>{usuario.nome}</h1>
             <p>{usuario.email}</p>

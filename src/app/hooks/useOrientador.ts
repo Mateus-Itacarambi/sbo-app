@@ -1,7 +1,8 @@
+import { Professor } from '@/types';
 import { useState, useEffect } from 'react';
 
 export const useOrientador = (usuario: any) => {
-  const [orientador, setOrientador] = useState<any>(null);
+  const [orientador, setOrientador] = useState<Professor | null>(null);
   
   useEffect(() => {
     const fetchOrientador = async () => {
