@@ -10,8 +10,9 @@ import Dropdown from "@/components/Dropdown";
 import { getInitials } from "@/utils/getInitials";
 import { useAuth } from "@/contexts/AuthContext";
 import { Professor, Estudante } from "@/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Notificacao from "@/components/Notificacao";
+import { NotificacaoDTO } from "@/types/notificacao";
 
 const NavLink = ({
   href,
@@ -41,6 +42,13 @@ const NavBar = () => {
   const professor = usuario?.role === "PROFESSOR" ? (usuario as Professor) : null;
   const estudante = usuario?.role === "ESTUDANTE" ? (usuario as Estudante) : null;
   const endpoint = estudante ? `/perfil/${estudante.matricula}` : professor ? `/perfil/${professor?.idLattes}` : "/perfil";
+  const [notificacoes, setNotificacoes] = useState<NotificacaoDTO[]>([]);
+
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/notificacoes/nao-lidas/${usuario?.id}`, { credentials: "include" })
+      .then(res => res.json())
+      .then(setNotificacoes);
+  }, [usuario]);
 
   return (
     <>
@@ -69,7 +77,9 @@ const NavBar = () => {
               <div className={styles.userSection}>
                 <button className={styles.notificacao} onClick={() => setMostrarNotificacao(true)}>
                   <Image src={iconBell} width={23} alt="Ícone de sino" />
-                  <span className={styles.sinal}></span>
+                  {notificacoes.length > 0 && (
+                    <span className={styles.sinal}></span>
+                  )}
                 </button>
 
                 <Link href={`${endpoint}`}>
@@ -133,7 +143,7 @@ const NavBar = () => {
         </div>
       </nav>
 
-      <Notificacao visivel={mostrarNotificacao} onClose={() => setMostrarNotificacao(false)} />
+      <Notificacao notificacoes={notificacoes || []} visivel={mostrarNotificacao} onClose={() => setMostrarNotificacao(false)} />
     </>
   );
 };

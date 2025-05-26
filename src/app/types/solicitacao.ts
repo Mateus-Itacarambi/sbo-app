@@ -9,6 +9,11 @@ export interface Solicitacao {
     motivo?: string;
 }
 
+export interface SolicitacaoDTO {
+    id: number;
+    motivo?: string;
+}
+
 export type StatusSolicitacao = 'PENDENTE' | 'APROVADA' | 'REJEITADA' | 'CANCELADA' | 'CONCLUIDA';
 
 export const statusMap: Record<string, string> = {
