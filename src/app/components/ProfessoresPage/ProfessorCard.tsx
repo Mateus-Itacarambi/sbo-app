@@ -1,14 +1,17 @@
 import { Professor } from "@/types";
 import styles from "./professoresPage.module.scss";
-import Image from "next/image";
-import { getInitials } from "@/utils/getInitials";
-import { Check, X } from "lucide-react";
 import ButtonAuth from "../ButtonAuth";
 import Link from "next/link";
 import { SquareArrowOutUpRight } from 'lucide-react';
 import ProfessorProfile from "../UsuarioProfile";
 
-export default function ProfessorCard({ professor }: { professor: Professor }) {
+interface ProfessorCardProps {
+  professor: Professor;
+  desabilitarSolicitacao?: boolean;
+  onSolicitarOrientacao?: () => void;
+}
+
+export default function ProfessorCard({ professor, desabilitarSolicitacao, onSolicitarOrientacao }: ProfessorCardProps) {
   return (
     <div className={styles.card_professor}>
       <ProfessorProfile usuario={professor} />
@@ -40,7 +43,7 @@ export default function ProfessorCard({ professor }: { professor: Professor }) {
           <Link href={`/perfil/${professor.idLattes}`} target="_blank" >
             <ButtonAuth text={"Visualizar Perfil"} type="button" theme="primary_2" margin="0" />
           </Link>
-          <ButtonAuth text={"Solicitar Orientação"} type="button" theme="primary" margin="0" />
+          <ButtonAuth text={"Solicitar Orientação"} type="button" theme="primary" margin="0" disabled={desabilitarSolicitacao} onClick={onSolicitarOrientacao} />
         </div>
       </div>
     </div>

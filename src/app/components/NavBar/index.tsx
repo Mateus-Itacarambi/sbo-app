@@ -44,11 +44,26 @@ const NavBar = () => {
   const endpoint = estudante ? `/perfil/${estudante.matricula}` : professor ? `/perfil/${professor?.idLattes}` : "/perfil";
   const [notificacoes, setNotificacoes] = useState<NotificacaoDTO[]>([]);
 
-  useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/notificacoes/nao-lidas/${usuario?.id}`, { credentials: "include" })
-      .then(res => res.json())
-      .then(setNotificacoes);
-  }, [usuario]);
+useEffect(() => {
+  const fetchNotificacoes = async () => {
+    if (!usuario?.id) return;
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/notificacoes/nao-lidas/${usuario.id}`, {
+        credentials: "include",
+      });
+
+      if (!res.ok) throw new Error("Erro ao buscar notificações");
+      const data = await res.json();
+      setNotificacoes(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  fetchNotificacoes();
+}, [usuario, loading]);
+
 
   return (
     <>

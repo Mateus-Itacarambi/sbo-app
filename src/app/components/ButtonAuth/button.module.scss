@@ -21,6 +21,7 @@
 
         &:disabled{
             background-color: $verde11;
+            cursor: default;
         }
 
         &_2 {

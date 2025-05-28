@@ -11,7 +11,7 @@ interface Props {
   notificacoes: NotificacaoDTO[];
 }
 
-export default function AsideNotificacoes({ visivel, onClose, notificacoes }: Props) {
+export default function Notificacao({ visivel, onClose, notificacoes }: Props) {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -19,7 +19,6 @@ export default function AsideNotificacoes({ visivel, onClose, notificacoes }: Pr
     document.addEventListener("keydown", handleEsc);
     return () => document.removeEventListener("keydown", handleEsc);
   }, [onClose]);
-  console.log(notificacoes);
   return (
     <div className={`${styles.overlay} ${visivel ? styles.aberto : ""}`} onClick={onClose}>
       <aside className={styles.aside} onClick={(e) => e.stopPropagation()}>

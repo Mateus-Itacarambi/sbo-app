@@ -5,6 +5,8 @@ import { Professor } from "@/types";
 import FiltroProfessor from "@/components/ProfessoresPage/FiltroProfessor";
 import ListaProfessores from "@/components/ProfessoresPage/ListaProfessores";
 import styles from "./professores.module.scss";
+import Alerta from "@/components/Alerta";
+import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
 
 interface Page<T> {
   content: T[];
@@ -16,8 +18,8 @@ interface Page<T> {
   };
 }
 
-
 export default function ProfessoresPage() {
+  const { erro, sucesso, isLoading, mostrarAlerta, setErro, setSucesso, setIsLoading } = useAlertaTemporarioContext();
   const [professores, setProfessores] = useState<Professor[]>([]);
   const [paginaAtual, setPaginaAtual] = useState(0);
   const [totalPaginas, setTotalPaginas] = useState(0);
@@ -48,20 +50,21 @@ export default function ProfessoresPage() {
       }
     });
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/professores?${params}`);
-  if (!res.ok) throw new Error("Erro ao buscar professores");
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/professores?${params}`);
+    if (!res.ok) throw new Error("Erro ao buscar professores");
 
-  const data: Page<Professor> = await res.json();
-  if (!data.page) throw new Error("Formato inesperado de resposta");
+    const data: Page<Professor> = await res.json();
+    if (!data.page) throw new Error("Formato inesperado de resposta");
 
-  setProfessores(data.content);
-  setTotalPaginas(data.page.totalPages);
-};
-
-
+    setProfessores(data.content);
+    setTotalPaginas(data.page.totalPages);
+  };
 
   return (
     <div className={styles.main}>
+      {mostrarAlerta && (
+        <Alerta text={erro || sucesso} theme={erro ? "erro" : "sucesso"} top="10rem" />
+      )}
         <div className={styles.container}>
             <FiltroProfessor filtros={filtros} setFiltros={setFiltros} />
             <ListaProfessores 
