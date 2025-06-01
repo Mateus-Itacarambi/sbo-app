@@ -16,3 +16,11 @@ export interface TemaDTO {
     descricao: string;
     palavrasChave: string;
 }
+  
+export interface TemaSolicitacao {
+    id: number;
+    titulo: string;
+    descricao: string;
+    palavrasChave: string;
+    estudantes?: Estudante[];
+}

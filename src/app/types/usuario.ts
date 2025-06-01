@@ -9,3 +9,8 @@ export interface Usuario {
     cadastroCompleto?: boolean;
     profileImage?: string;
   }
+
+export interface UsuarioDTO {
+    id: number;
+    nome: string;
+  }

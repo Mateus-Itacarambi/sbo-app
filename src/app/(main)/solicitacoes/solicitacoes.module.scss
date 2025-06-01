@@ -1,0 +1,54 @@
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 2rem;
+
+h1 {
+  margin-bottom: 1rem;
+}
+
+}
+.filtro {
+  margin-bottom: 1.5rem;
+
+  label {
+    margin-right: 0.5rem;
+    font-weight: 500;
+  }
+
+  select {
+    padding: 0.4rem 0.8rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+
+  th,
+  td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  th {
+    background: #f5f5f5;
+    font-weight: bold;
+  }
+
+  button {
+    margin-right: 0.5rem;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &:hover {
+      color: #0070f3;
+    }
+  }
+}

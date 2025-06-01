@@ -13,6 +13,7 @@ import { Professor, Estudante } from "@/types";
 import { useEffect, useState } from "react";
 import Notificacao from "@/components/Notificacao";
 import { NotificacaoDTO } from "@/types/notificacao";
+import { useWebSocketNotificacoes } from "@/hooks/useWebSocketNotificacoes";
 
 const NavLink = ({
   href,
@@ -44,12 +45,12 @@ const NavBar = () => {
   const endpoint = estudante ? `/perfil/${estudante.matricula}` : professor ? `/perfil/${professor?.idLattes}` : "/perfil";
   const [notificacoes, setNotificacoes] = useState<NotificacaoDTO[]>([]);
 
-useEffect(() => {
+  useEffect(() => {
   const fetchNotificacoes = async () => {
     if (!usuario?.id) return;
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/notificacoes/nao-lidas/${usuario.id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/notificacoes/nao-lidas`, {
         credentials: "include",
       });
 
@@ -64,6 +65,15 @@ useEffect(() => {
   fetchNotificacoes();
 }, [usuario, loading]);
 
+  useWebSocketNotificacoes({
+    userId: usuario?.id ?? 0,
+    onNovaNotificacao: (nova) => {
+      setNotificacoes((prev) => {
+        const ids = prev.map(n => n.id);
+        return ids.includes(nova.id) ? prev : [nova, ...prev];
+      });
+    },
+  });
 
   return (
     <>
@@ -81,7 +91,7 @@ useEffect(() => {
               <NavLink href="/temas">Temas</NavLink>
             </li>
             <li className={styles.nav__li}>
-              <NavLink href="/cursos">Cursos</NavLink>
+              <NavLink href="/solicitacoes">Solicitações</NavLink>
             </li>
             <li className={styles.nav__li}>
               <NavLink href="/sobre">Sobre</NavLink>
@@ -158,7 +168,12 @@ useEffect(() => {
         </div>
       </nav>
 
-      <Notificacao notificacoes={notificacoes || []} visivel={mostrarNotificacao} onClose={() => setMostrarNotificacao(false)} />
+      <Notificacao 
+        notificacoes={notificacoes || []}
+        setNotificacoes={setNotificacoes}
+        visivel={mostrarNotificacao} 
+        onClose={() => setMostrarNotificacao(false)}
+      />
     </>
   );
 };

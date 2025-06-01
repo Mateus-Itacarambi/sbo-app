@@ -1,12 +1,16 @@
+import { TemaSolicitacao } from "./tema";
+import { UsuarioDTO } from "./usuario";
+
 export interface Solicitacao {
     id: number;
     status: StatusSolicitacao;
     dataSolicitacao: string;
-    dataConclusao?: string;
-    idTema: number;
-    idProfessor: number;
-    idEstutande?: number;
+    dataConclusaoOrientacao?: string;
+    tema: TemaSolicitacao;
+    professor: UsuarioDTO;
+    estudante?: UsuarioDTO;
     motivo?: string;
+    tipo: string;
 }
 
 export interface SolicitacaoDTO {
@@ -22,4 +26,11 @@ export const statusMap: Record<string, string> = {
   REJEITADA: 'Rejeitada',
   CANCELADA: 'Cancelada',
   CONCLUIDA: 'Concluída',
+};
+
+export type TipoSolicitacao = 'ORIENTACAO' | 'TEMA';
+
+export const tipoMap: Record<string, string> = {
+  ORIENTACAO: 'Orientação',
+  TEMA: 'Tema',
 };

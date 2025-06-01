@@ -1,4 +1,4 @@
-import { Estudante, Professor } from "@/types";
+import { Estudante } from "@/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -10,4 +10,17 @@ export const solicitarOrientacao = async (estudante: Estudante, professorId: num
   });
   if (!response.ok) throw new Error(await response.text());
   return response.json();
+};
+
+export const cancelarOrientacao = async (temaId: number, motivo: string) => {
+  const response = await fetch(`${API_URL}/solicitacoes/cancelar/${temaId}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({
+      motivo: motivo
+    }),
+  });
+
+  if (!response.ok) throw new Error(await response.text());
 };

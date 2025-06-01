@@ -22,8 +22,7 @@ interface CardTemaProps {
 
 export default function CardTema({ usuario, onEditar, onRemover, onAdicionarEstudante, onRemoverEstudante, onCancelarOrientação, onAdicionarTema, mostrarBotoes, isLoading }: CardTemaProps) {
   const [modalConfirmarRemocaoTema, setModalConfirmarRemocaoTema] = useState(false);
-  
-
+  const [modalConfirmarCancelar, setModalConfirmarCancelar] = useState(false);
 
   return (
     <div className={styles.card_tema}>
@@ -46,7 +45,7 @@ export default function CardTema({ usuario, onEditar, onRemover, onAdicionarEstu
                         { type: "action", label: "Remover", onClick: () => setModalConfirmarRemocaoTema(true) },
                         { type: "action", label: "Adicionar Estudante", onClick: onAdicionarEstudante },
                         { type: "action", label: "Remover Estudante", onClick: onRemoverEstudante },
-                        { type: "action", label: "Cancelar Orientação", onClick: onCancelarOrientação },
+                        { type: "action", label: "Cancelar Orientação", onClick:  () => setModalConfirmarCancelar(true) },
                       ]}
                     />
                   )}
@@ -81,6 +80,16 @@ export default function CardTema({ usuario, onEditar, onRemover, onAdicionarEstu
           descricao="Tem certeza que deseja remover este tema?"
           onClose={() => setModalConfirmarRemocaoTema(false)}
           handleRemover={onRemover}
+          isLoading={isLoading}
+        />
+      )}
+
+      {modalConfirmarCancelar && (
+        <ModalConfirmar
+          titulo="Cancelar Orientação"
+          descricao="Tem certeza que deseja cancelar a orientação?"
+          onClose={() => setModalConfirmarCancelar(false)}
+          handleRemover={onCancelarOrientação}
           isLoading={isLoading}
         />
       )}

@@ -1,6 +1,6 @@
 import Paginacao from "@/components/Paginacao";
 import ProfessorCard from "./ProfessorCard";
-import { Estudante, Professor } from "@/types";
+import { Professor } from "@/types";
 import styles from "./professoresPage.module.scss";
 import { useEffect, useRef } from "react";
 import { useAuth } from "@/contexts/AuthContext";

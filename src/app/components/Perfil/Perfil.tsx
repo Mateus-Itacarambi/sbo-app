@@ -25,6 +25,7 @@ import { useAreasInteresse } from "@/hooks/useAreasInteresse";
 import ModalAreaInteresse from "../Modal/Professor/ModalAreaInteresse";
 import ModalCurso from "../Modal/Professor/ModalCurso";
 import { useCursosActions } from "@/hooks/useCursosActions";
+import { useSolicitacaoActions } from "@/hooks/useSolicitacaoActions";
 
 interface PerfilProps {
   usuarioVisualizado: Estudante | Professor | null;
@@ -64,6 +65,7 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
   const formacaoActions = useFormacaoActions(usuarioVisualizado);
   const areaInteresseActions = useAreaInteresseActions(usuarioVisualizado);
   const cursoActions = useCursosActions(usuarioVisualizado);
+  const solicitacaoActions = useSolicitacaoActions(usuarioVisualizado);
 
   const { formacoes, setFormacoes } = useFormacoes();
   const { temas, setTemas } = useTemas();
@@ -200,6 +202,14 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
     cursos.setCursosProfessor((prev) => prev.filter((c) => c.id !== cursoId));
   };
 
+  const cancelarOrientacao = async (temaId: number, motivo: string) => {
+    if (usuarioVisualizado.role === "PROFESSOR") {
+      await solicitacaoActions.handleCancelarOrientacao(temaId, motivo);
+    } else {
+      await solicitacaoActions.handleCancelarOrientacao(temaId, "");
+    }
+  };
+
   if (!usuarioVisualizado) return <Loading />;
 
   return (
@@ -226,7 +236,7 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
                 onRemoverTema={removerTema}
                 onAdicionarEstudante={() => modal.setModalAdicionarEstudanteTema(true)}
                 onRemoverEstudante={() => modal.setModalRemoverEstudanteTema(true)}
-                onCancelarOrientacao={() => modal.setModalConfirmarRemocaoTema(true)}
+                onCancelarOrientacao={cancelarOrientacao}
                 onAdicionarTema={() => modal.setModalTemaEstudante(true)}
                 isMeuPerfil={isMeuPerfil}
                 isLoading={isLoading}

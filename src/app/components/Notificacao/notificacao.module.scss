@@ -39,6 +39,64 @@
     border-bottom: 2px solid $cinza3;
   }
 
+  .solicitacoes {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 2px solid $cinza3;
+    gap: 1rem;
+
+    .icon {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+      border: 2px solid $cinza5;
+      color: $cinza12;
+    }
+
+    p {
+      display: flex;
+      flex-direction: column;
+      font-size: 1.2rem;
+      font-weight: 700;
+      gap: .3rem;
+
+      span {
+        font-weight: 400;
+        color: $cinza9;
+      }
+    }
+
+    .sinal {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      width: 1.5rem;
+      height: 1.5rem;
+      right: -4px;
+      top: 0;
+      background-color: red;
+      font-size: 1rem;
+      border-radius: 50%;
+      color: white;
+      border: 3px solid white;
+    }
+
+    &:hover {
+      background-color: $cinza3;
+      cursor: pointer;
+
+      .sinal {
+        border: 3px solid $cinza3;
+      }
+    }
+  }
+
   .overlay.aberto & {
     right: 0;
   }
