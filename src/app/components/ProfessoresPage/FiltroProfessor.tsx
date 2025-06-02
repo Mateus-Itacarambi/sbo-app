@@ -1,4 +1,4 @@
-import { X, Search } from "lucide-react"; // ícones de lupa e "x"
+import { X, Search } from "lucide-react";
 import ButtonAuth from "../ButtonAuth";
 import styles from "./professoresPage.module.scss";
 import DropdownCheck from "../DropdownCheck";

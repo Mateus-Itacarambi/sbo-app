@@ -10,10 +10,10 @@ interface Props {
   visivel: boolean;
   onClose: () => void;
   notificacoes: NotificacaoDTO[];
-  setNotificacoes: React.Dispatch<React.SetStateAction<NotificacaoDTO[]>>;
+  marcarTodasComoLidas: () => void;
 }
 
-export default function Notificacao({ visivel, onClose, notificacoes, setNotificacoes }: Props) {
+export default function Notificacao({ visivel, onClose, notificacoes, marcarTodasComoLidas }: Props) {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -21,21 +21,6 @@ export default function Notificacao({ visivel, onClose, notificacoes, setNotific
     document.addEventListener("keydown", handleEsc);
     return () => document.removeEventListener("keydown", handleEsc);
   }, [onClose]);
-
-  const marcarTodasComoLidas = async () => {
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/notificacoes/marcar-todas-lidas`, {
-        method: "PUT",
-        credentials: "include",
-      });
-
-      setNotificacoes((prev) =>
-        prev.map((n) => ({ ...n, lida: true }))
-      );
-    } catch (error) {
-      console.error("Erro ao marcar todas como lidas:", error);
-    }
-  };
 
   return (
     <div className={`${styles.overlay} ${visivel ? styles.aberto : ""}`} onClick={onClose}>

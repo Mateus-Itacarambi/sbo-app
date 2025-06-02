@@ -1,15 +1,110 @@
+@import "../../styles/variaveis";
+
+.main {
+  background-color: $cinza3;
+  height: calc(100vh - 8rem);
+}
+
 .container {
-  max-width: 1000px;
-  margin: auto;
+  max-width: 1200px;;
+  height: calc(100vh - 8rem);
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.card_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
   padding: 2rem;
+  display: flex;
+  border-radius: 1.5rem;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  gap: 2rem;
+  box-shadow: rgba(108, 122, 108, 0.245) 0px 3px 6px, rgba(103, 117, 103, 0.048) 0px 3px 6px;
 
-h1 {
-  margin-bottom: 1rem;
+  .head {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      color: $verde10;
+    }
+
+    .filtros_button {
+      width: 12rem;
+      background-color: $verde9;
+      border-radius: 2rem;
+      color: white;
+      font-weight: 600;
+      padding: .5rem 0;
+      border: none;
+      border-radius: 2rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $verde11;
+      }
+
+      &.hidden {
+        background-color: $vermelho9;
+
+        &:hover {
+          background-color: $vermelho11;
+        }
+      }
+    }
+  }
 }
 
+.inputComIcone {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    input {
+        width: 100%;
+        font-size: 1.4rem;
+        padding: 1rem;
+        border-radius: 1rem;
+        border: 2px solid $cinza6;
+        transition: .3s;
+        color: $cinza11;
+        padding-right: 3.5rem;
+
+        &:focus {
+            outline: none;
+            border: 2px solid $verde9;
+        }
+
+        &::placeholder {
+            color: $cinza8;
+        }
+    }
+
+    .icone {
+        position: absolute;
+        right: 1rem;
+        cursor: pointer;
+        color: $cinza7;
+    }
+
+    &:focus-within .icone {
+        color: $verde10;
+    }
 }
+
 .filtro {
-  margin-bottom: 1.5rem;
+  display: flex;
 
   label {
     margin-right: 0.5rem;

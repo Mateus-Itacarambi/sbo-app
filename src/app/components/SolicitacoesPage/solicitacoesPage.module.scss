@@ -1,0 +1,69 @@
+@import "../../styles/variaveis";
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+
+  th,
+  td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  th {
+    background: #f5f5f5;
+    font-weight: bold;
+  }
+
+  button {
+    margin-right: 0.5rem;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &:hover {
+      color: #0070f3;
+    }
+  }
+}
+
+.inputComIcone {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    input {
+        width: 100%;
+        font-size: 1.4rem;
+        padding: 1rem;
+        border-radius: .6rem;
+        border: 2px solid $cinza6;
+        transition: .3s;
+        color: $cinza11;
+        padding-right: 3.5rem;
+
+        &:focus {
+            outline: none;
+            border: 2px solid $verde9;
+        }
+
+        &::placeholder {
+            color: $cinza8;
+        }
+    }
+
+    .icone {
+        position: absolute;
+        right: 1rem;
+        cursor: pointer;
+        color: $cinza7;
+    }
+
+    &:focus-within .icone {
+        color: $verde10;
+    }
+}

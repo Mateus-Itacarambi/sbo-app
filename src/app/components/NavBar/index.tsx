@@ -75,6 +75,21 @@ const NavBar = () => {
     },
   });
 
+  const marcarTodasComoLidas = async () => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/notificacoes/marcar-todas-lidas`, {
+        method: "PUT",
+        credentials: "include",
+      });
+
+      setNotificacoes((prev) =>
+        prev.map((n) => ({ ...n, lida: true }))
+      );
+    } catch (error) {
+      console.error("Erro ao marcar todas como lidas:", error);
+    }
+  };
+
   return (
     <>
       <nav className={styles.nav}>
@@ -170,7 +185,7 @@ const NavBar = () => {
 
       <Notificacao 
         notificacoes={notificacoes || []}
-        setNotificacoes={setNotificacoes}
+        marcarTodasComoLidas={marcarTodasComoLidas}
         visivel={mostrarNotificacao} 
         onClose={() => setMostrarNotificacao(false)}
       />

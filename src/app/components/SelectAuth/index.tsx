@@ -9,12 +9,15 @@ interface Option {
 
 interface CustomSelectProps {
   name: string;
-  text: string;
+  text?: string;
   options: Option[];
   disabled?: boolean;
   placeholder?: string;
   selected?: string | number;
   onChange: (value: string) => void;
+  height?: string;
+  padding?: string;
+  margin?: string;
 }
 
 export default function CustomSelect({
@@ -25,6 +28,9 @@ export default function CustomSelect({
   placeholder = "Selecione uma opção",
   selected,
   onChange,
+  height,
+  padding,
+  margin
 }: CustomSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string>("");
@@ -64,9 +70,9 @@ export default function CustomSelect({
 
   return (
     <div className={styles.container_select}>
-      <label className={styles.label}>{text}</label>
+      {text && <label className={styles.label}>{text}</label>}
 
-      <div className={`${styles.select_wrapper} ${isOpen ? styles.aberto : ""} ${disabled ? styles.disabled : ""}`}  ref={containerRef}>
+      <div className={`${styles.select_wrapper} ${isOpen ? styles.aberto : ""} ${disabled ? styles.disabled : ""}`}  ref={containerRef} style={{ height: height, margin: margin }}>
 
         <input
           type="hidden"
@@ -78,8 +84,9 @@ export default function CustomSelect({
           className={`${styles.select_display} ${disabled ? styles.disabled : ""}`}
           onClick={() => !disabled && setIsOpen((prev) => !prev)}
           tabIndex={0}
+          style={{ padding: padding}}
         >
-          {selectedLabel || placeholder}
+          {selectedLabel || <span className={styles.placeholder}>{placeholder}</span>}
 
           <ChevronDown className={styles.icone} />
         </div>

@@ -8,7 +8,7 @@ export interface Solicitacao {
     dataConclusaoOrientacao?: string;
     tema: TemaSolicitacao;
     professor: UsuarioDTO;
-    estudante?: UsuarioDTO;
+    estudante: UsuarioDTO;
     motivo?: string;
     tipo: string;
 }
