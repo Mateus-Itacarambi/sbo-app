@@ -107,7 +107,7 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
                   onChange={(status) => setFiltros({ ...filtros, status })}
                   name="status"
                   height="auto"
-                  padding=".7rem 1rem"
+                  padding=".6rem 1rem"
                   margin="0"
                 />
               </td>
@@ -117,7 +117,7 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
                   onChange={(tipo) => setFiltros({ ...filtros, tipo })}
                   name="tipo"
                   height="auto"
-                  padding=".7rem 1rem"
+                  padding=".6rem 1rem"
                   margin="0"
                 />
               </td>
@@ -138,7 +138,7 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
             <td>{s.tema?.titulo}</td>
             <td>{statusMap[s.status]}</td>
             <td>{tipoMap[s.tipo]}</td>
-            <td>
+            <td style={{ width: "100%", display: "flex", gap: "1rem" }}>
               {s.status === "PENDENTE" ? (
                 usuario?.role === "PROFESSOR" ? (
                   <>
@@ -147,8 +147,7 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
                   </>
                 ) : (
                   <>
-                    <button title="Cancelar" onClick={() => cancelarOrientacao(s.id, "")}>Cancelar</button>
-                    {/* <button title="Rejeitar">✗</button> */}
+                    <button title="Cancelar" className={styles.rejeitar} onClick={() => cancelarOrientacao(s.id, "")}>Cancelar</button>
                   </>
                 )
               ) : (

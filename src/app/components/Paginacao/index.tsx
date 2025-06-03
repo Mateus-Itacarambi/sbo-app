@@ -6,11 +6,12 @@ interface Props {
   totalPaginas: number;
   onPaginaChange: (p: number) => void;
   boxShadow?: boolean;
+  padding?: string;
 }
 
-export default function Paginacao({ paginaAtual, totalPaginas, onPaginaChange, boxShadow=true }: Props) {
+export default function Paginacao({ paginaAtual, totalPaginas, onPaginaChange, boxShadow=true, padding }: Props) {
   return (
-    <div className={styles.paginacao} style={{ boxShadow: boxShadow  ? "" : "none" }}>
+    <div className={styles.paginacao} style={{ boxShadow: boxShadow  ? "" : "none", padding: padding }}>
       <button
         className={styles.prev}
         disabled={paginaAtual === 0 || totalPaginas === 0}

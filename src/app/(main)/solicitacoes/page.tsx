@@ -88,6 +88,7 @@ export default function SolicitacoesPage() {
             totalPaginas={totalPaginas}
             onPaginaChange={setPaginaAtual}
             boxShadow={false}
+            padding="0"
           />
         </div>
       </div>
