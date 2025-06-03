@@ -18,6 +18,7 @@ interface CustomSelectProps {
   height?: string;
   padding?: string;
   margin?: string;
+  fontSize?: string;
 }
 
 export default function CustomSelect({
@@ -30,7 +31,8 @@ export default function CustomSelect({
   onChange,
   height,
   padding,
-  margin
+  margin,
+  fontSize
 }: CustomSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string>("");
@@ -72,7 +74,7 @@ export default function CustomSelect({
     <div className={styles.container_select}>
       {text && <label className={styles.label}>{text}</label>}
 
-      <div className={`${styles.select_wrapper} ${isOpen ? styles.aberto : ""} ${disabled ? styles.disabled : ""}`}  ref={containerRef} style={{ height: height, margin: margin }}>
+      <div className={`${styles.select_wrapper} ${isOpen ? styles.aberto : ""} ${disabled ? styles.disabled : ""}`}  ref={containerRef} style={{ height: height, margin: margin, fontSize: fontSize }}>
 
         <input
           type="hidden"

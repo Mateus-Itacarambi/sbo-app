@@ -10,6 +10,13 @@ export interface Usuario {
     profileImage?: string;
   }
 
+export interface UsuarioSimplesDTO {
+    id: number;
+    nome: string;
+    role: string;
+    slug: string;
+}
+
 export interface UsuarioDTO {
     id: number;
     nome: string;

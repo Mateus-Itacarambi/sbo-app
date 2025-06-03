@@ -4,6 +4,8 @@ import { handleFetchError } from "@/utils/handleFetchError";
 import {
   solicitarOrientacao,
   cancelarOrientacao,
+  rejeitarSolicitacao,
+  aprovarSolicitacao,
 } from "@/services/solicitacaoService";
 
 
@@ -25,10 +27,40 @@ export const useSolicitacaoActions = (usuario: any) => {
     }
   };
 
-  const handleCancelarOrientacao = async (temaId: number, motivo: string) => {
+  const handleAprovarSolicitacao = async (solicitacaoId: number) => {
     try {
       setIsLoading(true);
-      await cancelarOrientacao(temaId, motivo);
+      await aprovarSolicitacao(usuario, solicitacaoId);
+      setSucesso("Solicitacão aprovada com sucesso!");
+      setErro("");
+    } catch (error: any) {
+      setErro(handleFetchError(error));
+      setSucesso("");
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRejeitarSolicitacao = async (e: React.FormEvent, solicitacaoId: number, motivo: string) => {
+    try {
+      setIsLoading(true);
+      await rejeitarSolicitacao(e, usuario, solicitacaoId, motivo);
+      setSucesso("Solicitacão rejeitada com sucesso!");
+      setErro("");
+    } catch (error: any) {
+      setErro(handleFetchError(error));
+      setSucesso("");
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCancelarOrientacao = async (e: React.FormEvent, solicitacaoId: number, motivo: string) => {
+    try {
+      setIsLoading(true);
+      await cancelarOrientacao(e, solicitacaoId, motivo);
       localStorage.setItem("mensagemSucesso", "Orientação cancelada com sucesso!");
       location.reload();
     } catch (error: any) {
@@ -42,6 +74,8 @@ export const useSolicitacaoActions = (usuario: any) => {
   
   return {
     handleSolicitarOrientacao,
+    handleAprovarSolicitacao,
+    handleRejeitarSolicitacao,
     handleCancelarOrientacao,
   };
 };

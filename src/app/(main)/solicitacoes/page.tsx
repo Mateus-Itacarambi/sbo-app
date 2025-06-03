@@ -3,11 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./solicitacoes.module.scss";
 import { Solicitacao } from "@/types";
-// import FiltroSolicitacoes from "./FiltroSolicitacoes";
-// import ListaSolicitacoes from "./ListaSolicitacoes";
 import Paginacao from "../../components/Paginacao";
-import { useAuth } from "@/contexts/AuthContext";
 import TabelaSolicitacoes from "@/components/SolicitacoesPage/TabelaSolicitacoes";
+import Alerta from "@/components/Alerta";
+import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
+import ModalEstudanteTema from "@/components/Modal/Estudante/ModalEstudanteTema";
+import ModalCancelarSolicitacao from "@/components/Modal/ModalCancelarSolicitacao";
 
 interface Page<T> {
   content: T[];
@@ -20,6 +21,7 @@ interface Page<T> {
 }
 
 export default function SolicitacoesPage() {
+  const { erro, sucesso, mostrarAlerta } = useAlertaTemporarioContext();
   const containerRef = useRef<HTMLDivElement>(null);
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
   const [solicitacoes, setSolicitacoes] = useState<Solicitacao[]>([]);
@@ -65,6 +67,9 @@ export default function SolicitacoesPage() {
 
   return (
     <div className={styles.main}>
+      {mostrarAlerta && (
+        <Alerta text={erro || sucesso} theme={erro ? "erro" : "sucesso"} top="10rem" />
+      )}
       <div className={styles.container}>
         <div className={styles.card_container}>
           <div className={styles.head}>

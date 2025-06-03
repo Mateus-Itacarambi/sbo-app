@@ -1,7 +1,9 @@
+import { s } from 'framer-motion/client';
 import styles from './statusBadge.module.scss';
 
 interface StatusBadgeProps {
-  status: 'RESERVADO' | 'EM_ANDAMENTO' | 'DISPONIVEL' | 'INDISPONIVEL' | 'CONCLUIDO';
+  status: 'RESERVADO' | 'EM_ANDAMENTO' | 'DISPONIVEL' | 'INDISPONIVEL' | 'CONCLUIDO' | 'PENDENTE' | 'APROVADA' | 'REJEITADA' | 'CANCELADA' | 'CONCLUIDA';
+  style?: React.CSSProperties;
 }
 
 const statusMap: Record<string, string> = {
@@ -10,11 +12,16 @@ const statusMap: Record<string, string> = {
   DISPONIVEL: 'Disponível',
   INDISPONIVEL: 'Indisponível',
   CONCLUIDO: 'Concluído',
+  PENDENTE: 'Pendente',
+  APROVADA: 'Aprovada',
+  REJEITADA: 'Rejeitada',
+  CANCELADA: 'Cancelada',
+  CONCLUIDA: 'Concluída',
 };
 
-export default function StatusBadge({ status }: StatusBadgeProps) {
+export default function StatusBadge({ status, style }: StatusBadgeProps) {
     return (
-        <span className={`${styles.badge} ${styles[status]}`}>
+        <span className={`${styles.badge} ${styles[status]}`} style={style}>
         {statusMap[status]}
         </span>
     );

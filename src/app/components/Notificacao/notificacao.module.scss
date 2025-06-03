@@ -104,48 +104,48 @@
   ul {
     list-style: none;
 
-    li {
-      position: relative;
-      padding: 1rem 2rem;
-      border-bottom: 2px solid $cinza3;
+    a {
+      text-decoration: none;
+      color: inherit;
 
-      p {
-        margin: 0;
-        font-size: 1.2rem;
-        font-weight: 600;
-        line-height: 1.3rem;
-        margin-bottom: .3rem;
+      li {
+        position: relative;
+        padding: 1rem 2rem;
+        border-bottom: 2px solid $cinza3;
 
-        a {
-          color: $verde10;
-          text-decoration: none;
-          transition: color 0.3s;
+        p {
+          margin: 0;
+          font-size: 1.2rem;
+          font-weight: 600;
+          line-height: 1.3rem;
+          margin-bottom: .3rem;
 
-          &:hover {
-            text-decoration: underline;
+          span {
+            color: $verde10;
+            text-decoration: none;
+            transition: color 0.3s;
           }
-
         }
-      }
 
-      small {
-        font-size: 0.95rem;
-        color: $cinza10;
-      }
+        small {
+          font-size: 0.95rem;
+          color: $cinza10;
+        }
 
-      .lida {
-        position: absolute;
-        top: 50%;
-        left: .7rem;
-        width: .5rem;
-        height: .5rem;
-        background-color: $verde10;
-        border-radius: 50%;
-      }
+        .lida {
+          position: absolute;
+          top: 50%;
+          left: .7rem;
+          width: .5rem;
+          height: .5rem;
+          background-color: $verde10;
+          border-radius: 50%;
+        }
 
-      &:hover {
-        background-color: $cinza3;
-        cursor: pointer;
+        &:hover {
+          background-color: $cinza3;
+          cursor: pointer;
+        }
       }
     }
   }

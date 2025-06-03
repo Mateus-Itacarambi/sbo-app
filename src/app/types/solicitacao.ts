@@ -1,5 +1,5 @@
 import { TemaSolicitacao } from "./tema";
-import { UsuarioDTO } from "./usuario";
+import { UsuarioDTO, UsuarioSimplesDTO } from "./usuario";
 
 export interface Solicitacao {
     id: number;
@@ -7,8 +7,8 @@ export interface Solicitacao {
     dataSolicitacao: string;
     dataConclusaoOrientacao?: string;
     tema: TemaSolicitacao;
-    professor: UsuarioDTO;
-    estudante: UsuarioDTO;
+    professor: UsuarioSimplesDTO;
+    estudante: UsuarioSimplesDTO;
     motivo?: string;
     tipo: string;
 }

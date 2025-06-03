@@ -7,7 +7,7 @@ import Loading from "@/components/Loading/loading";
 import Alerta from "@/components/Alerta";
 import ModalEditarPerfil from "@/components/Modal/ModalEditarPerfil";
 import ModalTema from "@/components/Modal/Estudante/ModalTemaEstudante";
-import ModalEstudanteTema from "@/components/Modal/ModalEstudanteTema";
+import ModalEstudanteTema from "@/components/Modal/ModalCancelarSolicitacao";
 import ModalConfirmarTema from "@/components/Modal/ModalConfirmar";
 
 import PerfilCabecalho from "@/components/Perfil/PerfilCabecalho";

@@ -1,11 +1,5 @@
 import { SolicitacaoDTO } from "./solicitacao";
-
-export interface UsuarioSimplesDTO {
-    id: number;
-    nome: string;
-    role: string;
-    slug: string;
-}
+import { UsuarioSimplesDTO } from "./usuario";
 
 export interface NotificacaoDTO {
     id: number;

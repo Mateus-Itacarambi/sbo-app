@@ -202,14 +202,6 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
     cursos.setCursosProfessor((prev) => prev.filter((c) => c.id !== cursoId));
   };
 
-  const cancelarOrientacao = async (temaId: number, motivo: string) => {
-    if (usuarioVisualizado.role === "PROFESSOR") {
-      await solicitacaoActions.handleCancelarOrientacao(temaId, motivo);
-    } else {
-      await solicitacaoActions.handleCancelarOrientacao(temaId, "");
-    }
-  };
-
   if (!usuarioVisualizado) return <Loading />;
 
   return (
@@ -236,7 +228,6 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
                 onRemoverTema={removerTema}
                 onAdicionarEstudante={() => modal.setModalAdicionarEstudanteTema(true)}
                 onRemoverEstudante={() => modal.setModalRemoverEstudanteTema(true)}
-                onCancelarOrientacao={cancelarOrientacao}
                 onAdicionarTema={() => modal.setModalTemaEstudante(true)}
                 isMeuPerfil={isMeuPerfil}
                 isLoading={isLoading}

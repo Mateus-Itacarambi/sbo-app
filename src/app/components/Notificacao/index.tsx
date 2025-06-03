@@ -43,18 +43,19 @@ export default function Notificacao({ visivel, onClose, notificacoes, marcarToda
         </div>
         <ul>
           {notificacoes.map((n) => {
-            if (n.tipo === "ORIENTACAO" || n.tipo === "APROVADA" || n.tipo === "REPROVADA") { 
+            if (n.tipo === "ORIENTACAO" || n.tipo === "APROVADA" || n.tipo === "REJEITADA") { 
               return (
-                <li key={n.id}>
-                  {!n.lida && <span className={styles.lida}></span>}
-                  <p>
-                    {n.mensagem}
-                    <Link href={`/perfil/${n.solicitante?.slug}`} target="_blank">
-                      {n.solicitante?.nome}
-                    </Link>.
-                  </p>
-                  <small>{new Date(n.dataCriacao).toLocaleString()}</small>
-                </li>
+                <>
+                  <Link href={`/solicitacoes`}>
+                    <li key={n.id}>
+                      {!n.lida && <span className={styles.lida}></span>}
+                      <p>
+                        {n.mensagem}<span>{n.solicitante?.nome}.</span> 
+                      </p>
+                      <small>{new Date(n.dataCriacao).toLocaleString()}</small>
+                    </li>
+                  </Link>
+                </>
               );
             }
             return null;
