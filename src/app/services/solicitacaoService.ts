@@ -36,9 +36,9 @@ export const rejeitarSolicitacao = async (e: React.FormEvent, professor: Profess
   return response.json();
 };
 
-export const cancelarOrientacao = async (e: React.FormEvent, temaId: number, motivo: string) => {
+export const cancelarOrientacao = async (e: React.FormEvent, solicitacaoId: number, motivo: string) => {
   e.preventDefault();
-  const response = await fetch(`${API_URL}/solicitacoes/cancelar/${temaId}`, {
+  const response = await fetch(`${API_URL}/solicitacoes/cancelar/${solicitacaoId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     credentials: "include",

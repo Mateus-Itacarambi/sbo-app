@@ -21,7 +21,7 @@ interface TabelaSolicitacoesProps {
 
 export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtros, setFiltros }: TabelaSolicitacoesProps) {
   const { isLoading } = useAlertaTemporarioContext();
-  const [modalCanelarSolicitacao, setModalCanelarSolicitacao] = useState(false);
+  const [modalCancelarSolicitacao, setModalCancelarSolicitacao] = useState(false);
   const [modalRejeitarSolicitacao, setModalRejeitarSolicitacao] = useState(false);
   const [solicitacaoIdSelecionada, setSolicitacaoIdSelecionada] = useState<number | null>(null);
   const [loading, setLoading] = useState<{ id: number; tipo: "APROVAR" | "REJEITAR" | "CANCELAR" } | null>(null);
@@ -213,11 +213,11 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
                       </>
                     ) : (
                       <>
-                        <button title="Cancelar" className={styles.rejeitar} onClick={() => { setSolicitacaoIdSelecionada(s.id); setModalCanelarSolicitacao(true) }}>Cancelar</button>
+                        <button title="Cancelar" className={styles.rejeitar} onClick={() => { setSolicitacaoIdSelecionada(s.id); setModalCancelarSolicitacao(true) }}>Cancelar</button>
                       </>
                     )
                   ) : s.status === "APROVADA" ? (
-                    <button title="Cancelar" className={styles.rejeitar} onClick={() => setModalCanelarSolicitacao(true)}>Cancelar</button>
+                    <button title="Cancelar" className={styles.rejeitar} onClick={() => setModalCancelarSolicitacao(true)}>Cancelar</button>
                   ) : (
                     <button title="Mostrar/Ocultar Motivo" className={styles.ver} onClick={() => toggleMotivo(s.id)}>
                       {motivoAberto.includes(s.id) ? (
@@ -249,23 +249,24 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
         </tbody>
       </table>
 
-      {(modalCanelarSolicitacao || modalRejeitarSolicitacao) && (
+      {(modalCancelarSolicitacao || modalRejeitarSolicitacao) && (
         <ModalCancelarSolicitacao
-          titulo={modalCanelarSolicitacao ? "Cancelar Solicitação" : "Rejeitar Solicitação"}
+          titulo={modalCancelarSolicitacao ? "Cancelar Solicitação" : "Rejeitar Solicitação"}
           onClose={() => {
-            setModalCanelarSolicitacao(false);
+            setModalCancelarSolicitacao(false);
             setModalRejeitarSolicitacao(false);
             setSolicitacaoIdSelecionada(null);
           }}
-          onSubmit={(e, motivo) => {
+          onSubmit={() => {
             if (solicitacaoIdSelecionada !== null) {
-              modalCanelarSolicitacao
-                ? cancelarOrientacao(e, solicitacaoIdSelecionada, motivo)
-                : rejeitarOrientacao(e, solicitacaoIdSelecionada, motivo);
+              modalCancelarSolicitacao
+                ? cancelarOrientacao
+                : rejeitarOrientacao;
             }
           }}
           isLoading={isLoading}
           textoBotao="Concluir"
+          idSolicitacao={solicitacaoIdSelecionada}
         />
       )}
     </>
