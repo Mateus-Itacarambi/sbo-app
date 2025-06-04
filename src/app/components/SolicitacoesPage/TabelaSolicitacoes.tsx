@@ -10,7 +10,6 @@ import StatusBadge from "../StatusBadge";
 import { StatusTipo } from "@/types";
 import ModalCancelarSolicitacao from "../Modal/ModalCancelarSolicitacao";
 import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
-import { m } from "framer-motion";
 
 interface TabelaSolicitacoesProps {
   solicitacoes: Solicitacao[];
@@ -30,14 +29,7 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
   const [motivoAberto, setMotivoAberto] = useState<number[]>([]);
 
   const cancelarOrientacao = async (e: React.FormEvent, solicitacaoId: number, motivo: string) => {
-      if (usuario?.role === "PROFESSOR") {
-        await solicitacaoActions.handleCancelarOrientacao(e, solicitacaoId, motivo);
-      } else {
-        await solicitacaoActions.handleCancelarOrientacao(e, solicitacaoId, motivo);
-      }
-    // } finally {
-    //   setLoading(null);
-    // }
+    await solicitacaoActions.handleCancelarOrientacao(e, solicitacaoId, motivo);
   };
 
   const aprovarOrientacao = async (solicitacaoId: number) => {
@@ -217,7 +209,7 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
                       </>
                     )
                   ) : s.status === "APROVADA" ? (
-                    <button title="Cancelar" className={styles.rejeitar} onClick={() => setModalCancelarSolicitacao(true)}>Cancelar</button>
+                    <button title="Cancelar" className={styles.rejeitar} onClick={() => { setSolicitacaoIdSelecionada(s.id); setModalCancelarSolicitacao(true)}}>Cancelar</button>
                   ) : (
                     <button title="Mostrar/Ocultar Motivo" className={styles.ver} onClick={() => toggleMotivo(s.id)}>
                       {motivoAberto.includes(s.id) ? (
@@ -257,13 +249,7 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
             setModalRejeitarSolicitacao(false);
             setSolicitacaoIdSelecionada(null);
           }}
-          onSubmit={() => {
-            if (solicitacaoIdSelecionada !== null) {
-              modalCancelarSolicitacao
-                ? cancelarOrientacao
-                : rejeitarOrientacao;
-            }
-          }}
+          onSubmit={modalCancelarSolicitacao ? cancelarOrientacao : rejeitarOrientacao}
           isLoading={isLoading}
           textoBotao="Concluir"
           idSolicitacao={solicitacaoIdSelecionada}

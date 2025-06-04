@@ -22,9 +22,9 @@ export const aprovarSolicitacao = async (professor: Professor, solicitacaoId: nu
   return response.json();
 };
 
-export const rejeitarSolicitacao = async (e: React.FormEvent, professor: Professor, solicitacaoId: number, motivo: string) => {
+export const rejeitarSolicitacao = async (e: React.FormEvent, solicitacaoId: number, motivo: string) => {
   e.preventDefault();
-  const response = await fetch(`${API_URL}/solicitacoes/${solicitacaoId}/rejeitar/${professor.id}`, {
+  const response = await fetch(`${API_URL}/solicitacoes/rejeitar/${solicitacaoId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     credentials: "include",

@@ -45,7 +45,7 @@ export const useSolicitacaoActions = (usuario: any) => {
   const handleRejeitarSolicitacao = async (e: React.FormEvent, solicitacaoId: number, motivo: string) => {
     try {
       setIsLoading(true);
-      await rejeitarSolicitacao(e, usuario, solicitacaoId, motivo);
+      await rejeitarSolicitacao(e, solicitacaoId, motivo);
       setSucesso("Solicitacão rejeitada com sucesso!");
       setErro("");
     } catch (error: any) {
