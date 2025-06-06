@@ -59,8 +59,8 @@ export default function ModalTemaEstudante({ usuario, onClose, atualizarTema, ca
               onChange={(e) => setTemaDescricao(e.target.value)}
           />
           <div style={{ display: "flex", justifyContent: "flex-end", gap: "1rem" }}>
-              <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={onCancelar} />
-              <ButtonAuth text={isLoading ? <span className="spinner"></span> : "Salvar"} type="submit" theme="primary"/>
+              <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={onCancelar} loading={isLoading} />
+              <ButtonAuth text={"Salvar"} type="submit" theme="primary" loading={isLoading} />
           </div>
         </form>
     </Modal>

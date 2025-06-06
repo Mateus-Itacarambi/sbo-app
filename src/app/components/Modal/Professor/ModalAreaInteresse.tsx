@@ -12,7 +12,7 @@ interface ModalProps {
   areasSelecionadas: AreaInteresse[];
   onCancelar: () => void;
   onAdicionar: (selecionadas: AreaInteresse[]) => void;
-  isLoading?: boolean;
+  isLoading: boolean;
 }
 
 export default function ModalAreaInteresse({ todasAreas, areasSelecionadas, onCancelar, onAdicionar, isLoading }: ModalProps) {
@@ -64,14 +64,14 @@ export default function ModalAreaInteresse({ todasAreas, areasSelecionadas, onCa
             text={isLoading ? <span className="spinner"></span> : "Cancelar"} 
             theme="secondary" 
             margin="0" 
-            disabled={isLoading} 
+            loading={isLoading} 
             onClick={onCancelar} 
           />
           <ButtonAuth 
             type="button" 
             text={isLoading ? <span className="spinner"></span> : "Adicionar"} 
             theme="primary" margin="0" 
-            disabled={isLoading} 
+            loading={isLoading} 
             onClick={() => onAdicionar(selecionadas)} 
           />
         </div>

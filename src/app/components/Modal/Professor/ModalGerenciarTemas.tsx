@@ -115,8 +115,8 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove
             <InputAuth label="Descrição" type="textarea" value={formularioEdicao.descricao} onChange={(e) => handleChange("descricao", e.target.value)} />
           </div>
           <div className={styles.flex}>
-            <ButtonAuth type="submit" text={isLoading ? <span className="spinner"></span> : "Remover Tema"} theme="secondary" margin="0" disabled={isLoading} onClick={() => setModalConfirmarRemocaoTema(true)} />
-            <ButtonAuth type="submit" text={isLoading ? <span className="spinner"></span> : "Atualizar Tema"} theme="primary" margin="0" disabled={isLoading} onClick={handleSubmit} />
+            <ButtonAuth type="submit" text={"Remover Tema"} theme="secondary" margin="0" loading={isLoading} onClick={() => setModalConfirmarRemocaoTema(true)} />
+            <ButtonAuth type="submit" text={"Atualizar Tema"} theme="primary" margin="0" loading={isLoading} onClick={handleSubmit} />
           </div>
         </form>
       </div>
@@ -140,7 +140,7 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove
             ))}
         </ul>
 
-        <ButtonAuth type="button" text="Fechar" theme="secondary" onClick={onClose} margin="0" />
+        <ButtonAuth type="button" text="Fechar" theme="secondary" onClick={onClose} margin="0" loading={isLoading} />
       </div>
       
       {modalConfirmarRemocaoTema && (

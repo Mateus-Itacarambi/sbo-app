@@ -215,13 +215,13 @@ export default function Cadastro() {
               text="Cancelar"
               type="reset"
               theme="secondary"
-              disabled={isLoading}
+              loading={isLoading}
             />
             <ButtonAuth
-              text={isLoading ? <span className="spinner"></span> : "Cadastrar"}
+              text={"Cadastrar"}
               type="submit"
               theme="primary"
-              disabled={isLoading}
+              loading={isLoading}
             />
           </form>
           <p>

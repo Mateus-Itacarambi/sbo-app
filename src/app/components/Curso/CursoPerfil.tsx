@@ -1,6 +1,4 @@
 import CardProfessor from "../CardProfessor";
-import CardOrientador from "../Perfil/Estudante/CardOrientador";
-import UsuarioProfile from "../UsuarioProfile";
 import styles from "./curso.module.scss";
 import { Curso } from "@/types"
 

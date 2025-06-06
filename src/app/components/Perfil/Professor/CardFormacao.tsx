@@ -10,9 +10,10 @@ interface CardFormacaoProps {
   onGerenciar: () => void;
   onAdicionarFormacao: () => void;
   mostrarBotoes: boolean;
+  isLoading: boolean;
 }
 
-export default function CardFormacao({ formacoes, mostrarBotoes, onGerenciar, onAdicionarFormacao }: CardFormacaoProps) {
+export default function CardFormacao({ formacoes, mostrarBotoes, onGerenciar, onAdicionarFormacao, isLoading }: CardFormacaoProps) {
   if (!formacoes || formacoes.length === 0) {
     return (
       <>
@@ -22,7 +23,7 @@ export default function CardFormacao({ formacoes, mostrarBotoes, onGerenciar, on
           </div>
           <p>Não possui formações cadastradas.</p>
           {mostrarBotoes && (
-            <ButtonAuth text="Adicionar Formação" type="button" theme="primary" margin="2rem 0 0 0" onClick={onAdicionarFormacao} />
+            <ButtonAuth text="Adicionar Formação" type="button" theme="primary" margin="2rem 0 0 0" onClick={onAdicionarFormacao} loading={isLoading} />
           )}
         </div>
       </>

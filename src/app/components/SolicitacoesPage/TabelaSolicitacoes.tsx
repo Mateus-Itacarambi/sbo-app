@@ -10,6 +10,7 @@ import StatusBadge from "../StatusBadge";
 import { StatusTipo } from "@/types";
 import ModalCancelarSolicitacao from "../Modal/ModalCancelarSolicitacao";
 import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
+import { tr } from "framer-motion/client";
 
 interface TabelaSolicitacoesProps {
   solicitacoes: Solicitacao[];
@@ -26,28 +27,43 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
   const [solicitacaoIdSelecionada, setSolicitacaoIdSelecionada] = useState<number | null>(null);
   const [loading, setLoading] = useState<{ id: number; tipo: "APROVAR" | "REJEITAR" | "CANCELAR" } | null>(null);
   const { usuario } = useAuth();
-  const solicitacaoActions = useSolicitacaoActions(usuario);
+  const solicitacaoActions = useSolicitacaoActions();
   const [motivoAberto, setMotivoAberto] = useState<number[]>([]);
 
   const cancelarOrientacao = async (solicitacaoId: number, motivo: string) => {
     setLoading({ id: solicitacaoId, tipo: "CANCELAR" });
-    await solicitacaoActions.handleCancelarOrientacao(solicitacaoId, motivo);
-    await atualizarSolicitacoes();
-    setLoading(null);
+    try {
+      await solicitacaoActions.handleCancelarOrientacao(solicitacaoId, motivo);
+      await atualizarSolicitacoes();
+    } catch (error) {
+      console.error("Erro ao cancelar orientação:", error);
+    } finally {
+      setLoading(null);
+    }
   };
 
   const aprovarOrientacao = async (solicitacaoId: number) => {
     setLoading({ id: solicitacaoId, tipo: "APROVAR" });
-    await solicitacaoActions.handleAprovarSolicitacao(solicitacaoId);
-    await atualizarSolicitacoes();
-    setLoading(null);
+    try {
+      await solicitacaoActions.handleAprovarSolicitacao(solicitacaoId);
+      await atualizarSolicitacoes();
+    } catch (error) {
+      console.error("Erro ao aprovar orientação:", error);
+    } finally {
+      setLoading(null);
+    }
   };
 
   const rejeitarOrientacao = async (solicitacaoId: number, motivo: string) => {
     setLoading({ id: solicitacaoId, tipo: "REJEITAR" });
-    await solicitacaoActions.handleRejeitarSolicitacao(solicitacaoId, motivo);
-    await atualizarSolicitacoes();
-    setLoading(null);
+    try {
+      await solicitacaoActions.handleRejeitarSolicitacao(solicitacaoId, motivo);
+      await atualizarSolicitacoes();
+    } catch (error) {
+      console.error("Erro ao rejeitar orientação:", error);
+    } finally {
+      setLoading(null);
+    }
   };
 
   const toggleMotivo = (id: number) => {

@@ -68,7 +68,7 @@ export default function ProfessorCard({ professor, desabilitarSolicitacao, solic
       
         <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1rem" }}>
           <Link href={`/perfil/${professor.idLattes}`} target="_blank" >
-            <ButtonAuth text={"Visualizar Perfil"} type="button" theme="primary_2" margin="0" />
+            <ButtonAuth text={"Visualizar Perfil"} type="button" theme="primary_2" margin="0" loading={loading} />
           </Link>
           <ButtonAuth
             text={solicitado ? "Cancelar Solicitação" : "Solicitar Orientação"}
@@ -77,6 +77,7 @@ export default function ProfessorCard({ professor, desabilitarSolicitacao, solic
             margin="0"
             disabled={desabilitarSolicitacao || loading}
             onClick={handleClick}
+            loading={loading}
           />
         </div>
       </div>

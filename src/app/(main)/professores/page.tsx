@@ -19,7 +19,7 @@ interface Page<T> {
 }
 
 export default function ProfessoresPage() {
-  const { erro, sucesso, isLoading, mostrarAlerta, setErro, setSucesso, setIsLoading } = useAlertaTemporarioContext();
+  const { erro, sucesso, isLoading, mostrarAlerta} = useAlertaTemporarioContext();
   const [professores, setProfessores] = useState<Professor[]>([]);
   const [paginaAtual, setPaginaAtual] = useState(0);
   const [totalPaginas, setTotalPaginas] = useState(0);
@@ -50,7 +50,10 @@ export default function ProfessoresPage() {
       }
     });
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/professores?${params}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/professores?${params}`, {
+      method: "GET",
+      credentials: "include",
+    });
     if (!res.ok) throw new Error("Erro ao buscar professores");
 
     const data: Page<Professor> = await res.json();
@@ -60,18 +63,27 @@ export default function ProfessoresPage() {
     setTotalPaginas(data.page.totalPages);
   };
 
+  const atualizarProfessores = async () => {
+    try {
+      await buscarProfessores();
+    } catch (e) {
+      console.error("Erro ao atualizar professores:", e);
+    }
+  };
+
   return (
     <div className={styles.main}>
       {mostrarAlerta && (
         <Alerta text={erro || sucesso} theme={erro ? "erro" : "sucesso"} top="10rem" />
       )}
         <div className={styles.container}>
-            <FiltroProfessor filtros={filtros} setFiltros={setFiltros} />
+            <FiltroProfessor filtros={filtros} setFiltros={setFiltros} isLoading={isLoading} />
             <ListaProfessores 
                 professores={professores}
                 paginaAtual={paginaAtual}
                 totalPaginas={totalPaginas}
                 onPaginaChange={setPaginaAtual}
+                atualizarProfessores={atualizarProfessores}
              />
         </div>
     </div>

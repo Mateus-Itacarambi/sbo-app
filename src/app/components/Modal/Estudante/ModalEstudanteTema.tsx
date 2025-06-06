@@ -30,8 +30,8 @@ export default function ModalEstudanteTema({ titulo, onClose, onSubmit, isLoadin
           onChange={(e) => setMatricula(e.target.value)}
         />
         <div style={{ display: "flex", justifyContent: "flex-end", gap: "1rem"}}>
-          <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={onClose} margin="0"/>
-          <ButtonAuth text={isLoading ? <span className="spinner"></span> : textoBotao} type="submit" theme="primary"  margin="0"/>
+          <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={onClose} margin="0" loading={isLoading}/>
+          <ButtonAuth text={textoBotao} type="submit" theme="primary"  margin="0" loading={isLoading}/>
         </div>
       </form>
     </Modal>

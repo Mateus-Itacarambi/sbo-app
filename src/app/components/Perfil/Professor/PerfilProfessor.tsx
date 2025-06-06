@@ -8,7 +8,6 @@ import CardFormacao from "./CardFormacao";
 import Link from "next/link";
 import { SquareArrowOutUpRight } from "lucide-react";
 import CardCurso from "./CardCurso";
-import { on } from "events";
 
 interface PerfilProfessorProps {
   professor: Professor;
@@ -25,6 +24,7 @@ interface PerfilProfessorProps {
   cursos?: CursoProfessor[];
   onRemoverAreaInteresse: (areaInteresseId: number) => void;
   onRemoverCurso: (cursoId: number) => void;
+  isLoading: boolean;
 }
 
 const PerfilProfessor: FC<PerfilProfessorProps> = ({
@@ -42,6 +42,7 @@ const PerfilProfessor: FC<PerfilProfessorProps> = ({
   cursos,
   onRemoverAreaInteresse,
   onRemoverCurso,
+  isLoading,
 }) => (
   <>
     <CardInfo titulo="ID Lattes" texto={professor.idLattes} link={<Link href={`https://lattes.cnpq.br/${professor.idLattes}`} target="_blank"><SquareArrowOutUpRight color="#669966" /></Link>} />
@@ -50,7 +51,8 @@ const PerfilProfessor: FC<PerfilProfessorProps> = ({
       formacoes={formacoes} 
       onGerenciar={onGerenciarFormacao}
       onAdicionarFormacao={onAdicionarFormacao}
-      mostrarBotoes={isMeuPerfil} 
+      mostrarBotoes={isMeuPerfil}
+      isLoading={isLoading}
     />
 
     <CardAreaInteresse
@@ -58,6 +60,7 @@ const PerfilProfessor: FC<PerfilProfessorProps> = ({
       onAdicionarArea={onAdicionarAreaInteresse}
       mostrarBotoes={isMeuPerfil}
       onRemoverAreaInteresse={onRemoverAreaInteresse}
+      isLoading={isLoading}
     />
 
     <CardTema
@@ -65,6 +68,7 @@ const PerfilProfessor: FC<PerfilProfessorProps> = ({
       onGerenciar={onGerenciarTemas}
       onAdicionarTema={onAdicionarTema}
       mostrarBotoes={isMeuPerfil} 
+      isLoading={isLoading}
     />
 
     <CardCurso
@@ -72,6 +76,7 @@ const PerfilProfessor: FC<PerfilProfessorProps> = ({
       onAdicionarCurso={onAdicionarCurso}
       onRemoverCurso={onRemoverCurso}
       mostrarBotoes={isMeuPerfil} 
+      isLoading={isLoading}
     />
   </>
 );

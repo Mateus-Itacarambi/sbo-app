@@ -15,8 +15,8 @@ export default function ModalConfirmar({ onClose, handleRemover, isLoading, titu
         <h2>{titulo}</h2>
         <p>{descricao}</p>
         <div style={{ display: "flex", justifyContent: "flex-end", gap: "1rem" }}>
-        <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={onClose} margin="0"/>
-        <ButtonAuth text={isLoading ? <span className="spinner"></span> : "Confirmar"} type="button" onClick={handleRemover} theme="primary"  margin="0"/>
+        <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={onClose} margin="0" loading={isLoading}/>
+        <ButtonAuth text={"Confirmar"} type="button" onClick={handleRemover} theme="primary"  margin="0" loading={isLoading}/>
         </div>
     </Modal>
   );

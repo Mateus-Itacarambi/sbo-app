@@ -9,9 +9,10 @@ import InputTags from "../InputTags";
 interface Props {
   filtros: any;
   setFiltros: (f: any) => void;
+  isLoading: boolean;
 }
 
-export default function FiltroProfessor({ filtros, setFiltros }: Props) {
+export default function FiltroProfessor({ filtros, setFiltros, isLoading }: Props) {
   const [professoresOptions, setProfessoresOptions] = useState<{ value: string; label: string }[]>([]);
 
   useEffect(() => {
@@ -81,6 +82,7 @@ export default function FiltroProfessor({ filtros, setFiltros }: Props) {
         onClick={() =>
           setFiltros({ titulo: "", professor: "" })
         }
+        loading={isLoading}
       />
     </aside>
   );

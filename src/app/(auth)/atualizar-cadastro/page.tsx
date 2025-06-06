@@ -121,6 +121,7 @@ export default function AtualizarCadastro() {
             />
 
             <SelectAuth
+              name="genero"
               options={generos}
               onChange={(value) => setGenero(value)}
               text="Gênero"
@@ -175,13 +176,13 @@ export default function AtualizarCadastro() {
               text="Cancelar"
               type="reset"
               theme="secondary"
-              disabled={isLoading}
+              loading={isLoading}
             />
             <ButtonAuth
-              text={isLoading ? <span className="spinner"></span> : "Atualizar"}
+              text={"Atualizar"}
               type="submit"
               theme="primary"
-              disabled={isLoading}
+              loading={isLoading}
             />
           </form>
         </div>

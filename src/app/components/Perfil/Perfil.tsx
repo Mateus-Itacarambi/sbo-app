@@ -65,7 +65,7 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
   const formacaoActions = useFormacaoActions(usuarioVisualizado);
   const areaInteresseActions = useAreaInteresseActions(usuarioVisualizado);
   const cursoActions = useCursosActions(usuarioVisualizado);
-  const solicitacaoActions = useSolicitacaoActions(usuarioVisualizado);
+  const solicitacaoActions = useSolicitacaoActions();
 
   const { formacoes, setFormacoes } = useFormacoes();
   const { temas, setTemas } = useTemas();
@@ -250,6 +250,7 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
                 onRemoverAreaInteresse={removerAreaInteresse}
                 onRemoverCurso={removerCurso}
                 cursos={cursos.cursosProfessor}
+                isLoading={isLoading}
               />
             )}
 
@@ -271,6 +272,7 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
           onSalvar={adicionarTema}
           onClose={() => modal.setModalTemaProfessor(false)}
           onCancelar={() => modal.setModalTemaProfessor(false)}
+          isLoading={isLoading}
         />
       )}
       
@@ -299,6 +301,7 @@ export default function Perfil({ usuarioVisualizado }: PerfilProps) {
           onSalvar={adicionarFormacao}
           onClose={() => modal.setModalFormacao(false)}
           onCancelar={handleCancelar}
+          isLoading={isLoading}
         />
       )}
 

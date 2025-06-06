@@ -9,9 +9,10 @@ import { buscarAreasInteresse, buscarCursos } from "@/services";
 interface Props {
   filtros: any;
   setFiltros: (f: any) => void;
+  isLoading: boolean;
 }
 
-export default function FiltroProfessor({ filtros, setFiltros }: Props) {
+export default function FiltroProfessor({ filtros, setFiltros, isLoading }: Props) {
   const [areasOptions, setAreasOptions] = useState<{ value: string; label: string }[]>([]);
   const [cursosOptions, setCursosOptions] = useState<{ value: string; label: string }[]>([]);
 
@@ -108,6 +109,7 @@ export default function FiltroProfessor({ filtros, setFiltros }: Props) {
         onClick={() =>
           setFiltros({ nome: "", curso: "", disciplina: "", disponibilidade: "", areaInteresse: "" })
         }
+        loading={isLoading}
       />
     </aside>
   );

@@ -51,7 +51,7 @@ export default function PerfilEstudante({
         isLoading={isLoading}
       />
 
-      <CardOrientador usuario={estudante} orientador={orientador} mostrarBotoes={isMeuPerfil} />
+      <CardOrientador usuario={estudante} orientador={orientador} mostrarBotoes={isMeuPerfil} isLoading={isLoading} />
     </>
   );
 }

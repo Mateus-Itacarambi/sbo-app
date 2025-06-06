@@ -8,9 +8,10 @@ interface CardCursoProps {
   onAdicionarCurso: () => void;
   mostrarBotoes: boolean;
   onRemoverCurso: (cursoId: number) => void;
+  isLoading: boolean;
 }
 
-export default function CardCurso({ cursos, mostrarBotoes, onAdicionarCurso, onRemoverCurso }: CardCursoProps) {
+export default function CardCurso({ cursos, mostrarBotoes, onAdicionarCurso, onRemoverCurso, isLoading }: CardCursoProps) {
   if (!cursos || cursos.length === 0) {
     return (
       <>
@@ -20,7 +21,7 @@ export default function CardCurso({ cursos, mostrarBotoes, onAdicionarCurso, onR
           </div>
           <p>Não possui cursos cadastrados.</p>
           {mostrarBotoes && (
-            <ButtonAuth text="Adicionar Cursos" type="button" theme="primary" margin="2rem 0 0 0" onClick={onAdicionarCurso} />
+            <ButtonAuth text="Adicionar Cursos" type="button" theme="primary" margin="2rem 0 0 0" onClick={onAdicionarCurso} loading={isLoading} />
           )}
         </div>
       </>

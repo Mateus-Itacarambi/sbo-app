@@ -11,12 +11,14 @@ interface ListaProfessoresProps {
   paginaAtual: number;
   totalPaginas: number;
   onPaginaChange: (p: number) => void;
+  atualizarProfessores: () => void;
 }
 
-export default function ListaProfessores({ professores, paginaAtual, totalPaginas, onPaginaChange }: ListaProfessoresProps) {
+export default function ListaProfessores({ professores, paginaAtual, totalPaginas, onPaginaChange, atualizarProfessores }: ListaProfessoresProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { usuario } = useAuth();
-  const solicitacaoActions = useSolicitacaoActions(usuario);
+  const solicitacaoActions = useSolicitacaoActions();
+  console.log(professores);
 
   useEffect(() => {
     containerRef.current?.scrollTo({ top: 0, behavior: "instant" });
@@ -24,6 +26,12 @@ export default function ListaProfessores({ professores, paginaAtual, totalPagina
   
   const solicitarOrientacao = async (professorId: number) => {
     await solicitacaoActions.handleSolicitarOrientacao(professorId);
+    await atualizarProfessores();
+  };
+  
+  const cancelarSolicitacao = async (idSolicitacao: number) => {
+    await solicitacaoActions.handleCancelarOrientacao(idSolicitacao, "cancelar");
+    await atualizarProfessores();
   };
 
   return (
@@ -38,12 +46,8 @@ export default function ListaProfessores({ professores, paginaAtual, totalPagina
               professor={p}
               desabilitarSolicitacao={usuario?.role !== "ESTUDANTE"}
               solicitacaoJaFeita={p.solicitacaoPendente}
-              onSolicitar={async () => {
-                await fetch(`${process.env.NEXT_PUBLIC_API_URL}/solicitacoes/solicitarOrientacao/${p.id}`, { method: "POST" });
-              }}
-              onCancelar={async () => {
-                await fetch(`${process.env.NEXT_PUBLIC_API_URL}/solicitacoes/cancelar/${solicitacaoId}`, { method: "PUT" });
-              }}
+              onSolicitar={() => solicitarOrientacao(p.id)}
+              onCancelar={() => cancelarSolicitacao(p.idSolicitacao!)}
              />
           ))}
         </div>

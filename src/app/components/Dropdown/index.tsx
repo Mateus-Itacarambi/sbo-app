@@ -4,7 +4,6 @@ import { useState, useRef, useEffect, ReactNode } from 'react';
 import Link from 'next/link';
 import { ChevronDown } from 'lucide-react';
 import styles from './dropdown.module.scss';
-import { useAuth } from '@/contexts/AuthContext';
 
 type DropdownItem =
   | { type: 'link'; label: string; href: string }
@@ -21,7 +20,6 @@ interface DropdownProps {
 export default function Dropdown({ label, items, icon=null, width="13rem", top="calc(8rem - ((8rem - 4.5rem) / 2) + 1rem)" }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { usuario, logout, loading } = useAuth();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

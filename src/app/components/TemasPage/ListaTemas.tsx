@@ -9,9 +9,10 @@ interface ListaTemasProps {
   paginaAtual: number;
   totalPaginas: number;
   onPaginaChange: (p: number) => void;
+  isLoading: boolean;
 }
 
-export default function ListaTemas({ temas, paginaAtual, totalPaginas, onPaginaChange }: ListaTemasProps) {
+export default function ListaTemas({ temas, paginaAtual, totalPaginas, onPaginaChange, isLoading }: ListaTemasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -25,7 +26,7 @@ export default function ListaTemas({ temas, paginaAtual, totalPaginas, onPaginaC
       <div className={styles.temas_container} ref={containerRef}>
         <div className={styles.temas}>
           {temas.map((t) => (
-            <TemaCard key={t.id} tema={t} />
+            <TemaCard key={t.id} tema={t} isLoading={isLoading} />
           ))}
         </div>
       

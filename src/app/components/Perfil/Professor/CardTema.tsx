@@ -11,9 +11,10 @@ interface CardTemaProps {
   onGerenciar: () => void;
   onAdicionarTema: () => void;
   mostrarBotoes: boolean;
+  isLoading: boolean;
 }
 
-export default function CardTema({ temas, mostrarBotoes, onGerenciar, onAdicionarTema }: CardTemaProps) {
+export default function CardTema({ temas, mostrarBotoes, onGerenciar, onAdicionarTema, isLoading }: CardTemaProps) {
   if (!temas || temas.length === 0) {
     return (
       <>
@@ -23,7 +24,7 @@ export default function CardTema({ temas, mostrarBotoes, onGerenciar, onAdiciona
           </div>
           <p>Não possui temas cadastradas.</p>
           {mostrarBotoes && (
-            <ButtonAuth text="Adicionar Tema" type="button" theme="primary" margin="2rem 0 0 0" onClick={onAdicionarTema} />
+            <ButtonAuth text="Adicionar Tema" type="button" theme="primary" margin="2rem 0 0 0" onClick={onAdicionarTema} loading={isLoading} />
           )}
         </div>
       </>

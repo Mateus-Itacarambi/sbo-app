@@ -1,4 +1,3 @@
-import { s } from 'framer-motion/client';
 import styles from './statusBadge.module.scss';
 
 interface StatusBadgeProps {

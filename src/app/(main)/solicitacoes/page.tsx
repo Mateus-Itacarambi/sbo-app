@@ -52,7 +52,10 @@ export default function SolicitacoesPage() {
       }
     });
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/solicitacoes?${params}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/solicitacoes?${params}`, {
+      method: "GET",
+      credentials: "include",
+    });
     const data: Page<Solicitacao> = await res.json();
 
     setSolicitacoes(data.content);

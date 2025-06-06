@@ -111,8 +111,8 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove
             <InputAuth label="Ano de Início" type="number" value={formularioEdicao.anoInicio.toString()} onChange={(e) => handleChange("anoInicio", e.target.value)} />
             <InputAuth label="Ano de Conclusão" type="number" value={formularioEdicao.anoFim.toString()} onChange={(e) => handleChange("anoFim", e.target.value)} />
 
-            <ButtonAuth type="submit" text={isLoading ? <span className="spinner"></span> : "Remover Formação"} theme="secondary" margin="0" disabled={isLoading} onClick={() => setModalConfirmarRemocaoFormacao(true)} />
-            <ButtonAuth type="submit" text={isLoading ? <span className="spinner"></span> : "Atualizar Formação"} theme="primary" margin="0" disabled={isLoading} onClick={handleSubmit} />
+            <ButtonAuth type="submit" text={"Remover Formação"} theme="secondary" margin="0" loading={isLoading} onClick={() => setModalConfirmarRemocaoFormacao(true)} />
+            <ButtonAuth type="submit" text={"Atualizar Formação"} theme="primary" margin="0" loading={isLoading} onClick={handleSubmit} />
           </div>
         </form>
       </div>
@@ -136,7 +136,7 @@ export default function ModalGerenciarFormacoes({ onClose, onAtualizar, onRemove
             ))}
         </ul>
 
-        <ButtonAuth type="button" text="Fechar" theme="secondary" onClick={onClose} margin="0" />
+        <ButtonAuth type="button" text="Fechar" theme="secondary" onClick={onClose} margin="0" loading={isLoading} />
       </div>
       
       {modalConfirmarRemocaoFormacao && (

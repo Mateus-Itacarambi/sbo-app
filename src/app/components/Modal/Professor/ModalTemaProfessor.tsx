@@ -10,9 +10,10 @@ interface ModalTemaProfessorProps {
   onClose: () => void;
   onSalvar: (tema: TemaDTO) => void;
   onCancelar: () => void;
+  isLoading: boolean;
 }
 
-export default function ModalTemaProfessor({ onSalvar, onClose, onCancelar }: ModalTemaProfessorProps) {
+export default function ModalTemaProfessor({ onSalvar, onClose, onCancelar, isLoading }: ModalTemaProfessorProps) {
   const tema = useTema();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -37,8 +38,8 @@ export default function ModalTemaProfessor({ onSalvar, onClose, onCancelar }: Mo
         <InputAuth label="Descrição" type="textarea" value={tema.temaDescricao} onChange={(e) => tema.setTemaDescricao(e.target.value)} />
 
         <div className={styles.flex}>
-          <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={onCancelar} margin="0" />
-          <ButtonAuth type="submit" text={"Adicionar Tema"} theme="primary" margin="0" />
+          <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={onCancelar} margin="0" loading={isLoading} />
+          <ButtonAuth type="submit" text={"Adicionar Tema"} theme="primary" margin="0" loading={isLoading} />
         </div>
       </form>
     </Modal>

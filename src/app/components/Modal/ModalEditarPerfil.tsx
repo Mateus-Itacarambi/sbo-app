@@ -61,8 +61,8 @@ export default function ModalEditarPerfil({ usuario, formData, cursos, semestres
             </>
           )}
 
-          <ButtonAuth type="button" text="Cancelar" theme="secondary" onClick={handleCancelar} />
-          <ButtonAuth type="submit" text={isLoading ? <span className="spinner"></span> : "Salvar"} theme="primary"/>
+          <ButtonAuth type="button" text="Cancelar" theme="secondary" onClick={handleCancelar} loading={isLoading} />
+          <ButtonAuth type="submit" text="Salvar" theme="primary" loading={isLoading}/>
         </form>
       </div>
     </div>,

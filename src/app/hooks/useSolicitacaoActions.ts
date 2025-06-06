@@ -9,7 +9,7 @@ import {
 } from "@/services/solicitacaoService";
 
 
-export const useSolicitacaoActions = (usuario: any) => {
+export const useSolicitacaoActions = () => {
   const { setErro, setSucesso, setIsLoading } = useAlertaTemporarioContext();
 
   const handleSolicitarOrientacao = async (professorId: number) => {
@@ -30,7 +30,7 @@ export const useSolicitacaoActions = (usuario: any) => {
   const handleAprovarSolicitacao = async (solicitacaoId: number) => {
     try {
       setIsLoading(true);
-      await aprovarSolicitacao(usuario, solicitacaoId);
+      await aprovarSolicitacao(solicitacaoId);
       setSucesso("Solicitacão aprovada com sucesso!");
       setErro("");
     } catch (error: any) {

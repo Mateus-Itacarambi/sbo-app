@@ -12,7 +12,7 @@ interface ModalProps {
   cursosSelecionados: CursoProfessor[];
   onCancelar: () => void;
   onAdicionar: (selecionadas: CursoProfessor[]) => void;
-  isLoading?: boolean;
+  isLoading: boolean;
 }
 
 export default function ModalAreaInteresse({ todosCursos, cursosSelecionados, onCancelar, onAdicionar, isLoading }: ModalProps) {
@@ -27,7 +27,7 @@ export default function ModalAreaInteresse({ todosCursos, cursosSelecionados, on
   .filter((curso) => curso.nome.toLowerCase().includes(busca.toLowerCase()))
   .sort((a, b) => a.nome.localeCompare(b.nome));
 
-  const toggleSelecao = (curso: Curso) => {
+  const toggleSelecao = (curso: CursoProfessor) => {
     setSelecionadas((prev) =>
       prev.some((a) => a.id === curso.id)
         ? prev.filter((a) => a.id !== curso.id)
@@ -61,17 +61,17 @@ export default function ModalAreaInteresse({ todosCursos, cursosSelecionados, on
         <div className={styles.botoes}>
           <ButtonAuth 
             type="button" 
-            text={isLoading ? <span className="spinner"></span> : "Cancelar"} 
+            text={"Cancelar"} 
             theme="secondary" 
             margin="0" 
-            disabled={isLoading} 
+            loading={isLoading} 
             onClick={onCancelar} 
           />
           <ButtonAuth 
             type="button" 
-            text={isLoading ? <span className="spinner"></span> : "Adicionar"} 
+            text={"Adicionar"} 
             theme="primary" margin="0" 
-            disabled={isLoading} 
+            loading={isLoading} 
             onClick={() => onAdicionar(selecionadas)} 
           />
         </div>

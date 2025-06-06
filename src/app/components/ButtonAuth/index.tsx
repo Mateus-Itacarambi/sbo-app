@@ -9,18 +9,31 @@ interface ButtonAuthProps {
   disabled?: boolean;
   margin?: string;
   icon?: boolean;
+  loading: boolean;
 }
 
-export default function ButtonAuth({ text, type, onClick, theme, disabled, margin, icon=false }: ButtonAuthProps) {
+export default function ButtonAuth({ text, type, onClick, theme, disabled = false, margin, icon=false, loading }: ButtonAuthProps) {
   return (
     <>
       {!icon ? (
-        <button className={`${styles.button} ${styles[theme]}`} onClick={onClick} type={type} disabled={disabled} style={{ margin: margin }}>
-          {text}
+        <button 
+          className={`${styles.button} ${styles[theme]}`}
+          onClick={onClick} type={type}
+          disabled={loading || disabled}
+          style={{ margin: margin }}
+        >
+          {loading ? <span className={styles.spinner}></span> : text}
         </button>
       ) : (
-        <button className={`${styles.button} ${styles[theme]}`} onClick={onClick} type={type} disabled={disabled} style={{  margin: margin, width: "0", height:"0", backgroundColor: "white" }}>
-          {text}
+        <button
+          className={`${styles.button}
+          ${styles[theme]}`}
+          onClick={onClick}
+          type={type}
+          disabled={loading || disabled}
+          style={{  margin: margin, width: "0", height:"0", backgroundColor: "white" }}
+        >
+          {loading ? <span className={styles.spinner}></span> : text}
         </button>
       )}
     </>

@@ -10,9 +10,10 @@ interface ModalFormacaoProps {
   onClose: () => void;
   onSalvar: (formacao: FormacaoDTO) => void;
   onCancelar: () => void;
+  isLoading: boolean;
 }
 
-export default function ModalFormacao({ onSalvar, onClose, onCancelar }: ModalFormacaoProps) {
+export default function ModalFormacao({ onSalvar, onClose, onCancelar, isLoading }: ModalFormacaoProps) {
   const formacao = useFormacao();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -42,8 +43,8 @@ export default function ModalFormacao({ onSalvar, onClose, onCancelar }: ModalFo
           <InputAuth label="Ano de Início" type="number" value={formacao.anoInicio.toString()} onChange={(e) => formacao.setAnoInicio(e.target.value)} />
           <InputAuth label="Ano de Conclusão" type="number" value={formacao.anoFim.toString()} onChange={(e) => formacao.setAnoFim(e.target.value)} />
           
-          <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={onCancelar} margin="0" />
-          <ButtonAuth type="submit" text={"Adicionar Formação"} theme="primary" margin="0" />
+          <ButtonAuth text="Cancelar" type="button" theme="secondary" onClick={onCancelar} margin="0" loading={isLoading} />
+          <ButtonAuth type="submit" text={"Adicionar Formação"} theme="primary" margin="0" loading={isLoading} />
         </div>
       </form>
     </Modal>

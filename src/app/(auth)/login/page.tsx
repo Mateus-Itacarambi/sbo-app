@@ -106,10 +106,10 @@ export default function Login() {
             </Link>
 
             <ButtonAuth
-              text={isLoading ? <span className="spinner"></span> : "Acessar"}
+              text={"Acessar"}
               type="submit"
               theme="primary"
-              disabled={isLoading}
+              loading={isLoading}
             />
 
             <p>

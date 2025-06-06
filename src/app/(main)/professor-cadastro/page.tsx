@@ -86,7 +86,7 @@ export default function UploadProfessores() {
             <p>luiz.dias@ifb.edu.br</p>
           </div>
           <div className={styles.obs}><strong>Observação: </strong>os valores contidos no arquivo .csv devem estar separados por vírgula.</div>
-          <ButtonAuth text={isLoading ? <span className="spinner"></span> : "Processar Arquivo"} type="button" onClick={handleFileUpload} disabled={isLoading || !file} theme="primary" margin="2rem 0 0 0"/>
+          <ButtonAuth text={"Processar Arquivo"} type="button" onClick={handleFileUpload} disabled={isLoading || !file} loading={isLoading} theme="primary" margin="2rem 0 0 0"/>
         </div>
       </div>
     </div>

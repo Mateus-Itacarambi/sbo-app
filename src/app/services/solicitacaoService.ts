@@ -12,7 +12,7 @@ export const solicitarOrientacao = async (professorId: number) => {
   return response.json();
 };
 
-export const aprovarSolicitacao = async (professor: Professor, solicitacaoId: number) => {
+export const aprovarSolicitacao = async (solicitacaoId: number) => {
   const response = await fetch(`${API_URL}/solicitacoes/aprovar/${solicitacaoId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },

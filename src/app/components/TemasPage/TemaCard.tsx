@@ -2,7 +2,7 @@ import { Tema } from "@/types";
 import styles from "./temasPage.module.scss";
 import ButtonAuth from "../ButtonAuth";
 
-export default function TemaCard({ tema }: { tema: Tema }) {
+export default function TemaCard({ tema, isLoading }: { tema: Tema, isLoading: boolean }) {
   return (
     <div className={styles.card_tema}>
       <h3>{tema.titulo}</h3>
@@ -22,7 +22,7 @@ export default function TemaCard({ tema }: { tema: Tema }) {
         {tema.professor.nome}
       </p>
 
-      <ButtonAuth text={"Solicitar Tema"} type="button" theme="primary" margin=".5rem 0 0 0" />
+      <ButtonAuth text={"Solicitar Tema"} type="button" theme="primary" margin=".5rem 0 0 0" loading={isLoading} />
     </div>
   );
 }

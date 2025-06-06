@@ -5,6 +5,7 @@ import { Tema } from "@/types";
 import FiltroTemas from "@/components/TemasPage/FiltroTemas";
 import ListaTemas from "@/components/TemasPage/ListaTemas";
 import styles from "./temas.module.scss";
+import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
 
 interface Page<T> {
   content: T[];
@@ -17,6 +18,7 @@ interface Page<T> {
 }
 
 export default function TemasPage() {
+  const { erro, sucesso, isLoading, mostrarAlerta} = useAlertaTemporarioContext();
   const [temas, setTemas] = useState<Tema[]>([]);
   const [paginaAtual, setPaginaAtual] = useState(0);
   const [totalPaginas, setTotalPaginas] = useState(0);
@@ -65,12 +67,13 @@ const buscarTemas = async () => {
   return (
     <div className={styles.main}>
         <div className={styles.container}>
-            <FiltroTemas filtros={filtros} setFiltros={setFiltros} />
+            <FiltroTemas filtros={filtros} setFiltros={setFiltros} isLoading={isLoading} />
             <ListaTemas 
                 temas={temas}
                 paginaAtual={paginaAtual}
                 totalPaginas={totalPaginas}
                 onPaginaChange={setPaginaAtual}
+                isLoading={isLoading}
              />
         </div>
     </div>

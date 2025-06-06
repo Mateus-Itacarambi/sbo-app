@@ -8,9 +8,10 @@ interface CardTemaProps {
   onAdicionarArea: () => void;
   mostrarBotoes: boolean;
   onRemoverAreaInteresse: (areaInteresseId: number) => void;
+  isLoading: boolean;
 }
 
-export default function CardTema({ areasInteresse, mostrarBotoes, onAdicionarArea, onRemoverAreaInteresse }: CardTemaProps) {
+export default function CardTema({ areasInteresse, mostrarBotoes, onAdicionarArea, onRemoverAreaInteresse, isLoading }: CardTemaProps) {
   if (!areasInteresse || areasInteresse.length === 0) {
     return (
       <>
@@ -20,7 +21,7 @@ export default function CardTema({ areasInteresse, mostrarBotoes, onAdicionarAre
           </div>
           <p>Não possui áreas de interesse cadastradas.</p>
           {mostrarBotoes && (
-            <ButtonAuth text="Adicionar Áreas de Interesse" type="button" theme="primary" margin="2rem 0 0 0" onClick={onAdicionarArea} />
+            <ButtonAuth text="Adicionar Áreas de Interesse" type="button" theme="primary" margin="2rem 0 0 0" onClick={onAdicionarArea} loading={isLoading} />
           )}
         </div>
       </>
