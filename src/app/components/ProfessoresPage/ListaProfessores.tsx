@@ -37,7 +37,13 @@ export default function ListaProfessores({ professores, paginaAtual, totalPagina
               key={p.id} 
               professor={p}
               desabilitarSolicitacao={usuario?.role !== "ESTUDANTE"}
-              onSolicitarOrientacao={() => solicitarOrientacao(p.id)}
+              solicitacaoJaFeita={p.solicitacaoPendente}
+              onSolicitar={async () => {
+                await fetch(`${process.env.NEXT_PUBLIC_API_URL}/solicitacoes/solicitarOrientacao/${p.id}`, { method: "POST" });
+              }}
+              onCancelar={async () => {
+                await fetch(`${process.env.NEXT_PUBLIC_API_URL}/solicitacoes/cancelar/${solicitacaoId}`, { method: "PUT" });
+              }}
              />
           ))}
         </div>

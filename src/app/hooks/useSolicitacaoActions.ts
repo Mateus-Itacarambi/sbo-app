@@ -15,7 +15,7 @@ export const useSolicitacaoActions = (usuario: any) => {
   const handleSolicitarOrientacao = async (professorId: number) => {
     try {
       setIsLoading(true);
-      await solicitarOrientacao(usuario, professorId);
+      await solicitarOrientacao(professorId);
       setSucesso("Solicitacão enviada com sucesso!");
       setErro("");
     } catch (error: any) {
@@ -42,10 +42,10 @@ export const useSolicitacaoActions = (usuario: any) => {
     }
   };
 
-  const handleRejeitarSolicitacao = async (e: React.FormEvent, solicitacaoId: number, motivo: string) => {
+  const handleRejeitarSolicitacao = async (solicitacaoId: number, motivo: string) => {
     try {
       setIsLoading(true);
-      await rejeitarSolicitacao(e, solicitacaoId, motivo);
+      await rejeitarSolicitacao(solicitacaoId, motivo);
       setSucesso("Solicitacão rejeitada com sucesso!");
       setErro("");
     } catch (error: any) {
@@ -57,12 +57,12 @@ export const useSolicitacaoActions = (usuario: any) => {
     }
   };
 
-  const handleCancelarOrientacao = async (e: React.FormEvent, solicitacaoId: number, motivo: string) => {
+  const handleCancelarOrientacao = async (solicitacaoId: number, motivo: string) => {
     try {
       setIsLoading(true);
-      await cancelarOrientacao(e, solicitacaoId, motivo);
-      localStorage.setItem("mensagemSucesso", "Orientação cancelada com sucesso!");
-      location.reload();
+      await cancelarOrientacao(solicitacaoId, motivo);
+      setSucesso("Solicitacão cancelada com sucesso!");
+      setErro("");
     } catch (error: any) {
       setErro(handleFetchError(error));
       setSucesso("");

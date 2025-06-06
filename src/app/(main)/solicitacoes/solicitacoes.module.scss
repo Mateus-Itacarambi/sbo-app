@@ -1,17 +1,36 @@
 @import "../../styles/variaveis";
 
 .main {
-  background-color: $cinza3;
   height: calc(100vh - 8rem);
+  display: flex;
+  justify-content: center;
+  background-color: $cinza3;
+  padding: 2rem 0;
 }
 
 .container {
   max-width: 1200px;;
-  height: calc(100vh - 8rem);
-  padding: 2rem 0;
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
+  padding: 0 1rem 1rem 2rem;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar
+  {
+      width: 8px;
+      border-radius: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb
+  {
+      border-radius: 15px;
+      background-color: $verde9;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $verde10;
+      }
+  }
 }
 
 .card_container {
@@ -62,89 +81,6 @@
           background-color: $vermelho11;
         }
       }
-    }
-  }
-}
-
-.inputComIcone {
-    position: relative;
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-
-    input {
-        width: 100%;
-        font-size: 1.4rem;
-        padding: 1rem;
-        border-radius: 1rem;
-        border: 2px solid $cinza6;
-        transition: .3s;
-        color: $cinza11;
-        padding-right: 3.5rem;
-
-        &:focus {
-            outline: none;
-            border: 2px solid $verde9;
-        }
-
-        &::placeholder {
-            color: $cinza8;
-        }
-    }
-
-    .icone {
-        position: absolute;
-        right: 1rem;
-        cursor: pointer;
-        color: $cinza7;
-    }
-
-    &:focus-within .icone {
-        color: $verde10;
-    }
-}
-
-.filtro {
-  display: flex;
-
-  label {
-    margin-right: 0.5rem;
-    font-weight: 500;
-  }
-
-  select {
-    padding: 0.4rem 0.8rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-}
-
-.tabela {
-  width: 100%;
-  border-collapse: collapse;
-  background: #fff;
-
-  th,
-  td {
-    padding: 0.75rem 1rem;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-
-  th {
-    background: #f5f5f5;
-    font-weight: bold;
-  }
-
-  button {
-    margin-right: 0.5rem;
-    border: none;
-    background: transparent;
-    font-size: 1rem;
-    cursor: pointer;
-
-    &:hover {
-      color: #0070f3;
     }
   }
 }

@@ -6,7 +6,7 @@ import { useState } from "react";
 interface ModalCancelarSolicitacaoProps {
   titulo: string;
   onClose: () => void;
-  onSubmit: (e: React.FormEvent, idSolicitacao: number, motivo: string) => void;
+  onSubmit: (idSolicitacao: number, motivo: string) => void;
   isLoading: boolean;
   textoBotao: string;
   idSolicitacao: number | null;
@@ -16,8 +16,11 @@ export default function ModalCancelarSolicitacao({ titulo, onClose, onSubmit, is
   const [motivo, setMotivo] = useState("");
   
   const handleSubmit = (e: React.FormEvent) => {
-    if (idSolicitacao != null)
-      onSubmit(e, idSolicitacao, motivo);
+    if (idSolicitacao != null){
+      e.preventDefault();
+      onSubmit(idSolicitacao, motivo);
+      onClose()
+    }
   };
 
   return (

@@ -4,14 +4,41 @@ import ButtonAuth from "../ButtonAuth";
 import Link from "next/link";
 import { SquareArrowOutUpRight } from 'lucide-react';
 import ProfessorProfile from "../UsuarioProfile";
+import { useEffect, useState } from "react";
 
 interface ProfessorCardProps {
   professor: Professor;
   desabilitarSolicitacao?: boolean;
-  onSolicitarOrientacao?: () => void;
+  solicitacaoJaFeita?: boolean;
+  onSolicitar?: () => Promise<void>;
+  onCancelar?: () => Promise<void>;
 }
 
-export default function ProfessorCard({ professor, desabilitarSolicitacao, onSolicitarOrientacao }: ProfessorCardProps) {
+export default function ProfessorCard({ professor, desabilitarSolicitacao, solicitacaoJaFeita, onSolicitar, onCancelar }: ProfessorCardProps) {
+  const [solicitado, setSolicitado] = useState(solicitacaoJaFeita);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setSolicitado(solicitacaoJaFeita);
+  }, [solicitacaoJaFeita]);
+
+  const handleClick = async () => {
+    setLoading(true);
+    try {
+      if (!solicitado) {
+        await onSolicitar?.();
+        setSolicitado(true);
+      } else {
+        await onCancelar?.();
+        setSolicitado(false);
+      }
+    } catch (e) {
+      console.error("Erro ao processar solicitação:", e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className={styles.card_professor}>
       <ProfessorProfile usuario={professor} />
@@ -43,7 +70,14 @@ export default function ProfessorCard({ professor, desabilitarSolicitacao, onSol
           <Link href={`/perfil/${professor.idLattes}`} target="_blank" >
             <ButtonAuth text={"Visualizar Perfil"} type="button" theme="primary_2" margin="0" />
           </Link>
-          <ButtonAuth text={"Solicitar Orientação"} type="button" theme="primary" margin="0" disabled={desabilitarSolicitacao} onClick={onSolicitarOrientacao} />
+          <ButtonAuth
+            text={solicitado ? "Cancelar Solicitação" : "Solicitar Orientação"}
+            type="button"
+            theme={solicitado ? "secondary" : "primary"}
+            margin="0"
+            disabled={desabilitarSolicitacao || loading}
+            onClick={handleClick}
+          />
         </div>
       </div>
     </div>

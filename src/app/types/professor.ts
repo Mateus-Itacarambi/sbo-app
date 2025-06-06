@@ -7,6 +7,7 @@ export interface Professor extends Usuario {
   areasDeInteresse?: AreaInteresse[] | null;
   formacoes?: Formacao[] | null;
   temas?: Tema[] | null;
+  solicitacaoPendente?: boolean;
 }
 
 export interface ProfessorCurso {

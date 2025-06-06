@@ -16,9 +16,10 @@ interface TabelaSolicitacoesProps {
   mostrarFiltros: boolean;
   filtros: any;
   setFiltros: (f: any) => void;
+  atualizarSolicitacoes: () => Promise<void>;
 }
 
-export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtros, setFiltros }: TabelaSolicitacoesProps) {
+export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtros, setFiltros, atualizarSolicitacoes }: TabelaSolicitacoesProps) {
   const { isLoading } = useAlertaTemporarioContext();
   const [modalCancelarSolicitacao, setModalCancelarSolicitacao] = useState(false);
   const [modalRejeitarSolicitacao, setModalRejeitarSolicitacao] = useState(false);
@@ -28,26 +29,25 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
   const solicitacaoActions = useSolicitacaoActions(usuario);
   const [motivoAberto, setMotivoAberto] = useState<number[]>([]);
 
-  const cancelarOrientacao = async (e: React.FormEvent, solicitacaoId: number, motivo: string) => {
-    await solicitacaoActions.handleCancelarOrientacao(e, solicitacaoId, motivo);
+  const cancelarOrientacao = async (solicitacaoId: number, motivo: string) => {
+    setLoading({ id: solicitacaoId, tipo: "CANCELAR" });
+    await solicitacaoActions.handleCancelarOrientacao(solicitacaoId, motivo);
+    await atualizarSolicitacoes();
+    setLoading(null);
   };
 
   const aprovarOrientacao = async (solicitacaoId: number) => {
-    // setLoading({ id: solicitacaoId, tipo: "APROVAR" });
-    // try {
-      solicitacaoActions.handleAprovarSolicitacao(solicitacaoId);
-    // } finally {
-    //   setLoading(null);
-    // }
+    setLoading({ id: solicitacaoId, tipo: "APROVAR" });
+    await solicitacaoActions.handleAprovarSolicitacao(solicitacaoId);
+    await atualizarSolicitacoes();
+    setLoading(null);
   };
 
-  const rejeitarOrientacao = async (e: React.FormEvent, solicitacaoId: number, motivo: string) => {
-    // setLoading({ id: solicitacaoId, tipo: "REJEITAR" });
-    // try {
-      await solicitacaoActions.handleRejeitarSolicitacao(e, solicitacaoId, motivo);
-    // } finally {
-    //   setLoading(null);
-    // }
+  const rejeitarOrientacao = async (solicitacaoId: number, motivo: string) => {
+    setLoading({ id: solicitacaoId, tipo: "REJEITAR" });
+    await solicitacaoActions.handleRejeitarSolicitacao(solicitacaoId, motivo);
+    await atualizarSolicitacoes();
+    setLoading(null);
   };
 
   const toggleMotivo = (id: number) => {
@@ -55,6 +55,16 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
   };
+
+  const toggleTodosMotivos = () => {
+    if (motivoAberto.length > 0) {
+      setMotivoAberto([]);
+    } else {
+      const todosIds = solicitacoes.map((s) => s.id);
+      setMotivoAberto(todosIds);
+    }
+  };
+
 
   const statusOptions = [
     { value: "", label: "Todos" },
@@ -164,7 +174,21 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
                     fontSize="1.4rem"
                   />
                 </td>
-                <td></td>
+                <td>
+                  <button onClick={toggleTodosMotivos} className={styles.botaoMostrarTodos}>
+                    {motivoAberto.length > 0 ? (
+                        <>
+                          <EyeOff size={"14px"} strokeWidth={"2px"}/>
+                          Ocultar Tudo
+                        </>
+                      ) : (
+                        <>
+                          <Eye size={"14px"} strokeWidth={"2px"}/>
+                          Mostrar Tudo
+                        </>
+                      )}
+                  </button>
+                </td>
               </tr>
             )}
         </thead>
@@ -205,7 +229,7 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
                       </>
                     ) : (
                       <>
-                        <button title="Cancelar" className={styles.rejeitar} onClick={() => { setSolicitacaoIdSelecionada(s.id); setModalCancelarSolicitacao(true) }}>Cancelar</button>
+                        <button title="Cancelar" className={styles.rejeitar} onClick={() => { cancelarOrientacao(s.id, "cancelar"); }}>Cancelar</button>
                       </>
                     )
                   ) : s.status === "APROVADA" ? (

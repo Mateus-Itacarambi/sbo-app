@@ -7,8 +7,6 @@ import Paginacao from "../../components/Paginacao";
 import TabelaSolicitacoes from "@/components/SolicitacoesPage/TabelaSolicitacoes";
 import Alerta from "@/components/Alerta";
 import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
-import ModalEstudanteTema from "@/components/Modal/Estudante/ModalEstudanteTema";
-import ModalCancelarSolicitacao from "@/components/Modal/ModalCancelarSolicitacao";
 
 interface Page<T> {
   content: T[];
@@ -87,6 +85,7 @@ export default function SolicitacoesPage() {
             mostrarFiltros={mostrarFiltros}
             filtros={filtros}
             setFiltros={setFiltros}
+            atualizarSolicitacoes={buscarSolicitacoes}
           />
           <Paginacao
             paginaAtual={paginaAtual}

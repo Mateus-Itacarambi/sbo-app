@@ -2,8 +2,8 @@ import { Estudante, Professor } from "@/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const solicitarOrientacao = async (estudante: Estudante, professorId: number) => {
-  const response = await fetch(`${API_URL}/solicitacoes/solicitarOrientacao/${estudante.id}/${professorId}`, {
+export const solicitarOrientacao = async (professorId: number) => {
+  const response = await fetch(`${API_URL}/solicitacoes/solicitarOrientacao/${professorId}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
@@ -13,7 +13,7 @@ export const solicitarOrientacao = async (estudante: Estudante, professorId: num
 };
 
 export const aprovarSolicitacao = async (professor: Professor, solicitacaoId: number) => {
-  const response = await fetch(`${API_URL}/solicitacoes/${solicitacaoId}/aprovar/${professor.id}`, {
+  const response = await fetch(`${API_URL}/solicitacoes/aprovar/${solicitacaoId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
@@ -22,8 +22,7 @@ export const aprovarSolicitacao = async (professor: Professor, solicitacaoId: nu
   return response.json();
 };
 
-export const rejeitarSolicitacao = async (e: React.FormEvent, solicitacaoId: number, motivo: string) => {
-  e.preventDefault();
+export const rejeitarSolicitacao = async (solicitacaoId: number, motivo: string) => {
   const response = await fetch(`${API_URL}/solicitacoes/rejeitar/${solicitacaoId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -36,8 +35,7 @@ export const rejeitarSolicitacao = async (e: React.FormEvent, solicitacaoId: num
   return response.json();
 };
 
-export const cancelarOrientacao = async (e: React.FormEvent, solicitacaoId: number, motivo: string) => {
-  e.preventDefault();
+export const cancelarOrientacao = async (solicitacaoId: number, motivo: string) => {
   const response = await fetch(`${API_URL}/solicitacoes/cancelar/${solicitacaoId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
