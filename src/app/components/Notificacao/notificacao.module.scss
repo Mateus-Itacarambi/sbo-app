@@ -22,12 +22,13 @@
   top: 0;
   right: -650px;
   width: 450px;
-  height: 100%;
+  height: 100vh;
   background-color: #fff;
-  color: #333;
+  color: $cinza12;
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
-  padding: 1rem 0;
+  padding-top: 1rem;
   transition: right 0.3s ease;
+  overflow-y: auto;
 
   h1 {
     display: flex;
@@ -102,6 +103,10 @@
   }
 
   ul {
+    height: calc(100vh - 5.2rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     list-style: none;
 
     a {
@@ -112,6 +117,7 @@
         position: relative;
         padding: 1rem 2rem;
         border-bottom: 2px solid $cinza3;
+        height: fit-content;
 
         p {
           margin: 0;
@@ -148,5 +154,25 @@
         }
       }
     }
+  }
+}
+
+.marcar_todos {
+  position: relative;
+  width: 100%;
+  background-color: white;
+  border: none;
+  border-bottom: 2px solid $cinza3;
+  border-top: 2px solid $cinza3;
+  padding: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: $cinza12;
+  bottom: 0;
+  left: 0;
+
+  &:hover {
+    background-color: $cinza3;
+    cursor: pointer;
   }
 }

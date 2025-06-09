@@ -7,6 +7,8 @@ import Paginacao from "../../components/Paginacao";
 import TabelaSolicitacoes from "@/components/SolicitacoesPage/TabelaSolicitacoes";
 import Alerta from "@/components/Alerta";
 import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
+import { useWebSocketSolicitacoes } from "@/hooks/useWebSocketSolicitacoes";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Page<T> {
   content: T[];
@@ -19,6 +21,7 @@ interface Page<T> {
 }
 
 export default function SolicitacoesPage() {
+  const { usuario } = useAuth();
   const { erro, sucesso, mostrarAlerta } = useAlertaTemporarioContext();
   const containerRef = useRef<HTMLDivElement>(null);
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
@@ -65,6 +68,21 @@ export default function SolicitacoesPage() {
   useEffect(() => {
     containerRef.current?.scrollTo({ top: 0, behavior: "instant" });
   }, [paginaAtual]);
+
+  useWebSocketSolicitacoes({
+    userId: usuario?.id || 0,
+    onNovaSolicitacao: (nova) => {
+      setSolicitacoes((prev) => {
+        const existe = prev.some((s) => s.id === nova.id);
+        return existe
+          ? prev.map((s) => (s.id === nova.id ? nova : s))
+          : [nova, ...prev];
+      });
+    },
+    onRemoverSolicitacao: (id) => {
+      setSolicitacoes((prev) => prev.filter((s) => s.id !== id));
+    },
+  });
 
   return (
     <div className={styles.main}>

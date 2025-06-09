@@ -66,14 +66,35 @@ const NavBar = () => {
 }, [usuario, loading]);
 
   useWebSocketNotificacoes({
-    userId: usuario?.id ?? 0,
+    userId: usuario?.id || 0,
     onNovaNotificacao: (nova) => {
       setNotificacoes((prev) => {
-        const ids = prev.map(n => n.id);
-        return ids.includes(nova.id) ? prev : [nova, ...prev];
+        const existe = prev.some(n => n.id === nova.id);
+        return existe ? prev : [nova, ...prev];
       });
     },
+    onRemoverNotificacao: (id) => {
+      setNotificacoes((prev) => prev.filter(n => n.id !== id));
+    }
   });
+
+  const marcarComoLida = async (idNotificacao: number) => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/notificacoes/${idNotificacao}/marcar-lida`, {
+        method: "PUT",
+        credentials: "include",
+      });
+
+      setNotificacoes((prev) =>
+        prev.map((n) =>
+          n.id === idNotificacao ? { ...n, lida: true } : n
+        )
+      );
+
+    } catch (error) {
+      console.error("Erro ao marcar como lida:", error);
+    }
+  };
 
   const marcarTodasComoLidas = async () => {
     try {
@@ -117,7 +138,7 @@ const NavBar = () => {
               <div className={styles.userSection}>
                 <button className={styles.notificacao} onClick={() => setMostrarNotificacao(true)}>
                   <Image src={iconBell} width={23} alt="Ícone de sino" />
-                  {notificacoes.length > 0 && (
+                  {notificacoes.some(n => !n.lida) && (
                     <span className={styles.sinal}></span>
                   )}
                 </button>
@@ -186,6 +207,7 @@ const NavBar = () => {
       <Notificacao 
         notificacoes={notificacoes || []}
         marcarTodasComoLidas={marcarTodasComoLidas}
+        marcarComoLida={marcarComoLida}
         visivel={mostrarNotificacao} 
         onClose={() => setMostrarNotificacao(false)}
       />

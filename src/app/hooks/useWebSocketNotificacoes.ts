@@ -1,14 +1,19 @@
 import { useEffect, useRef } from "react";
 import SockJS from "sockjs-client";
-import { Client, Message } from "@stomp/stompjs";
+import { Client } from "@stomp/stompjs";
 import { NotificacaoDTO } from "@/types/notificacao";
 
 type UseWebSocketNotificacoesProps = {
   userId: number;
   onNovaNotificacao: (notificacao: NotificacaoDTO) => void;
+  onRemoverNotificacao?: (idRemover: number) => void; // novo
 };
 
-export function useWebSocketNotificacoes({ userId, onNovaNotificacao }: UseWebSocketNotificacoesProps) {
+export function useWebSocketNotificacoes({
+  userId,
+  onNovaNotificacao,
+  onRemoverNotificacao,
+}: UseWebSocketNotificacoesProps) {
   const clientRef = useRef<Client | null>(null);
 
   useEffect(() => {
@@ -20,8 +25,14 @@ export function useWebSocketNotificacoes({ userId, onNovaNotificacao }: UseWebSo
       reconnectDelay: 5000,
       onConnect: () => {
         stompClient.subscribe(`/topic/notificacoes/${userId}`, (message) => {
-          const notificacao: NotificacaoDTO = JSON.parse(message.body);
-          onNovaNotificacao(notificacao);
+          const body = JSON.parse(message.body);
+
+          if ("removerNotificacaoId" in body && onRemoverNotificacao) {
+            onRemoverNotificacao(body.removerNotificacaoId);
+          } else {
+            const notificacao: NotificacaoDTO = body;
+            onNovaNotificacao(notificacao);
+          }
         });
       },
       onStompError: (frame) => {
@@ -35,7 +46,5 @@ export function useWebSocketNotificacoes({ userId, onNovaNotificacao }: UseWebSo
     return () => {
       clientRef.current?.deactivate();
     };
-  }, [userId, onNovaNotificacao]);
-
+  }, [userId, onNovaNotificacao, onRemoverNotificacao]);
 }
-

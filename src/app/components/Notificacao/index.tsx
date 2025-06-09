@@ -11,9 +11,10 @@ interface Props {
   onClose: () => void;
   notificacoes: NotificacaoDTO[];
   marcarTodasComoLidas: () => void;
+  marcarComoLida: (idNotificacao: number) => void;
 }
 
-export default function Notificacao({ visivel, onClose, notificacoes, marcarTodasComoLidas }: Props) {
+export default function Notificacao({ visivel, onClose, notificacoes, marcarTodasComoLidas, marcarComoLida}: Props) {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -26,40 +27,31 @@ export default function Notificacao({ visivel, onClose, notificacoes, marcarToda
     <div className={`${styles.overlay} ${visivel ? styles.aberto : ""}`} onClick={onClose}>
       <aside className={styles.aside} onClick={(e) => e.stopPropagation()}>
         <h1>
-            <ChevronLeft style={{cursor: "pointer"}} size={"30px"} strokeWidth={"2px"} onClick={() => { onClose(); marcarTodasComoLidas(); }} />
+            <ChevronLeft style={{cursor: "pointer"}} size={"30px"} strokeWidth={"2px"} onClick={() => { onClose(); }} />
             Notificações
         </h1>
-        <div className={styles.solicitacoes}>
-          <span className={styles.icon}>
-            <UserPlus style={{ transform: "scaleX(-1)" }} />
-            {notificacoes.length > 0 && (
-              <span className={styles.sinal}></span>
-            )}
-          </span>
-          <p>
-            Solicitações pendentes
-            <span>Acompenhe suas solicitações aqui</span>
-          </p>
-        </div>
         <ul>
-          {notificacoes.map((n) => {
-            if (n.tipo === "ORIENTACAO" || n.tipo === "APROVADA" || n.tipo === "REJEITADA") { 
-              return (
-                <>
-                  <Link href={`/solicitacoes`}>
-                    <li key={n.id}>
-                      {!n.lida && <span className={styles.lida}></span>}
-                      <p>
-                        {n.mensagem}<span>{n.solicitante?.nome}.</span> 
-                      </p>
-                      <small>{new Date(n.dataCriacao).toLocaleString()}</small>
-                    </li>
-                  </Link>
-                </>
-              );
-            }
-            return null;
-          })}
+          <div className={styles.notificacoes}>
+            {notificacoes.map((n) => {
+              if (n.tipo === "ORIENTACAO" || n.tipo === "APROVADA" || n.tipo === "REJEITADA") { 
+                return (
+                  <>
+                    <Link href={`/solicitacoes`} onClick={() => { marcarComoLida(n.id); onClose(); }}>
+                      <li key={n.id}>
+                        {!n.lida && <span className={styles.lida}></span>}
+                        <p>
+                          {n.mensagem}<span>{n.solicitante?.nome}.</span> 
+                        </p>
+                        <small>{new Date(n.dataCriacao).toLocaleString()}</small>
+                      </li>
+                    </Link>
+                  </>
+                );
+              }
+              return null;
+            })}
+          </div>
+          <button className={styles.marcar_todos} onClick={() => { marcarTodasComoLidas(); onClose(); }}>Marcar todas como lidas</button>
         </ul>
       </aside>
     </div>

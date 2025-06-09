@@ -3,6 +3,7 @@
 .nav {
   background-color: $verde9;
   font-weight: 500;
+  z-index: 1000;
 
   &__container {
     height: 8rem;
