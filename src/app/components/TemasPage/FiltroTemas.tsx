@@ -80,7 +80,7 @@ export default function FiltroProfessor({ filtros, setFiltros, isLoading }: Prop
         theme="secondary"
         margin="0"
         onClick={() =>
-          setFiltros({ titulo: "", professor: "" })
+          setFiltros({ titulo: "", professor: "", palavrasChave: []})
         }
         loading={isLoading}
       />

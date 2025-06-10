@@ -24,10 +24,8 @@ export function useWebSocketSolicitacoes({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
       onConnect: () => {
-        console.log("Conectado ao WebSocket: Solicitacoes");
         stompClient.subscribe(`/topic/solicitacoes/${userId}`, (message) => {
           const body = JSON.parse(message.body);
-          console.log("Mensagem WS - Solicitacao:", body);
 
           if (body.removerSolicitacaoId && onRemoverSolicitacao) {
             onRemoverSolicitacao(body.removerSolicitacaoId);

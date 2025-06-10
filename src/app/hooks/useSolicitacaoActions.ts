@@ -7,6 +7,7 @@ import {
   cancelarOrientacao,
   rejeitarSolicitacao,
   aprovarSolicitacao,
+  concluirSolicitacao,
 } from "@/services/solicitacaoService";
 
 
@@ -73,6 +74,21 @@ export const useSolicitacaoActions = () => {
     }
   };
 
+  const handleConcluirSolicitacao = async (solicitacaoId: number) => {
+    try {
+      setIsLoading(true);
+      await concluirSolicitacao(solicitacaoId);
+      setSucesso("Solicitacão concluída com sucesso!");
+      setErro("");
+    } catch (error: any) {
+      setErro(handleFetchError(error));
+      setSucesso("");
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleCancelarOrientacao = async (solicitacaoId: number, motivo: string) => {
     try {
       setIsLoading(true);
@@ -93,6 +109,7 @@ export const useSolicitacaoActions = () => {
     handleSolicitarTema,
     handleAprovarSolicitacao,
     handleRejeitarSolicitacao,
+    handleConcluirSolicitacao,
     handleCancelarOrientacao,
   };
 };

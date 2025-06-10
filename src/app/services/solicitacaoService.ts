@@ -43,6 +43,16 @@ export const rejeitarSolicitacao = async (solicitacaoId: number, motivo: string)
   return response.json();
 };
 
+export const concluirSolicitacao = async (solicitacaoId: number) => {
+  const response = await fetch(`${API_URL}/solicitacoes/concluir/${solicitacaoId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
+  if (!response.ok) throw new Error(await response.text());
+  return response.json();
+};
+
 export const cancelarOrientacao = async (solicitacaoId: number, motivo: string) => {
   const response = await fetch(`${API_URL}/solicitacoes/cancelar/${solicitacaoId}`, {
     method: "PUT",

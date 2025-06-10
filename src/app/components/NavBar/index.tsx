@@ -129,9 +129,6 @@ const NavBar = () => {
             <li className={styles.nav__li}>
               <NavLink href="/solicitacoes">Solicitações</NavLink>
             </li>
-            <li className={styles.nav__li}>
-              <NavLink href="/sobre">Sobre</NavLink>
-            </li>
           </ul>
           <div className={styles.actions}>
           {loading ? null : usuario ? (

@@ -32,20 +32,31 @@ export default function Notificacao({ visivel, onClose, notificacoes, marcarToda
         <ul>
           <div className={styles.notificacoes}>
             {notificacoes.map((n) => {
-              if (n.tipo === "ORIENTACAO" || n.tipo === "APROVADA" || n.tipo === "REJEITADA") { 
+              if (n.tipo === "TEMA") { 
                 return (
                     <Link href={`/solicitacoes`} onClick={() => { marcarComoLida(n.id); onClose(); }}>
                       <li key={n.id}>
                         {!n.lida && <span className={styles.lida}></span>}
                         <p>
-                          {n.mensagem}<span>{n.solicitante?.nome}.</span> 
+                          <span>{n.solicitante?.nome}</span>{n.mensagem}
                         </p>
                         <small>{new Date(n.dataCriacao).toLocaleString()}</small>
                       </li>
                     </Link>
                 );
+              } else {
+                return (
+                  <Link href={`/solicitacoes`} onClick={() => { marcarComoLida(n.id); onClose(); }}>
+                    <li key={n.id}>
+                      {!n.lida && <span className={styles.lida}></span>}
+                      <p>
+                        {n.mensagem}<span>{n.solicitante?.nome}.</span> 
+                      </p>
+                      <small>{new Date(n.dataCriacao).toLocaleString()}</small>
+                    </li>
+                  </Link>
+                );
               }
-              return null;
             })}
           </div>
           <button className={styles.marcar_todos} onClick={() => { marcarTodasComoLidas(); onClose(); }}>Marcar todas como lidas</button>

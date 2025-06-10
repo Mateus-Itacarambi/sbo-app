@@ -9,10 +9,9 @@ interface TemaCardProps {
   solicitacaoJaFeita?: boolean;
   onSolicitar?: () => Promise<void>;
   onCancelar?: () => Promise<void>;
-  isLoading: boolean;
 }
 
-export default function TemaCard({ tema, isLoading, desabilitarSolicitacao, solicitacaoJaFeita, onSolicitar, onCancelar }: TemaCardProps) {
+export default function TemaCard({ tema, desabilitarSolicitacao, solicitacaoJaFeita, onSolicitar, onCancelar }: TemaCardProps) {
   const [solicitado, setSolicitado] = useState(solicitacaoJaFeita);
   const [loading, setLoading] = useState(false);
 

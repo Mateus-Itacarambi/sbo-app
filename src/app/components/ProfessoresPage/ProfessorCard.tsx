@@ -1,11 +1,10 @@
-import { Estudante, Professor } from "@/types";
+import { Professor } from "@/types";
 import styles from "./professoresPage.module.scss";
 import ButtonAuth from "../ButtonAuth";
 import Link from "next/link";
 import { SquareArrowOutUpRight } from 'lucide-react';
 import ProfessorProfile from "../UsuarioProfile";
 import { useEffect, useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
 
 interface ProfessorCardProps {
   professor: Professor;
@@ -18,7 +17,6 @@ interface ProfessorCardProps {
 export default function ProfessorCard({ professor, desabilitarSolicitacao, solicitacaoJaFeita, onSolicitar, onCancelar }: ProfessorCardProps) {
   const [solicitado, setSolicitado] = useState(solicitacaoJaFeita);
   const [loading, setLoading] = useState(false);
-  const { usuario } = useAuth();
 
   useEffect(() => {
     setSolicitado(solicitacaoJaFeita);
@@ -73,9 +71,9 @@ export default function ProfessorCard({ professor, desabilitarSolicitacao, solic
             <ButtonAuth text={"Visualizar Perfil"} type="button" theme="primary_2" margin="0" loading={loading} />
           </Link>
           <ButtonAuth
-            text={(solicitado && (usuario as Estudante).tema) ? "Cancelar Solicitação" : "Solicitar Orientação"}
+            text={solicitado ? "Cancelar Solicitação" : "Solicitar Orientação"}
             type="button"
-            theme={(solicitado && (usuario as Estudante).tema) ? "secondary" : "primary"}
+            theme={solicitado ? "secondary" : "primary"}
             margin="0"
             disabled={desabilitarSolicitacao || loading}
             onClick={handleClick}

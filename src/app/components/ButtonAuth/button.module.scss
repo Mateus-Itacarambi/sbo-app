@@ -21,7 +21,7 @@
 
         &:disabled{
             background-color: $verde11;
-            cursor: default;
+            cursor: no-drop;
         }
 
         &_2 {

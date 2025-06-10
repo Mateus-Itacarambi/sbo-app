@@ -25,7 +25,7 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
   const [modalCancelarSolicitacao, setModalCancelarSolicitacao] = useState(false);
   const [modalRejeitarSolicitacao, setModalRejeitarSolicitacao] = useState(false);
   const [solicitacaoIdSelecionada, setSolicitacaoIdSelecionada] = useState<number | null>(null);
-  const [loading, setLoading] = useState<{ id: number; tipo: "APROVAR" | "REJEITAR" | "CANCELAR" } | null>(null);
+  const [loading, setLoading] = useState<{ id: number; tipo: "APROVAR" | "REJEITAR" | "CANCELAR" | "CONCLUIR" } | null>(null);
   const { usuario } = useAuth();
   const solicitacaoActions = useSolicitacaoActions();
   const [motivoAberto, setMotivoAberto] = useState<number[]>([]);
@@ -61,6 +61,18 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
       await atualizarSolicitacoes();
     } catch (error) {
       console.error("Erro ao rejeitar orientação:", error);
+    } finally {
+      setLoading(null);
+    }
+  };
+
+  const concluirOrientacao = async (solicitacaoId: number) => {
+    setLoading({ id: solicitacaoId, tipo: "CONCLUIR" });
+    try {
+      await solicitacaoActions.handleConcluirSolicitacao(solicitacaoId);
+      await atualizarSolicitacoes();
+    } catch (error) {
+      console.error("Erro ao concluir orientação:", error);
     } finally {
       setLoading(null);
     }
@@ -249,7 +261,14 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
                       </>
                     )
                   ) : s.status === "APROVADA" ? (
-                    <button title="Cancelar" className={styles.rejeitar} onClick={() => { setSolicitacaoIdSelecionada(s.id); setModalCancelarSolicitacao(true)}}>Cancelar</button>
+                      <>
+                        <button title="Concluir" className={styles.aprovar} onClick={() => concluirOrientacao(s.id)} disabled={loading?.id === s.id}>
+                          {loading?.id === s.id && loading?.tipo === "CONCLUIR"
+                            ? <span className={styles.spinner}></span>
+                            : "Concluir"}
+                        </button>
+                        <button title="Cancelar" className={styles.rejeitar} onClick={() => { setSolicitacaoIdSelecionada(s.id); setModalCancelarSolicitacao(true)}}>Cancelar</button>
+                      </>
                   ) : (
                     <button title="Mostrar/Ocultar Motivo" className={styles.ver} onClick={() => toggleMotivo(s.id)}>
                       {motivoAberto.includes(s.id) ? (
@@ -267,11 +286,11 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
                   )}
                 </td>
               </tr>
-              {motivoAberto.includes(s.id) && (
+              {motivoAberto.includes(s.id) && s.motivo && (
                 <tr>
                   <td colSpan={5} style={{ padding: "1rem 0" }}>
                     <div className={styles.motivo}>
-                      <strong>Motivo:</strong> {s.motivo || "Não informado"}
+                      <strong>Motivo:</strong> {s.motivo}
                     </div>
                   </td>
                 </tr>

@@ -48,7 +48,6 @@ export default function ListaTemas({ temas, paginaAtual, totalPaginas, onPaginaC
               solicitacaoJaFeita={t.solicitacaoPendente}
               onSolicitar={() => solicitarTema(t.id)}
               onCancelar={() => cancelarSolicitacao(t.idSolicitacao!)}
-              isLoading={isLoading} 
             />
           ))}
         </div>

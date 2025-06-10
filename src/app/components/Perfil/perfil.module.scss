@@ -316,9 +316,24 @@
               color: white;
               font-weight: 600;
 
-            &:hover {
-              background-color: $verde11;
+              &:hover {
+                background-color: $verde11;
+              }
             }
+
+            &.cancelar {
+                background-color: $vermelho9;
+                border-radius: 2rem;
+                color: white;
+                font-weight: 600;
+
+                &:hover {
+                    background-color: $vermelho11;
+                }
+
+                &:disabled{
+                    background-color: $vermelho11;
+                }
             }
 
             &:hover {
