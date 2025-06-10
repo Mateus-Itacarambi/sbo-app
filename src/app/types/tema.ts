@@ -9,6 +9,8 @@ export interface Tema {
     statusTema: string;
     professor: Professor;
     estudantes?: Estudante[];
+    solicitacaoPendente?: boolean;
+    idSolicitacao?: number;
 }
   
 export interface TemaDTO {

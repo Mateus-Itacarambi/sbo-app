@@ -3,6 +3,7 @@ import { handleFetchError } from "@/utils/handleFetchError";
 
 import {
   solicitarOrientacao,
+  solicitarTema,
   cancelarOrientacao,
   rejeitarSolicitacao,
   aprovarSolicitacao,
@@ -16,6 +17,21 @@ export const useSolicitacaoActions = () => {
     try {
       setIsLoading(true);
       await solicitarOrientacao(professorId);
+      setSucesso("Solicitacão enviada com sucesso!");
+      setErro("");
+    } catch (error: any) {
+      setErro(handleFetchError(error));
+      setSucesso("");
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSolicitarTema = async (temaId: number) => {
+    try {
+      setIsLoading(true);
+      await solicitarTema(temaId);
       setSucesso("Solicitacão enviada com sucesso!");
       setErro("");
     } catch (error: any) {
@@ -74,6 +90,7 @@ export const useSolicitacaoActions = () => {
   
   return {
     handleSolicitarOrientacao,
+    handleSolicitarTema,
     handleAprovarSolicitacao,
     handleRejeitarSolicitacao,
     handleCancelarOrientacao,

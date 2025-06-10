@@ -18,7 +18,6 @@ export default function ListaProfessores({ professores, paginaAtual, totalPagina
   const containerRef = useRef<HTMLDivElement>(null);
   const { usuario } = useAuth();
   const solicitacaoActions = useSolicitacaoActions();
-  console.log(professores);
 
   useEffect(() => {
     containerRef.current?.scrollTo({ top: 0, behavior: "instant" });

@@ -4,7 +4,6 @@ import styles from "./notificacao.module.scss";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { NotificacaoDTO } from "@/types/notificacao";
-import { UserPlus } from 'lucide-react';
 
 interface Props {
   visivel: boolean;
@@ -35,7 +34,6 @@ export default function Notificacao({ visivel, onClose, notificacoes, marcarToda
             {notificacoes.map((n) => {
               if (n.tipo === "ORIENTACAO" || n.tipo === "APROVADA" || n.tipo === "REJEITADA") { 
                 return (
-                  <>
                     <Link href={`/solicitacoes`} onClick={() => { marcarComoLida(n.id); onClose(); }}>
                       <li key={n.id}>
                         {!n.lida && <span className={styles.lida}></span>}
@@ -45,7 +43,6 @@ export default function Notificacao({ visivel, onClose, notificacoes, marcarToda
                         <small>{new Date(n.dataCriacao).toLocaleString()}</small>
                       </li>
                     </Link>
-                  </>
                 );
               }
               return null;

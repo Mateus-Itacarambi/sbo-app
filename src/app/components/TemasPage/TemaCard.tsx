@@ -1,8 +1,42 @@
 import { Tema } from "@/types";
 import styles from "./temasPage.module.scss";
 import ButtonAuth from "../ButtonAuth";
+import { useEffect, useState } from "react";
 
-export default function TemaCard({ tema, isLoading }: { tema: Tema, isLoading: boolean }) {
+interface TemaCardProps {
+  tema: Tema;
+  desabilitarSolicitacao?: boolean;
+  solicitacaoJaFeita?: boolean;
+  onSolicitar?: () => Promise<void>;
+  onCancelar?: () => Promise<void>;
+  isLoading: boolean;
+}
+
+export default function TemaCard({ tema, isLoading, desabilitarSolicitacao, solicitacaoJaFeita, onSolicitar, onCancelar }: TemaCardProps) {
+  const [solicitado, setSolicitado] = useState(solicitacaoJaFeita);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setSolicitado(solicitacaoJaFeita);
+  }, [solicitacaoJaFeita]);
+
+  const handleClick = async () => {
+    setLoading(true);
+    try {
+      if (!solicitado) {
+        await onSolicitar?.();
+        setSolicitado(true);
+      } else {
+        await onCancelar?.();
+        setSolicitado(false);
+      }
+    } catch (e) {
+      console.error("Erro ao processar solicitação:", e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className={styles.card_tema}>
       <h3>{tema.titulo}</h3>
@@ -22,7 +56,15 @@ export default function TemaCard({ tema, isLoading }: { tema: Tema, isLoading: b
         {tema.professor.nome}
       </p>
 
-      <ButtonAuth text={"Solicitar Tema"} type="button" theme="primary" margin=".5rem 0 0 0" loading={isLoading} />
+      <ButtonAuth
+        text={solicitado ? "Cancelar Solicitação" : "Solicitar Tema"}
+        type="button"
+        theme={solicitado ? "secondary" : "primary"}
+        margin="0"
+        disabled={desabilitarSolicitacao || loading}
+        onClick={handleClick}
+        loading={loading}
+      />
     </div>
   );
 }
