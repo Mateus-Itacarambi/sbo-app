@@ -21,33 +21,39 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchUsuario = async () => {
+useEffect(() => {
+  const fetchUsuario = async () => {
     if (usuario) return;
-      try {
-        setLoading(true);
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/resumo`, {
-          credentials: "include",
-        });
 
-        if (!res.ok) {
+    try {
+      setLoading(true);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/resumo`, {
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        const publicPaths = ["/login", "/cadastro", "/esqueceu-senha", "/redefinir-senha"];
+        const pathname = window.location.pathname;
+
+        const isPublicPage = publicPaths.some((path) => pathname.startsWith(path));
+        if (!isPublicPage) {
           router.push("/login");
-          return;
         }
 
-        if (res.ok) {
-          const data = await res.json();
-          setUsuario(data);
-        }
-      } catch (error) {
-        console.error("Erro ao buscar usuário:", error);
-      } finally {
-        setLoading(false);
+        return;
       }
-    };
 
-    fetchUsuario();
-  }, []);
+      const data = await res.json();
+      setUsuario(data);
+    } catch (error) {
+      console.error("Erro ao buscar usuário:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchUsuario();
+}, []);
 
   const logout = async () => {
     try {

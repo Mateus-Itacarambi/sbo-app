@@ -10,7 +10,6 @@ import StatusBadge from "../StatusBadge";
 import { StatusTipo } from "@/types";
 import ModalCancelarSolicitacao from "../Modal/ModalCancelarSolicitacao";
 import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
-import { tr } from "framer-motion/client";
 
 interface TabelaSolicitacoesProps {
   solicitacoes: Solicitacao[];
@@ -261,6 +260,7 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
                       </>
                     )
                   ) : s.status === "APROVADA" ? (
+                    usuario?.role === "PROFESSOR" ? (
                       <>
                         <button title="Concluir" className={styles.aprovar} onClick={() => concluirOrientacao(s.id)} disabled={loading?.id === s.id}>
                           {loading?.id === s.id && loading?.tipo === "CONCLUIR"
@@ -269,6 +269,11 @@ export default function TabelaSolicitacoes({ solicitacoes, mostrarFiltros, filtr
                         </button>
                         <button title="Cancelar" className={styles.rejeitar} onClick={() => { setSolicitacaoIdSelecionada(s.id); setModalCancelarSolicitacao(true)}}>Cancelar</button>
                       </>
+                    ) : (
+                      <>
+                        <button title="Cancelar" className={styles.rejeitar} onClick={() => { setSolicitacaoIdSelecionada(s.id); setModalCancelarSolicitacao(true)}}>Cancelar</button>
+                      </>
+                    )
                   ) : (
                     <button title="Mostrar/Ocultar Motivo" className={styles.ver} onClick={() => toggleMotivo(s.id)}>
                       {motivoAberto.includes(s.id) ? (

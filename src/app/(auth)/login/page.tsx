@@ -8,14 +8,13 @@ import ButtonAuth from "@/components/ButtonAuth";
 import Alerta from "@/components/Alerta";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAlertaTemporarioContext } from "@/contexts/AlertaContext";
+import React from "react";
 
 export default function Login() {
+  const { isLoading, erro, sucesso, mostrarAlerta, setIsLoading, setErro, setSucesso } = useAlertaTemporarioContext();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [erro, setErro] = useState("");
-  const [sucesso, setSucesso] = useState("");
-  const [mostrarMensagem, setmostrarMensagem] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { usuario, setUsuario } = useAuth();
 
@@ -24,22 +23,6 @@ export default function Login() {
       router.push("/");
     }
   }, [usuario]);
-
-  useEffect(() => {
-    if (erro || sucesso) {
-      setmostrarMensagem(true);
-
-      const timer = setTimeout(() => {
-        setmostrarMensagem(false);
-        setErro("");
-        setSucesso("");
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [erro, sucesso]);
-
-  
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,12 +57,10 @@ export default function Login() {
 
   return (
     <div className={styles.container}>
-      <div className="teste"></div>
       <section>
-        {sucesso && mostrarMensagem && (
-          <Alerta text={sucesso} theme="sucesso" />
-        )}
-        {erro && mostrarMensagem && <Alerta text={erro} theme="erro" />}
+      {mostrarAlerta && (
+          <Alerta text={erro || sucesso} theme={erro ? "erro" : "sucesso"} top="10rem" />
+      )}
         <div className={styles.login}>
           <h1>BEM-VINDO DE VOLTA</h1>
           <p>Bem-vindo de volta! Por favor, entre com suas credenciais.</p>
@@ -101,7 +82,7 @@ export default function Login() {
               onChange={(e) => setSenha(e.target.value)}
             />
 
-            <Link href="/recuperar-senha">
+            <Link href="/esqueceu-senha">
               <p>Esqueceu sua senha?</p>
             </Link>
 

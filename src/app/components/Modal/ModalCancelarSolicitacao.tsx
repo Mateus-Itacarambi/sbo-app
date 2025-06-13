@@ -19,8 +19,8 @@ export default function ModalCancelarSolicitacao({ titulo, onClose, onSubmit, is
     if (idSolicitacao != null){
       e.preventDefault();
       onSubmit(idSolicitacao, motivo);
-      onClose()
     }
+      onClose()
   };
 
   return (

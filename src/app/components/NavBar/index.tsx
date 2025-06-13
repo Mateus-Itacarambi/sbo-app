@@ -160,20 +160,21 @@ const NavBar = () => {
                 
                 {estudante ? (
                   <Dropdown
+                    width="135px"
                     label=""
                     items={[
                       { type: "link", label: "Perfil", href: `${endpoint}` },
-                      { type: "link", label: "Alterar Senha", href: "/alterar-senha" },
+                      { type: "link", label: "Redefinir Senha", href: "/redefinir-senha" },
                       { type: "action", label: "Sair", onClick: logout },
                     ]}
                   />
                 ) : professor ? (
                   <Dropdown
+                    width="135px"
                     label=""
                     items={[
                       { type: "link", label: "Perfil", href: `${endpoint}` },
-                      { type: "link", label: "Configurações", href: "/configuracoes" },
-                      { type: "link", label: "Temas", href: "/temas" },
+                      { type: "link", label: "Redefinir Senha", href: "/redefinir-senha" },
                       { type: "action", label: "Sair", onClick: logout },
                     ]}
                   />
@@ -183,7 +184,7 @@ const NavBar = () => {
                     label=""
                     items={[
                       { type: "link", label: "Perfil", href: `${endpoint}` },
-                      { type: "link", label: "Configurações", href: "/configuracoes" },
+                      { type: "link", label: "Redefinir Senha", href: "/redefinir-senha" },
                       { type: "link", label: "Importar Cursos", href: "/cursos-cadastro" },
                       { type: "link", label: "Importar Professores", href: "/professor-cadastro" },
                       { type: "link", label: "Importar Áreas de Interesse", href: "/area-interesse-cadastro" },
